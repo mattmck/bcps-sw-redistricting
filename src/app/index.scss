@@ -12,6 +12,10 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
 // bower:scss
 // endbower
 
+.selected-row{
+  background-color: red
+}
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;

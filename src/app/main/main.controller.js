@@ -47,9 +47,11 @@
 
     $scope.selectedSchool = null;
     $scope.selectedPlanningBlock = null;
+    $scope.selectedSchoolName = "";
     $scope.schools = [];
     $scope.blocks = [];
     $scope.planningBlockLayers = {};
+    $scope.schoolColors = {};
     $scope.onBlockFeature = function(feature, layer){
       $scope.planningBlockLayers[feature.properties.PBID] = layer;
       layer.on({click: function(e){
@@ -80,6 +82,7 @@
           $scope.selectedSchool = feature;
           $scope.selectedSchoolColor = layer.options.fillColor;
           $log.info("school " + feature.properties.NAME + " clicked");
+          $scope.selectedSchoolName = feature.properties.NAME;
         }});
     };
     $scope.schoolColors = {};
@@ -139,6 +142,7 @@
                   if($scope.currentColor >= $scope.colors.length-1){
                       $scope.currentColor = 0;
                   };
+                  $scope.schoolColors[feature.properties.NAME] = $scope.colors[$scope.currentColor];
                   return L.circleMarker(latlng, {
                     radius: 10,
                     fillColor: $scope.colors[$scope.currentColor],
