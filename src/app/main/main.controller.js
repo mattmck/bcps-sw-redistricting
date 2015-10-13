@@ -62,10 +62,10 @@
           return;
         }
 
-        $scope.selectedSchool.properties.planningBlocks.push($scope.selectedPlanningBlock.OBJECTID);
+        $scope.selectedSchool.properties.planningBlocks.push($scope.selectedPlanningBlock.PBID);
 
         Enumerable.from($scope.schools).forEach(function(school){
-          if(school.OBJECTID != $scope.selectedSchool.properties.OBJECTID){
+          if(school.OBJECTID !== $scope.selectedSchool.properties.OBJECTID){
             school.planningBlocks = Enumerable.from(school.planningBlocks).where(function(block){
               return parseInt(block) != parseInt($scope.selectedPlanningBlock.PBID);
             }).toArray();
