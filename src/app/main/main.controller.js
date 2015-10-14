@@ -174,7 +174,7 @@
                 }
               }).addTo(map);
         });
-        $scope.tableParams = new NgTableParams({}, { getData: $scope.getTableData });
+        $scope.tableParams = new NgTableParams({}, { getData: $scope.getTableData, counts: [] });
       });
     });
 
