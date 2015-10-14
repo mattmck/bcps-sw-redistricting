@@ -176,7 +176,6 @@
         });
         $scope.tableParams = new NgTableParams({}, { getData: $scope.getTableData });
       });
-
     });
 
     $scope.option1 = {};
@@ -311,5 +310,7 @@
         awesomeThing.rank = Math.random();
       });
     }
+
+    setTimeout($scope.loadCurrent, 2000);
   }
 })();
