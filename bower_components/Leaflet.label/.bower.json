@@ -1,15 +1,35 @@
 {
   "name": "Leaflet.label",
   "homepage": "https://github.com/Leaflet/Leaflet.label",
-  "version": "0.2.1",
-  "_release": "0.2.1",
+  "authors": [
+    "Jacob Toye <jacob.toye@gmail.com>"
+  ],
+  "description": "Labels for leaflet maps",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "leaflet": "~0.7.0"
+  },
+  "main": [
+    "dist/leaflet.label-src.js",
+    "dist/leaflet.label.css"
+  ],
+  "keywords": [
+    "gis",
+    "map"
+  ],
+  "_release": "d0ab529a6e",
   "_resolution": {
-    "type": "version",
-    "tag": "0.2.1",
-    "commit": "90ed880773bd64723621a666e74a4f6730aea41c"
+    "type": "branch",
+    "branch": "master",
+    "commit": "d0ab529a6e3c3de4161a9324ad9ae2e960a67878"
   },
   "_source": "git://github.com/Leaflet/Leaflet.label.git",
-  "_target": "~0.2.1",
-  "_originalSource": "Leaflet.label",
+  "_target": "master",
+  "_originalSource": "git://github.com/Leaflet/Leaflet.label.git",
   "_direct": true
 }

@@ -115,8 +115,8 @@ exports.build = function (compsBase32, buildName) {
 	console.log('Concatenating ' + files.length + ' files...');
 
 	var copy = fs.readFileSync('src/copyright.js', 'utf8'),
-	    intro = '(function (window, document, undefined) {\n',
-	    outro = '}(this, document));',
+	    intro = '(function (window, document, undefined) {\nvar L = window.L;',
+	    outro = '}(window, document));',
 	    newSrc = copy + intro + combineFiles(files) + outro,
 
 	    pathPart = 'dist/leaflet.label' + (buildName ? '-' + buildName : ''),

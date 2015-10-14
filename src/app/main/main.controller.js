@@ -18,7 +18,7 @@
     activate();
 
     $scope.defaults = {
-        tileLayer: 'https://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWF0dG1jayIsImEiOiJjaWZpaDlyejlibDB2c3htNzFnZG5pMGV2In0.v9hKZ_mdZB8WNJHE9FJGjg',
+        tileLayer: 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWF0dG1jayIsImEiOiJjaWZpaDlyejlibDB2c3htNzFnZG5pMGV2In0.v9hKZ_mdZB8WNJHE9FJGjg',
         maxZoom: 22,
         path: {
             weight: 10,
@@ -40,6 +40,22 @@
       }, 4000);
     }
 
+    $scope.distance = function(lat1, lon1, lat2, lon2, unit) {
+    	var radlat1 = Math.PI * lat1/180
+    	var radlat2 = Math.PI * lat2/180
+    	var radlon1 = Math.PI * lon1/180
+    	var radlon2 = Math.PI * lon2/180
+    	var theta = lon1-lon2
+    	var radtheta = Math.PI * theta/180
+    	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    	dist = Math.acos(dist)
+    	dist = dist * 180/Math.PI
+    	dist = dist * 60 * 1.1515
+    	if (unit=="K") { dist = dist * 1.609344 }
+    	if (unit=="N") { dist = dist * 0.8684 }
+    	return dist
+    }
+
     $scope.colors = ['#4D4D4D','#5DA5DA','#FAA43A','#60BD68','#F17CB0','#B2912F','#B276B2','#DECF3F','#F15854'];
     $scope.currentColor = 0;
 
@@ -54,6 +70,7 @@
     $scope.schoolColors = {};
     $scope.onBlockFeature = function(feature, layer){
       $scope.planningBlockLayers[feature.properties.PBID] = layer;
+      layer.bindLabel('Planning Block: '+feature.properties.PBID);
       layer.on({click: function(e){
         $scope.selectedPlanningBlock = feature.properties;
         $log.info("planning block " + feature.properties.OBJECTID + " clicked");
@@ -77,6 +94,7 @@
     $scope.selectedSchoolColor = 'blue';
     $scope.onSchoolFeature = function(feature, layer){
       $scope.schoolColors[feature.properties.NAME] = layer.options.fillColor;
+      layer.bindLabel(feature.properties.NAME);
       layer.on({
         click: function(e){
           $scope.selectedSchool = feature;
@@ -101,6 +119,7 @@
       $scope.planningBlocks = Enumerable.from(data.features).select(function(feature){
         return feature.properties;
       }).toArray();
+      $scope.rawPlanningBlocks = data.features;
 
       //add only elementary schools
       $resource('assets/schoolLocations.geo.json').get().$promise.then(function(data){
@@ -134,6 +153,7 @@
 
           return feature.properties;
         }).toArray();
+
         leafletData.getMap().then(function(map) {
               L.geoJson(data, {
                 onEachFeature: $scope.onSchoolFeature,
@@ -258,6 +278,24 @@
 
           return school;
         }).toArray();
+
+        Enumerable.from($scope.schools).forEach(function(school){
+          school.walkablePlanningBlocks = Enumerable.from(school.planningBlocks).count(function(block){
+            var block = Enumerable.from($scope.rawPlanningBlocks).firstOrDefault(function(planningBlock){
+              return planningBlock.properties.PBID === block;
+            });
+            if(block === null)
+              return false;
+            return Enumerable.from(block.geometry.coordinates).all(function(coordinates){
+              return Enumerable.from(coordinates).all(function(coordinate){
+                var distance = $scope.distance(coordinate[1], coordinate[0], school.Y, school.X, 'M');
+                return distance < 1;
+              });
+            });
+          });
+          school.walkablePercent = school.walkablePlanningBlocks / school.planningBlocks.length;
+        });
+
         $defer.resolve($scope.schools);
     };
 
