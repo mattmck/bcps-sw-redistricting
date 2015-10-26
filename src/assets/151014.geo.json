@@ -30,8 +30,8 @@
         "OptC": "Catonsville ES",
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
-        "Shape.area": "4002828.132888909894973",
-        "Shape_Length": "10294.018253068599734"
+        "Shape.area": "4002828.132888900116086",
+        "Shape_Length": "10294.018253068999911"
       },
       "geometry": {
         "type": "Polygon",
@@ -2296,7 +2296,7 @@
         "OptC": "Westchester ES",
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
-        "Shape.area": "3270377.379799440037459",
+        "Shape.area": "3270377.379799399990588",
         "Shape_Length": "7886.060419400499995"
       },
       "geometry": {
@@ -2867,7 +2867,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "433478.950689200020861",
-        "Shape_Length": "3770.797152641409866"
+        "Shape_Length": "3770.797152641399862"
       },
       "geometry": {
         "type": "Polygon",
@@ -3413,7 +3413,7 @@
         "OptD": "Edmondson Heights ES",
         "OptE": "Edmondson Heights ES",
         "Shape.area": "669102.618141080019996",
-        "Shape_Length": "4089.196960459360071"
+        "Shape_Length": "4089.196960459400088"
       },
       "geometry": {
         "type": "Polygon",
@@ -3890,8 +3890,8 @@
         "OptC": "Johnnycake ES",
         "OptD": "Johnnycake ES",
         "OptE": "Johnnycake ES",
-        "Shape.area": "1692363.034972520079464",
-        "Shape_Length": "5814.700479338570403"
+        "Shape.area": "1692363.034972500056028",
+        "Shape_Length": "5814.700479338600417"
       },
       "geometry": {
         "type": "Polygon",
@@ -4212,8 +4212,8 @@
         "OptC": "Hillcrest ES",
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
-        "Shape.area": "1634821.894592150114477",
-        "Shape_Length": "6088.999621864710207"
+        "Shape.area": "1634821.894592199940234",
+        "Shape_Length": "6088.999621864700202"
       },
       "geometry": {
         "type": "Polygon",
@@ -5562,8 +5562,8 @@
         "OptC": "Woodbridge ES",
         "OptD": "Woodbridge ES",
         "OptE": "Woodbridge ES",
-        "Shape.area": "3445559.853041939903051",
-        "Shape_Length": "10805.814089214700289"
+        "Shape.area": "3445559.85304189985618",
+        "Shape_Length": "10805.814089215000422"
       },
       "geometry": {
         "type": "Polygon",
@@ -6168,8 +6168,8 @@
         "OptC": "Arbutus ES",
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
-        "Shape.area": "1124665.477389780106023",
-        "Shape_Length": "6465.397682442589939"
+        "Shape.area": "1124665.477389799896628",
+        "Shape_Length": "6465.397682442599944"
       },
       "geometry": {
         "type": "Polygon",
@@ -6930,7 +6930,7 @@
         "OptC": "Relay ES",
         "OptD": "Relay ES",
         "OptE": "Relay ES",
-        "Shape.area": "591321.954207404982299",
+        "Shape.area": "591321.95420739997644",
         "Shape_Length": "4269.235087813500286"
       },
       "geometry": {
@@ -7204,8 +7204,8 @@
         "OptC": "Lansdowne ES",
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
-        "Shape.area": "1791952.460868650116026",
-        "Shape_Length": "6168.32060970017028"
+        "Shape.area": "1791952.460868699941784",
+        "Shape_Length": "6168.320609700200293"
       },
       "geometry": {
         "type": "Polygon",
@@ -7802,8 +7802,8 @@
         "OptC": "Halethorpe ES",
         "OptD": "Halethorpe ES",
         "OptE": "Halethorpe ES",
-        "Shape.area": "2400360.787118379957974",
-        "Shape_Length": "6304.856045050480134"
+        "Shape.area": "2400360.787118399981409",
+        "Shape_Length": "6304.856045050500143"
       },
       "geometry": {
         "type": "Polygon",
@@ -8149,7 +8149,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Catonsville ES",
         "Shape.area": "749634.221666419995017",
-        "Shape_Length": "5302.92005971628987"
+        "Shape_Length": "5302.920059716299875"
       },
       "geometry": {
         "type": "Polygon",
@@ -8627,7 +8627,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "16771.135862499999348",
-        "Shape_Length": "843.069827105000968"
+        "Shape_Length": "843.069827104999945"
       },
       "geometry": {
         "type": "Polygon",
@@ -8785,7 +8785,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "563874.410012800013646",
-        "Shape_Length": "4867.517044641649591"
+        "Shape_Length": "4867.517044641599568"
       },
       "geometry": {
         "type": "Polygon",
@@ -11153,7 +11153,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "1747468.360099399928004",
-        "Shape_Length": "9454.288484619519295"
+        "Shape_Length": "9454.288484619499286"
       },
       "geometry": {
         "type": "Polygon",
@@ -11791,7 +11791,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "380287.15816327999346",
-        "Shape_Length": "2604.834932704749917"
+        "Shape_Length": "2604.834932704699895"
       },
       "geometry": {
         "type": "Polygon",
@@ -11969,7 +11969,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "319338.278904400009196",
-        "Shape_Length": "2764.11588599075003"
+        "Shape_Length": "2764.115885990800052"
       },
       "geometry": {
         "type": "Polygon",
@@ -12115,7 +12115,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Halethorpe ES",
         "Shape.area": "431770.027660480001941",
-        "Shape_Length": "2922.329509209610023"
+        "Shape_Length": "2922.329509209600019"
       },
       "geometry": {
         "type": "Polygon",
@@ -12533,7 +12533,7 @@
         "OptD": "Woodbridge ES",
         "OptE": "Woodbridge ES",
         "Shape.area": "241924.479488320008386",
-        "Shape_Length": "3246.666933766609873"
+        "Shape_Length": "3246.666933766599868"
       },
       "geometry": {
         "type": "Polygon",
@@ -12794,7 +12794,7 @@
         "OptC": "Relay ES",
         "OptD": "Relay ES",
         "OptE": "Relay ES",
-        "Shape.area": "3392223.488074719905853",
+        "Shape.area": "3392223.488074699882418",
         "Shape_Length": "10414.440888095999981"
       },
       "geometry": {
@@ -13536,8 +13536,8 @@
         "OptC": "Relay ES",
         "OptD": "Relay ES",
         "OptE": "Relay ES",
-        "Shape.area": "1224655.971073680091649",
-        "Shape_Length": "5019.201915639810068"
+        "Shape.area": "1224655.971073700115085",
+        "Shape_Length": "5019.201915639800063"
       },
       "geometry": {
         "type": "Polygon",
@@ -13823,7 +13823,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "227397.030973440007074",
-        "Shape_Length": "1987.48544653986005"
+        "Shape_Length": "1987.485446539900067"
       },
       "geometry": {
         "type": "Polygon",
@@ -14033,7 +14033,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "906966.279590639984235",
-        "Shape_Length": "4763.234734947640391"
+        "Shape_Length": "4763.234734947600373"
       },
       "geometry": {
         "type": "Polygon",
@@ -14583,7 +14583,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "119548.753105120005785",
-        "Shape_Length": "1559.435853645429916"
+        "Shape_Length": "1559.435853645399902"
       },
       "geometry": {
         "type": "Polygon",
@@ -14733,7 +14733,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "185123.581349599990062",
-        "Shape_Length": "1827.814255035659926"
+        "Shape_Length": "1827.814255035699944"
       },
       "geometry": {
         "type": "Polygon",
@@ -14967,7 +14967,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "39964.41636355999799",
-        "Shape_Length": "809.791074887627019"
+        "Shape_Length": "809.791074887629975"
       },
       "geometry": {
         "type": "Polygon",
@@ -15105,7 +15105,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "383774.489896879997104",
-        "Shape_Length": "3452.407266482469822"
+        "Shape_Length": "3452.407266482499836"
       },
       "geometry": {
         "type": "Polygon",
@@ -15623,7 +15623,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "79211.548615199993947",
-        "Shape_Length": "1423.369438610719953"
+        "Shape_Length": "1423.369438610699945"
       },
       "geometry": {
         "type": "Polygon",
@@ -15825,7 +15825,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "144806.007624119985849",
-        "Shape_Length": "1769.112708094369964"
+        "Shape_Length": "1769.112708094399977"
       },
       "geometry": {
         "type": "Polygon",
@@ -15947,7 +15947,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "388943.871323600003961",
-        "Shape_Length": "3695.308166042530047"
+        "Shape_Length": "3695.308166042500034"
       },
       "geometry": {
         "type": "Polygon",
@@ -16357,7 +16357,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "330393.653012200025842",
-        "Shape_Length": "3847.331164239260033"
+        "Shape_Length": "3847.331164239300051"
       },
       "geometry": {
         "type": "Polygon",
@@ -17005,7 +17005,7 @@
         "OptD": "Relay ES",
         "OptE": "Arbutus ES",
         "Shape.area": "262709.81219",
-        "Shape_Length": "2479.806052233660012"
+        "Shape_Length": "2479.806052233700029"
       },
       "geometry": {
         "type": "Polygon",
@@ -17179,7 +17179,7 @@
         "OptD": "Relay ES",
         "OptE": "Arbutus ES",
         "Shape.area": "293412.458739040012006",
-        "Shape_Length": "2624.430881413610223"
+        "Shape_Length": "2624.430881413600218"
       },
       "geometry": {
         "type": "Polygon",
@@ -17349,7 +17349,7 @@
         "OptD": "Halethorpe ES",
         "OptE": "Halethorpe ES",
         "Shape.area": "622646.516666",
-        "Shape_Length": "4202.760151956909795"
+        "Shape_Length": "4202.76015195689979"
       },
       "geometry": {
         "type": "Polygon",
@@ -19056,8 +19056,8 @@
         "OptC": "Relay ES",
         "OptD": "Relay ES",
         "OptE": "Relay ES",
-        "Shape.area": "1145700.166989440098405",
-        "Shape_Length": "4547.072578774849717"
+        "Shape.area": "1145700.166989400051534",
+        "Shape_Length": "4547.072578774799695"
       },
       "geometry": {
         "type": "Polygon",
@@ -19718,8 +19718,8 @@
         "OptC": "Relay ES",
         "OptD": "Relay ES",
         "OptE": "Relay ES",
-        "Shape.area": "1251294.625715039903298",
-        "Shape_Length": "5307.113201446980383"
+        "Shape.area": "1251294.625715",
+        "Shape_Length": "5307.113201447000392"
       },
       "geometry": {
         "type": "Polygon",
@@ -20249,7 +20249,7 @@
         "OptD": "Halethorpe ES",
         "OptE": "Halethorpe ES",
         "Shape.area": "441351.857003120006993",
-        "Shape_Length": "3003.024567696760187"
+        "Shape_Length": "3003.024567696800204"
       },
       "geometry": {
         "type": "Polygon",
@@ -21082,8 +21082,8 @@
         "OptC": "Halethorpe ES",
         "OptD": "Halethorpe ES",
         "OptE": "Halethorpe ES",
-        "Shape.area": "1362622.748786960029975",
-        "Shape_Length": "5130.859355509160196"
+        "Shape.area": "1362622.748787",
+        "Shape_Length": "5130.859355509200213"
       },
       "geometry": {
         "type": "Polygon",
@@ -21401,7 +21401,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "119517.054849220003234",
-        "Shape_Length": "1497.563817865629971"
+        "Shape_Length": "1497.563817865599958"
       },
       "geometry": {
         "type": "Polygon",
@@ -21725,7 +21725,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "80647.215591510001104",
-        "Shape_Length": "1334.101804148139991"
+        "Shape_Length": "1334.101804148099973"
       },
       "geometry": {
         "type": "Polygon",
@@ -22227,7 +22227,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "180631.646416839997983",
-        "Shape_Length": "2074.873318812480193"
+        "Shape_Length": "2074.873318812500202"
       },
       "geometry": {
         "type": "Polygon",
@@ -22369,7 +22369,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "270327.882387119985651",
-        "Shape_Length": "2798.599752383529903"
+        "Shape_Length": "2798.59975238349989"
       },
       "geometry": {
         "type": "Polygon",
@@ -22851,7 +22851,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "126630.616626439994434",
-        "Shape_Length": "1569.057637812260054"
+        "Shape_Length": "1569.057637812300072"
       },
       "geometry": {
         "type": "Polygon",
@@ -23069,7 +23069,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "597415.806108440039679",
-        "Shape_Length": "3790.14432833958017"
+        "Shape_Length": "3790.144328339600179"
       },
       "geometry": {
         "type": "Polygon",
@@ -23503,7 +23503,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "658413.468988439999521",
-        "Shape_Length": "3609.810538174860085"
+        "Shape_Length": "3609.810538174900103"
       },
       "geometry": {
         "type": "Polygon",
@@ -24440,8 +24440,8 @@
         "OptC": "Relay ES",
         "OptD": "Relay ES",
         "OptE": "Relay ES",
-        "Shape.area": "3951694.733081279788166",
-        "Shape_Length": "9697.339538611870012"
+        "Shape.area": "3951694.733081299811602",
+        "Shape_Length": "9697.339538611899115"
       },
       "geometry": {
         "type": "Polygon",
@@ -24727,7 +24727,7 @@
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
         "Shape.area": "806889.310863299993798",
-        "Shape_Length": "5729.806912467510301"
+        "Shape_Length": "5729.806912467500297"
       },
       "geometry": {
         "type": "Polygon",
@@ -25073,7 +25073,7 @@
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
         "Shape.area": "567796.812404719996266",
-        "Shape_Length": "3213.198935065259775"
+        "Shape_Length": "3213.198935065299793"
       },
       "geometry": {
         "type": "Polygon",
@@ -25335,7 +25335,7 @@
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
         "Shape.area": "487505.34674432000611",
-        "Shape_Length": "3739.354089585769998"
+        "Shape_Length": "3739.354089585800011"
       },
       "geometry": {
         "type": "Polygon",
@@ -25876,8 +25876,8 @@
         "OptC": "Lansdowne ES",
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
-        "Shape.area": "1943192.673153640003875",
-        "Shape_Length": "9673.652858119539815"
+        "Shape.area": "1943192.673153599957004",
+        "Shape_Length": "9673.652858119499797"
       },
       "geometry": {
         "type": "Polygon",
@@ -26947,7 +26947,7 @@
         "OptD": "Halethorpe ES",
         "OptE": "Arbutus ES",
         "Shape.area": "164233.06654639999033",
-        "Shape_Length": "1755.010988415509928"
+        "Shape_Length": "1755.010988415499924"
       },
       "geometry": {
         "type": "Polygon",
@@ -27361,7 +27361,7 @@
         "OptD": "Halethorpe ES",
         "OptE": "Arbutus ES",
         "Shape.area": "190498.349422160012182",
-        "Shape_Length": "1994.839738558430099"
+        "Shape_Length": "1994.839738558400086"
       },
       "geometry": {
         "type": "Polygon",
@@ -27731,7 +27731,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "257140.105758010002319",
-        "Shape_Length": "2388.387816442910207"
+        "Shape_Length": "2388.387816442900203"
       },
       "geometry": {
         "type": "Polygon",
@@ -27900,8 +27900,8 @@
         "OptC": "Halethorpe ES",
         "OptD": "Halethorpe ES",
         "OptE": "Halethorpe ES",
-        "Shape.area": "174210.276819605001947",
-        "Shape_Length": "1727.927883396590005"
+        "Shape.area": "174210.276819610007806",
+        "Shape_Length": "1727.927883396600009"
       },
       "geometry": {
         "type": "Polygon",
@@ -28222,7 +28222,7 @@
         "OptC": "Catonsville ES",
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
-        "Shape.area": "1154065.263099560048431",
+        "Shape.area": "1154065.263099600095302",
         "Shape_Length": "4899.086126273199625"
       },
       "geometry": {
@@ -28593,7 +28593,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "416996.190568119985983",
-        "Shape_Length": "2691.417804230689853"
+        "Shape_Length": "2691.417804230699858"
       },
       "geometry": {
         "type": "Polygon",
@@ -28823,7 +28823,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "136576.118945919995895",
-        "Shape_Length": "1759.420000005349948"
+        "Shape_Length": "1759.420000005299926"
       },
       "geometry": {
         "type": "Polygon",
@@ -29029,7 +29029,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Relay ES",
         "Shape.area": "71908.608891120005865",
-        "Shape_Length": "1104.776283884810027"
+        "Shape_Length": "1104.776283884800023"
       },
       "geometry": {
         "type": "Polygon",
@@ -29147,7 +29147,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Relay ES",
         "Shape.area": "184883.166445709997788",
-        "Shape_Length": "1714.676319841649956"
+        "Shape_Length": "1714.676319841599934"
       },
       "geometry": {
         "type": "Polygon",
@@ -29325,7 +29325,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "59777.765407920000143",
-        "Shape_Length": "1172.233540303810059"
+        "Shape_Length": "1172.233540303800055"
       },
       "geometry": {
         "type": "Polygon",
@@ -29567,7 +29567,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "44515.673865160002606",
-        "Shape_Length": "1035.945219458430074"
+        "Shape_Length": "1035.945219458400061"
       },
       "geometry": {
         "type": "Polygon",
@@ -29765,7 +29765,7 @@
         "OptD": "Arbutus ES",
         "OptE": "Arbutus ES",
         "Shape.area": "68615.782715470006224",
-        "Shape_Length": "1238.794996411679904"
+        "Shape_Length": "1238.794996411699913"
       },
       "geometry": {
         "type": "Polygon",
@@ -30123,7 +30123,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "647620.981097199954093",
-        "Shape_Length": "3490.599064870019902"
+        "Shape_Length": "3490.599064869999893"
       },
       "geometry": {
         "type": "Polygon",
@@ -30601,7 +30601,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "207277.025805520010181",
-        "Shape_Length": "2037.389018080250025"
+        "Shape_Length": "2037.389018080300048"
       },
       "geometry": {
         "type": "Polygon",
@@ -31121,7 +31121,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "150491.271444399986649",
-        "Shape_Length": "1623.996064461749938"
+        "Shape_Length": "1623.996064461699916"
       },
       "geometry": {
         "type": "Polygon",
@@ -31693,7 +31693,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "68864.570445680001285",
-        "Shape_Length": "1061.295625954270008"
+        "Shape_Length": "1061.295625954300021"
       },
       "geometry": {
         "type": "Polygon",
@@ -31827,7 +31827,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "70760.193870319999405",
-        "Shape_Length": "1093.412399824820113"
+        "Shape_Length": "1093.412399824800104"
       },
       "geometry": {
         "type": "Polygon",
@@ -32040,8 +32040,8 @@
         "OptC": "Relay ES",
         "OptD": "Relay ES",
         "OptE": "Relay ES",
-        "Shape.area": "2521182.271456279791892",
-        "Shape_Length": "7094.496953082139953"
+        "Shape.area": "2521182.271456299815327",
+        "Shape_Length": "7094.496953082099935"
       },
       "geometry": {
         "type": "Polygon",
@@ -32860,7 +32860,7 @@
         "OptC": "Catonsville ES",
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
-        "Shape.area": "1071598.90123764006421",
+        "Shape.area": "1071598.901237600017339",
         "Shape_Length": "4845.922048254999936"
       },
       "geometry": {
@@ -33343,7 +33343,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "365894.806100159999914",
-        "Shape_Length": "2928.843082373180096"
+        "Shape_Length": "2928.843082373200104"
       },
       "geometry": {
         "type": "Polygon",
@@ -33669,7 +33669,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "1257264.66997",
-        "Shape_Length": "4749.73828867857992"
+        "Shape_Length": "4749.738288678599929"
       },
       "geometry": {
         "type": "Polygon",
@@ -34055,7 +34055,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "558945.718079020036384",
-        "Shape_Length": "3402.402501169469815"
+        "Shape_Length": "3402.402501169499828"
       },
       "geometry": {
         "type": "Polygon",
@@ -34365,7 +34365,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "548631.845140079967678",
-        "Shape_Length": "3586.096209231090143"
+        "Shape_Length": "3586.096209231100147"
       },
       "geometry": {
         "type": "Polygon",
@@ -34730,8 +34730,8 @@
         "OptC": "Catonsville ES",
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
-        "Shape.area": "298977.730924125004094",
-        "Shape_Length": "2583.490133841070019"
+        "Shape.area": "298977.730924130009953",
+        "Shape_Length": "2583.490133841100032"
       },
       "geometry": {
         "type": "Polygon",
@@ -35149,7 +35149,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "994210.578380719991401",
-        "Shape_Length": "5269.683795350680157"
+        "Shape_Length": "5269.683795350700166"
       },
       "geometry": {
         "type": "Polygon",
@@ -35755,7 +35755,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "0.00182571",
-        "Shape_Length": "0.290988032251346"
+        "Shape_Length": "0.29098803225135"
       },
       "geometry": {
         "type": "Polygon",
@@ -35805,7 +35805,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "734627.124073919956572",
-        "Shape_Length": "3360.083613870689987"
+        "Shape_Length": "3360.083613870699992"
       },
       "geometry": {
         "type": "Polygon",
@@ -36511,7 +36511,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
         "Shape.area": "363634.791244880005252",
-        "Shape_Length": "3111.456884212189834"
+        "Shape_Length": "3111.456884212199839"
       },
       "geometry": {
         "type": "Polygon",
@@ -36789,7 +36789,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
         "Shape.area": "993301.230634239967912",
-        "Shape_Length": "4432.367397218629776"
+        "Shape_Length": "4432.367397218599763"
       },
       "geometry": {
         "type": "Polygon",
@@ -37367,7 +37367,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
         "Shape.area": "500974.585634300019592",
-        "Shape_Length": "3406.048523001570175"
+        "Shape_Length": "3406.048523001600188"
       },
       "geometry": {
         "type": "Polygon",
@@ -37801,7 +37801,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
         "Shape.area": "619818.675733480020426",
-        "Shape_Length": "3939.571304090090052"
+        "Shape_Length": "3939.571304090100057"
       },
       "geometry": {
         "type": "Polygon",
@@ -38386,8 +38386,8 @@
         "OptC": "Hillcrest ES",
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
-        "Shape.area": "203658.866528604994528",
-        "Shape_Length": "2414.038788394259882"
+        "Shape.area": "203658.866528599988669",
+        "Shape_Length": "2414.0387883942999"
       },
       "geometry": {
         "type": "Polygon",
@@ -38861,7 +38861,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
         "Shape.area": "336785.428941240010317",
-        "Shape_Length": "3027.326238955849931"
+        "Shape_Length": "3027.326238955799909"
       },
       "geometry": {
         "type": "Polygon",
@@ -39699,7 +39699,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
         "Shape.area": "495128.879189839994069",
-        "Shape_Length": "2992.368169258780199"
+        "Shape_Length": "2992.368169258800208"
       },
       "geometry": {
         "type": "Polygon",
@@ -40301,7 +40301,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Hillcrest ES",
         "Shape.area": "205272.920298879995244",
-        "Shape_Length": "2019.74257902124009"
+        "Shape_Length": "2019.742579021200072"
       },
       "geometry": {
         "type": "Polygon",
@@ -40535,7 +40535,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
         "Shape.area": "599150.285005360026844",
-        "Shape_Length": "3559.053889015639925"
+        "Shape_Length": "3559.053889015599907"
       },
       "geometry": {
         "type": "Polygon",
@@ -41548,8 +41548,8 @@
         "OptC": "Westowne ES",
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
-        "Shape.area": "159406.618555505003314",
-        "Shape_Length": "1872.415396958160045"
+        "Shape.area": "159406.618555510009173",
+        "Shape_Length": "1872.415396958200063"
       },
       "geometry": {
         "type": "Polygon",
@@ -41887,7 +41887,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "55204.10142371999973",
-        "Shape_Length": "1202.64727514255992"
+        "Shape_Length": "1202.647275142599938"
       },
       "geometry": {
         "type": "Polygon",
@@ -42121,7 +42121,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "38217.539025760001095",
-        "Shape_Length": "921.182939686547002"
+        "Shape_Length": "921.182939686549958"
       },
       "geometry": {
         "type": "Polygon",
@@ -42403,7 +42403,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "606574.447320190025494",
-        "Shape_Length": "4196.784049365680403"
+        "Shape_Length": "4196.784049365700412"
       },
       "geometry": {
         "type": "Polygon",
@@ -42940,7 +42940,7 @@
         "OptC": "Westowne ES",
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
-        "Shape.area": "342979.424717104993761",
+        "Shape.area": "342979.424717099987902",
         "Shape_Length": "4288.731442449499809"
       },
       "geometry": {
@@ -43823,7 +43823,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "301048.296148639987223",
-        "Shape_Length": "2960.396992200890054"
+        "Shape_Length": "2960.396992200900058"
       },
       "geometry": {
         "type": "Polygon",
@@ -44641,7 +44641,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "194338.567357680003624",
-        "Shape_Length": "1946.544487916780099"
+        "Shape_Length": "1946.544487916800108"
       },
       "geometry": {
         "type": "Polygon",
@@ -45171,7 +45171,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "30905.575512639999943",
-        "Shape_Length": "935.789886458225965"
+        "Shape_Length": "935.789886458229944"
       },
       "geometry": {
         "type": "Polygon",
@@ -45396,8 +45396,8 @@
         "OptC": "Westowne ES",
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
-        "Shape.area": "844429.068266005022451",
-        "Shape_Length": "4845.327790812290004"
+        "Shape.area": "844429.06826601002831",
+        "Shape_Length": "4845.327790812300009"
       },
       "geometry": {
         "type": "Polygon",
@@ -46287,7 +46287,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "298872.219176880025771",
-        "Shape_Length": "3441.804997553860176"
+        "Shape_Length": "3441.804997553900193"
       },
       "geometry": {
         "type": "Polygon",
@@ -46705,7 +46705,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "308244.169447719992604",
-        "Shape_Length": "2344.262847954580138"
+        "Shape_Length": "2344.262847954600147"
       },
       "geometry": {
         "type": "Polygon",
@@ -46967,7 +46967,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "84431.55178939999314",
-        "Shape_Length": "1349.434079717919985"
+        "Shape_Length": "1349.434079717899976"
       },
       "geometry": {
         "type": "Polygon",
@@ -47209,7 +47209,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "407467.025584439979866",
-        "Shape_Length": "2790.508802200070022"
+        "Shape_Length": "2790.508802200100035"
       },
       "geometry": {
         "type": "Polygon",
@@ -47395,7 +47395,7 @@
         "OptD": "Westowne ES",
         "OptE": "Westowne ES",
         "Shape.area": "305704.80755455000326",
-        "Shape_Length": "2685.567521985789881"
+        "Shape_Length": "2685.567521985799885"
       },
       "geometry": {
         "type": "Polygon",
@@ -48118,8 +48118,8 @@
         "OptC": "Lansdowne ES",
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
-        "Shape.area": "1161434.196154759963974",
-        "Shape_Length": "4882.559168683439566"
+        "Shape.area": "1161434.196154800010845",
+        "Shape_Length": "4882.559168683399548"
       },
       "geometry": {
         "type": "Polygon",
@@ -48381,7 +48381,7 @@
         "OptD": "Johnnycake ES",
         "OptE": "Westchester ES",
         "Shape.area": "219297.361045119992923",
-        "Shape_Length": "2076.250499671809848"
+        "Shape_Length": "2076.250499671799844"
       },
       "geometry": {
         "type": "Polygon",
@@ -48907,7 +48907,7 @@
         "OptD": "Johnnycake ES",
         "OptE": "Westchester ES",
         "Shape.area": "324155.12664367002435",
-        "Shape_Length": "2647.525146191950171"
+        "Shape_Length": "2647.525146192000193"
       },
       "geometry": {
         "type": "Polygon",
@@ -49277,7 +49277,7 @@
         "OptD": "Johnnycake ES",
         "OptE": "Westchester ES",
         "Shape.area": "245316.562397920002695",
-        "Shape_Length": "2319.364336630750131"
+        "Shape_Length": "2319.364336630800153"
       },
       "geometry": {
         "type": "Polygon",
@@ -49747,7 +49747,7 @@
         "OptD": "Johnnycake ES",
         "OptE": "Westchester ES",
         "Shape.area": "577211.077552309958264",
-        "Shape_Length": "3321.697703525519955"
+        "Shape_Length": "3321.697703525499946"
       },
       "geometry": {
         "type": "Polygon",
@@ -50013,7 +50013,7 @@
         "OptD": "Johnnycake ES",
         "OptE": "Westchester ES",
         "Shape.area": "305283.853338540007826",
-        "Shape_Length": "2546.256573646110155"
+        "Shape_Length": "2546.256573646100151"
       },
       "geometry": {
         "type": "Polygon",
@@ -50231,7 +50231,7 @@
         "OptD": "Johnnycake ES",
         "OptE": "Johnnycake ES",
         "Shape.area": "568428.734202719992027",
-        "Shape_Length": "3273.84781180562004"
+        "Shape_Length": "3273.847811805600031"
       },
       "geometry": {
         "type": "Polygon",
@@ -50830,8 +50830,8 @@
         "OptC": "Johnnycake ES",
         "OptD": "Johnnycake ES",
         "OptE": "Johnnycake ES",
-        "Shape.area": "1965594.692853519925848",
-        "Shape_Length": "6057.839510959230211"
+        "Shape.area": "1965594.692853499902412",
+        "Shape_Length": "6057.839510959200197"
       },
       "geometry": {
         "type": "Polygon",
@@ -51579,7 +51579,7 @@
         "OptD": "Johnnycake ES",
         "OptE": "Johnnycake ES",
         "Shape.area": "1455315.972554400097579",
-        "Shape_Length": "5092.470840091789796"
+        "Shape_Length": "5092.470840091799801"
       },
       "geometry": {
         "type": "Polygon",
@@ -51909,7 +51909,7 @@
         "OptD": "Johnnycake ES",
         "OptE": "Johnnycake ES",
         "Shape.area": "840957.425876560038887",
-        "Shape_Length": "4078.612074766660044"
+        "Shape_Length": "4078.612074766700061"
       },
       "geometry": {
         "type": "Polygon",
@@ -52174,8 +52174,8 @@
         "OptC": "Edmondson Heights ES",
         "OptD": "Edmondson Heights ES",
         "OptE": "Edmondson Heights ES",
-        "Shape.area": "1088691.53005671990104",
-        "Shape_Length": "4794.566921665439622"
+        "Shape.area": "1088691.530056700110435",
+        "Shape_Length": "4794.566921665399605"
       },
       "geometry": {
         "type": "Polygon",
@@ -52561,7 +52561,7 @@
         "OptD": "Edmondson Heights ES",
         "OptE": "Edmondson Heights ES",
         "Shape.area": "198403.760550239996519",
-        "Shape_Length": "1936.177431976429943"
+        "Shape_Length": "1936.17743197639993"
       },
       "geometry": {
         "type": "Polygon",
@@ -52839,7 +52839,7 @@
         "OptD": "Edmondson Heights ES",
         "OptE": "Edmondson Heights ES",
         "Shape.area": "162423.436944229993969",
-        "Shape_Length": "1694.622343213120075"
+        "Shape_Length": "1694.622343213100066"
       },
       "geometry": {
         "type": "Polygon",
@@ -53065,7 +53065,7 @@
         "OptD": "Edmondson Heights ES",
         "OptE": "Edmondson Heights ES",
         "Shape.area": "493302.129488400008995",
-        "Shape_Length": "2959.03099204325008"
+        "Shape_Length": "2959.030992043300103"
       },
       "geometry": {
         "type": "Polygon",
@@ -53447,7 +53447,7 @@
         "OptD": "Edmondson Heights ES",
         "OptE": "Edmondson Heights ES",
         "Shape.area": "195402.435627319995547",
-        "Shape_Length": "1840.07958660928989"
+        "Shape_Length": "1840.079586609299895"
       },
       "geometry": {
         "type": "Polygon",
@@ -54276,8 +54276,8 @@
         "OptC": "Edmondson Heights ES",
         "OptD": "Edmondson Heights ES",
         "OptE": "Edmondson Heights ES",
-        "Shape.area": "1711414.236348320031539",
-        "Shape_Length": "5534.851482188560112"
+        "Shape.area": "1711414.236348300008103",
+        "Shape_Length": "5534.85148218860013"
       },
       "geometry": {
         "type": "Polygon",
@@ -55835,7 +55835,7 @@
         "OptD": "Woodbridge ES",
         "OptE": "Woodbridge ES",
         "Shape.area": "960430.326314480043948",
-        "Shape_Length": "5396.724355330809885"
+        "Shape_Length": "5396.724355330799881"
       },
       "geometry": {
         "type": "Polygon",
@@ -56472,8 +56472,8 @@
         "OptC": "Woodbridge ES",
         "OptD": "Woodbridge ES",
         "OptE": "Woodbridge ES",
-        "Shape.area": "1664158.17570095998235",
-        "Shape_Length": "6233.628333134810418"
+        "Shape.area": "1664158.175701",
+        "Shape_Length": "6233.628333134800414"
       },
       "geometry": {
         "type": "Polygon",
@@ -57659,7 +57659,7 @@
         "OptD": "Woodbridge ES",
         "OptE": "Woodbridge ES",
         "Shape.area": "377858.308869439992122",
-        "Shape_Length": "2724.62458097246008"
+        "Shape_Length": "2724.624580972500098"
       },
       "geometry": {
         "type": "Polygon",
@@ -57836,8 +57836,8 @@
         "OptC": "Woodbridge ES",
         "OptD": "Woodbridge ES",
         "OptE": "Woodbridge ES",
-        "Shape.area": "1528272.25720077008009",
-        "Shape_Length": "5909.501561554749969"
+        "Shape.area": "1528272.257200800115243",
+        "Shape_Length": "5909.501561554699947"
       },
       "geometry": {
         "type": "Polygon",
@@ -58310,8 +58310,8 @@
         "OptC": "Westchester ES",
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
-        "Shape.area": "2191311.579560889862478",
-        "Shape_Length": "7316.975662883770383"
+        "Shape.area": "2191311.579560900107026",
+        "Shape_Length": "7316.975662883800396"
       },
       "geometry": {
         "type": "Polygon",
@@ -59097,7 +59097,7 @@
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
         "Shape.area": "4021401.075651200022548",
-        "Shape_Length": "10229.274386159699134"
+        "Shape_Length": "10229.274386159999267"
       },
       "geometry": {
         "type": "Polygon",
@@ -60474,8 +60474,8 @@
         "OptC": "Hillcrest ES",
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
-        "Shape.area": "2036941.554583359975368",
-        "Shape_Length": "6690.470068844309935"
+        "Shape.area": "2036941.554583400022238",
+        "Shape_Length": "6690.470068844299931"
       },
       "geometry": {
         "type": "Polygon",
@@ -60971,7 +60971,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "763536.586805640021339",
-        "Shape_Length": "4688.872076883710179"
+        "Shape_Length": "4688.872076883700174"
       },
       "geometry": {
         "type": "Polygon",
@@ -61905,7 +61905,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Catonsville ES",
         "Shape.area": "568671.187492960016243",
-        "Shape_Length": "3275.953769695539904"
+        "Shape_Length": "3275.953769695499886"
       },
       "geometry": {
         "type": "Polygon",
@@ -62139,7 +62139,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "110599.184871920006117",
-        "Shape_Length": "1633.826654022059984"
+        "Shape_Length": "1633.826654022100001"
       },
       "geometry": {
         "type": "Polygon",
@@ -62344,8 +62344,8 @@
         "OptC": "Hillcrest ES",
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
-        "Shape.area": "518202.51299368502805",
-        "Shape_Length": "3938.82847873908986"
+        "Shape.area": "518202.512993689975701",
+        "Shape_Length": "3938.828478739099864"
       },
       "geometry": {
         "type": "Polygon",
@@ -62971,7 +62971,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
         "Shape.area": "536146.903496740036644",
-        "Shape_Length": "3283.699231696969946"
+        "Shape_Length": "3283.699231696999959"
       },
       "geometry": {
         "type": "Polygon",
@@ -63561,7 +63561,7 @@
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
         "Shape.area": "122.07618822",
-        "Shape_Length": "51.271559514952301"
+        "Shape_Length": "51.271559514952003"
       },
       "geometry": {
         "type": "Polygon",
@@ -63651,7 +63651,7 @@
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
         "Shape.area": "479182.177999700012151",
-        "Shape_Length": "3555.782680404509847"
+        "Shape_Length": "3555.782680404499843"
       },
       "geometry": {
         "type": "Polygon",
@@ -64681,7 +64681,7 @@
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
         "Shape.area": "148119.241586160002043",
-        "Shape_Length": "1634.723412469159939"
+        "Shape_Length": "1634.723412469199957"
       },
       "geometry": {
         "type": "Polygon",
@@ -65091,7 +65091,7 @@
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
         "Shape.area": "298422.90674",
-        "Shape_Length": "2198.380737372870044"
+        "Shape_Length": "2198.380737372900057"
       },
       "geometry": {
         "type": "Polygon",
@@ -65501,7 +65501,7 @@
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
         "Shape.area": "666096.131049850024283",
-        "Shape_Length": "3493.761120267990009"
+        "Shape_Length": "3493.761120268000013"
       },
       "geometry": {
         "type": "Polygon",
@@ -65838,8 +65838,8 @@
         "OptC": "Westchester ES",
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
-        "Shape.area": "1279421.900126080028713",
-        "Shape_Length": "5540.160058685640251"
+        "Shape.area": "1279421.900126100052148",
+        "Shape_Length": "5540.160058685600234"
       },
       "geometry": {
         "type": "Polygon",
@@ -66692,8 +66692,8 @@
         "OptC": "Westchester ES",
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
-        "Shape.area": "1545265.713024839991704",
-        "Shape_Length": "5293.858049122550256"
+        "Shape.area": "1545265.713024799944833",
+        "Shape_Length": "5293.858049122600278"
       },
       "geometry": {
         "type": "Polygon",
@@ -67235,7 +67235,7 @@
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
         "Shape.area": "740347.747975360020064",
-        "Shape_Length": "4416.205806834030227"
+        "Shape_Length": "4416.205806834000214"
       },
       "geometry": {
         "type": "Polygon",
@@ -67849,7 +67849,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "253217.385507519997191",
-        "Shape_Length": "3342.547025738510001"
+        "Shape_Length": "3342.547025738499997"
       },
       "geometry": {
         "type": "Polygon",
@@ -68467,7 +68467,7 @@
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
         "Shape.area": "256674.082099540013587",
-        "Shape_Length": "2768.390938014430048"
+        "Shape_Length": "2768.390938014400035"
       },
       "geometry": {
         "type": "Polygon",
@@ -68741,7 +68741,7 @@
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
         "Shape.area": "108832.860946319997311",
-        "Shape_Length": "1450.172811843440059"
+        "Shape_Length": "1450.172811843400041"
       },
       "geometry": {
         "type": "Polygon",
@@ -68975,7 +68975,7 @@
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
         "Shape.area": "278639.463286400015932",
-        "Shape_Length": "2553.979651542979809"
+        "Shape_Length": "2553.979651542999818"
       },
       "geometry": {
         "type": "Polygon",
@@ -69284,8 +69284,8 @@
         "OptC": "Lansdowne ES",
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
-        "Shape.area": "161452.843274474987993",
-        "Shape_Length": "1628.8343202410299"
+        "Shape.area": "161452.843274470011238",
+        "Shape_Length": "1628.834320240999887"
       },
       "geometry": {
         "type": "Polygon",
@@ -69937,7 +69937,7 @@
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
         "Shape.area": "101422.192329080004129",
-        "Shape_Length": "1342.177123213120012"
+        "Shape_Length": "1342.177123213100003"
       },
       "geometry": {
         "type": "Polygon",
@@ -70311,7 +70311,7 @@
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
         "Shape.area": "358298.730732759984676",
-        "Shape_Length": "2727.007668043780086"
+        "Shape_Length": "2727.007668043800095"
       },
       "geometry": {
         "type": "Polygon",
@@ -70561,7 +70561,7 @@
         "OptD": "Lansdowne ES",
         "OptE": "Lansdowne ES",
         "Shape.area": "157709.508479640004225",
-        "Shape_Length": "1742.193265717379973"
+        "Shape_Length": "1742.193265717399981"
       },
       "geometry": {
         "type": "Polygon",
@@ -70803,7 +70803,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "285518.708347819978371",
-        "Shape_Length": "2380.824835011209871"
+        "Shape_Length": "2380.824835011199866"
       },
       "geometry": {
         "type": "Polygon",
@@ -71061,7 +71061,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "114657.450800880003953",
-        "Shape_Length": "1563.785453305479905"
+        "Shape_Length": "1563.785453305499914"
       },
       "geometry": {
         "type": "Polygon",
@@ -71263,7 +71263,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "388240.043736419989727",
-        "Shape_Length": "2944.083313592259856"
+        "Shape_Length": "2944.083313592299874"
       },
       "geometry": {
         "type": "Polygon",
@@ -72045,7 +72045,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "103335.327371199993649",
-        "Shape_Length": "1272.817843161280052"
+        "Shape_Length": "1272.817843161300061"
       },
       "geometry": {
         "type": "Polygon",
@@ -72231,7 +72231,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "932458.180505300057121",
-        "Shape_Length": "5910.455939925270286"
+        "Shape_Length": "5910.455939925300299"
       },
       "geometry": {
         "type": "Polygon",
@@ -73605,7 +73605,7 @@
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
         "Shape.area": "701661.650193440029398",
-        "Shape_Length": "3914.148320951259848"
+        "Shape_Length": "3914.148320951299866"
       },
       "geometry": {
         "type": "Polygon",
@@ -74578,8 +74578,8 @@
         "OptC": "Catonsville ES",
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
-        "Shape.area": "1592740.147261919919401",
-        "Shape_Length": "5848.048152511460103"
+        "Shape.area": "1592740.147261899895966",
+        "Shape_Length": "5848.04815251150012"
       },
       "geometry": {
         "type": "Polygon",
@@ -75224,8 +75224,8 @@
         "OptC": "Hillcrest ES",
         "OptD": "Catonsville ES",
         "OptE": "Catonsville ES",
-        "Shape.area": "666995.319838745053858",
-        "Shape_Length": "3682.99547995624016"
+        "Shape.area": "666995.319838749943301",
+        "Shape_Length": "3682.995479956200143"
       },
       "geometry": {
         "type": "Polygon",
@@ -76335,7 +76335,7 @@
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
         "Shape.area": "181481.314299919991754",
-        "Shape_Length": "1966.718389736110112"
+        "Shape_Length": "1966.718389736100107"
       },
       "geometry": {
         "type": "Polygon",
@@ -76649,7 +76649,7 @@
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
         "Shape.area": "968872.90374417998828",
-        "Shape_Length": "4212.948630087339552"
+        "Shape_Length": "4212.948630087300444"
       },
       "geometry": {
         "type": "Polygon",
@@ -77550,8 +77550,8 @@
         "OptC": "Westchester ES",
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
-        "Shape.area": "1185164.98262408003211",
-        "Shape_Length": "4924.888334368980395"
+        "Shape.area": "1185164.982624100055546",
+        "Shape_Length": "4924.888334369000404"
       },
       "geometry": {
         "type": "Polygon",
@@ -78076,8 +78076,8 @@
         "OptC": "Westchester ES",
         "OptD": "Westchester ES",
         "OptE": "Westchester ES",
-        "Shape.area": "2429605.199154280126095",
-        "Shape_Length": "7686.477514937019805"
+        "Shape.area": "2429605.19915430014953",
+        "Shape_Length": "7686.477514936999796"
       },
       "geometry": {
         "type": "Polygon",
@@ -78499,7 +78499,7 @@
         "OptD": "Relay ES",
         "OptE": "Relay ES",
         "Shape.area": "610397.185636",
-        "Shape_Length": "3696.470656581209823"
+        "Shape_Length": "3696.470656581199819"
       },
       "geometry": {
         "type": "Polygon",
@@ -78757,7 +78757,7 @@
         "OptD": "Relay ES",
         "OptE": "Arbutus ES",
         "Shape.area": "273863.807353230018634",
-        "Shape_Length": "3087.660428938610039"
+        "Shape_Length": "3087.660428938600035"
       },
       "geometry": {
         "type": "Polygon",
@@ -79349,7 +79349,7 @@
         "OptD": "Woodbridge ES",
         "OptE": "Westchester ES",
         "Shape.area": "266667.969075199973304",
-        "Shape_Length": "2869.129760931250075"
+        "Shape_Length": "2869.129760931300098"
       },
       "geometry": {
         "type": "Polygon",
@@ -79555,7 +79555,7 @@
         "OptD": "Woodbridge ES",
         "OptE": "Westchester ES",
         "Shape.area": "228241.143267840001499",
-        "Shape_Length": "2947.273177311879863"
+        "Shape_Length": "2947.273177311899872"
       },
       "geometry": {
         "type": "Polygon",
@@ -79741,7 +79741,7 @@
         "OptD": "Halethorpe ES",
         "OptE": "Arbutus ES",
         "Shape.area": "46315.857371519996377",
-        "Shape_Length": "944.186553522926033"
+        "Shape_Length": "944.186553522930012"
       },
       "geometry": {
         "type": "Polygon",
@@ -79903,7 +79903,7 @@
         "OptD": "Hillcrest ES",
         "OptE": "Hillcrest ES",
         "Shape.area": "83185.33673192000424",
-        "Shape_Length": "1236.457637507269965"
+        "Shape_Length": "1236.457637507299978"
       },
       "geometry": {
         "type": "Polygon",

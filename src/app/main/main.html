@@ -6,14 +6,48 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <form class="form-inline">
-        <div class="form-group">
-          <button ng-click="loadCurrent()" class="btn btn-primary">Current</button>
-          <button ng-click="loadOption1()" class="btn btn-primary">Option 1</button>
-          <button ng-click="loadOption2()" class="btn btn-primary">Option 2</button>
-          <button ng-click="loadOption3()" class="btn btn-primary">Option 3</button>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <button ng-click="takeSnapshot()" class="btn btn-primary"><span ng-hide="snapshotInProgress">Take Snapshot</span><i class="fa fa-cog fa-spin" ng-hide="!snapshotInProgress"></i></button>
+          <button ng-click="loadCurrent()" class="btn btn-primary">Current Districting</button>
         </div>
-      </form>
+     </div>
+     <div class="panel panel-default">
+       <div class="panel-heading">
+         <h4 class="panel-title">9/30/2015 Meeting Options</h4>
+      </div>
+      <div class="panel-body">
+        <button ng-click="loadOption1()" class="btn btn-primary">Option 1</button>
+        <button ng-click="loadOption2()" class="btn btn-primary">Option 2</button>
+        <button ng-click="loadOption3()" class="btn btn-primary">Option 3</button>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">10/14/2015 Meeting Options</h4>
+     </div>
+     <div class="panel-body">
+       <button ng-click="loadOptionA()" class="btn btn-primary">Option A</button>
+       <button ng-click="loadOptionB()" class="btn btn-primary">Option B</button>
+       <button ng-click="loadOptionC()" class="btn btn-primary">Option C</button>
+       <button ng-click="loadOptionD()" class="btn btn-primary">Option D</button>
+       <button ng-click="loadOptionE()" class="btn btn-primary">Option E</button>
+     </div>
+   </div>
+   <div class="panel panel-default">
+     <div class="panel-heading">
+       <h4 class="panel-title">10/28/2015 Meeting Options</h4>
+    </div>
+    <div class="panel-body">
+      <button ng-click="loadOptionA1021()" class="btn btn-primary">Option A</button>
+      <button ng-click="loadOptionB1021()" class="btn btn-primary">Option B</button>
+      <button ng-click="loadOptionC1021()" class="btn btn-primary">Option C</button>
+      <button ng-click="loadOptionD1021()" class="btn btn-primary">Option D</button>
+      <button ng-click="loadOptionE1021()" class="btn btn-primary">Option E</button>
+      <button ng-click="loadOptionF1021()" class="btn btn-primary">Option F</button>
+      <button ng-click="loadOptionG1021()" class="btn btn-primary">Option G</button>
+    </div>
+  </div>
     </div>
   </div>
     <!-- <div class="row">
@@ -61,5 +95,7 @@
         <td title="'% Walkable'" sortable="'school.walkablePercent'">{{Math.round(school.walkablePercent*100)}}%</td>
       </tr>
     </table>
+  </div>
+  <div ng-hide="hideSnapshot" id="snapshot">
   </div>
 </div>

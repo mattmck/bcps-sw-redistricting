@@ -6,7 +6,7 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($timeout, $scope, $resource, $log, webDevTec, toastr, leafletDirective, leafletData, NgTableParams) {
+  function MainController($timeout, $scope, $resource, $log, $anchorScroll, $location, webDevTec, toastr, leafletDirective, leafletData, NgTableParams) {
     var vm = this;
 
     $scope.Math = window.Math;
@@ -91,6 +91,9 @@
         $scope.tableParams.reload();
       }});
     };
+
+    $scope.hideSnapshot = true;
+    $scope.snapshotInProgress = false;
     $scope.selectedSchoolColor = 'blue';
     $scope.onSchoolFeature = function(feature, layer){
       $scope.schoolColors[feature.properties.NAME] = layer.options.fillColor;
@@ -181,10 +184,22 @@
     $scope.option1 = {};
     $scope.option2 = {};
     $scope.option3 = {};
-    $scope.current = {}
+    $scope.optionA = {};
+    $scope.optionB = {};
+    $scope.optionC = {};
+    $scope.optionD = {};
+    $scope.optionE = {};
+    $scope.optionA1021 = {};
+    $scope.optionB1021 = {};
+    $scope.optionC1021 = {};
+    $scope.optionD1021 = {};
+    $scope.optionE1021 = {};
+    $scope.optionF1021 = {};
+    $scope.optionG1021 = {};
+    $scope.current = {};
 
-    $scope.getOption = function(field, object){
-      $resource('assets/option1.geo.json').get().$promise.then(function(data){
+    $scope.get0930Option = function(field, object){
+      $resource('assets/150930.geo.json').get().$promise.then(function(data){
         Enumerable.from(data.features).forEach(function(feature){
           if(object[feature.properties[field]] === undefined){
             object[feature.properties[field]] = [];
@@ -193,10 +208,47 @@
         });
       });
     }
-    $scope.getOption('Opt1', $scope.option1);
-    $scope.getOption('Opt2', $scope.option2);
-    $scope.getOption('Opt3', $scope.option3);
-    $scope.getOption('ES1516', $scope.current);
+    $scope.get0930Option('Opt1', $scope.option1);
+    $scope.get0930Option('Opt2', $scope.option2);
+    $scope.get0930Option('Opt3', $scope.option3);
+    //$scope.get0930Option('ES1516', $scope.current);
+
+    $scope.get1014Option = function(field, object){
+      $resource('assets/151014.geo.json').get().$promise.then(function(data){
+        Enumerable.from(data.features).forEach(function(feature){
+          if(object[feature.properties[field]] === undefined){
+            object[feature.properties[field]] = [];
+          }
+          object[feature.properties[field]].push(feature.properties.PBID);
+        });
+      });
+    }
+    //$scope.get1014Option('ES1516', $scope.current);
+    $scope.get1014Option('OptA', $scope.optionA);
+    $scope.get1014Option('OptB', $scope.optionB);
+    $scope.get1014Option('OptC', $scope.optionC);
+    $scope.get1014Option('OptD', $scope.optionD);
+    $scope.get1014Option('OptE', $scope.optionE);
+
+    $scope.get1021Option = function(field, object){
+      $resource('assets/151021.geo.json').get().$promise.then(function(data){
+        Enumerable.from(data.features).forEach(function(feature){
+          if(object[feature.properties[field]] === undefined){
+            object[feature.properties[field]] = [];
+          }
+          object[feature.properties[field]].push(feature.properties.PBID);
+        });
+      });
+    }
+    $scope.get1021Option('ES1516', $scope.current);
+    $scope.get1021Option('OptA', $scope.optionA1021);
+    $scope.get1021Option('OptB', $scope.optionB1021);
+    $scope.get1021Option('OptC', $scope.optionC1021);
+    $scope.get1021Option('OptD', $scope.optionD1021);
+    $scope.get1021Option('OptE', $scope.optionE1021);
+    $scope.get1021Option('OptF', $scope.optionF1021);
+    $scope.get1021Option('OptG', $scope.optionG1021);
+
 
     $scope.loadOption = function(option){
       Enumerable.from($scope.schools).forEach(function(school){
@@ -213,6 +265,26 @@
       $scope.tableParams.reload();
     };
 
+    $scope.takeSnapshot = function(){
+      $scope.snapshotInProgress = true;
+      leafletData.getMap().then(function(map){
+        leafletImage(map, function(err, canvas) {
+          var img = document.createElement('img');
+          var dimensions = map.getSize();
+          img.width = dimensions.x;
+          img.height = dimensions.y;
+          img.src = canvas.toDataURL();
+          $scope.imageUrl = img.src;
+          document.getElementById('snapshot').innerHTML = '';
+          document.getElementById('snapshot').appendChild(img);
+          $scope.hideSnapshot = false;
+          $scope.snapshotInProgress = false;
+          $location.hash('snapshot');
+          $anchorScroll();
+        });
+      });
+    };
+
     $scope.loadOption1 = function(){
       $scope.loadOption($scope.option1);
     };
@@ -224,6 +296,44 @@
     };
     $scope.loadCurrent = function(){
       $scope.loadOption($scope.current);
+    };
+
+    $scope.loadOptionA = function(){
+      $scope.loadOption($scope.optionA);
+    };
+    $scope.loadOptionB = function(){
+      $scope.loadOption($scope.optionB);
+    };
+    $scope.loadOptionC = function(){
+      $scope.loadOption($scope.optionC);
+    };
+    $scope.loadOptionD = function(){
+      $scope.loadOption($scope.optionD);
+    };
+    $scope.loadOptionE = function(){
+      $scope.loadOption($scope.optionE);
+    };
+
+    $scope.loadOptionA1021 = function(){
+      $scope.loadOption($scope.optionA1021);
+    };
+    $scope.loadOptionB1021 = function(){
+      $scope.loadOption($scope.optionB1021);
+    };
+    $scope.loadOptionC1021 = function(){
+      $scope.loadOption($scope.optionC1021);
+    };
+    $scope.loadOptionD1021 = function(){
+      $scope.loadOption($scope.optionD1021);
+    };
+    $scope.loadOptionE1021 = function(){
+      $scope.loadOption($scope.optionE1021);
+    };
+    $scope.loadOptionF1021 = function(){
+      $scope.loadOption($scope.optionF1021);
+    };
+    $scope.loadOptionG1021 = function(){
+      $scope.loadOption($scope.optionG1021);
     };
 
     $scope.getTableData = function getData($defer, params){
@@ -239,37 +349,37 @@
 
           switch(school.NAME){
             case "Arbutus ES":
-              school.students += 22;
+              school.students += 17 + 11 + 0;
               break;
             case "Catonsville ES":
-              school.students += 30;
+              school.students += 29 + 21 + 1;
               break;
             case "Edmondson Heights ES":
-              school.students += 4;
+              school.students += 5 + 43 + 27;
               break;
             case "Halethorpe ES":
-              school.students += 35;
+              school.students += 37 + 30 + 0;
               break;
             case "Hillcrest ES":
-              school.students += 19;
+              school.students += 14 + 0 + 0;
               break;
             case "Johnnycake ES":
-              school.students += 35;
+              school.students += 38 + 29 + 13;
               break;
             case "Lansdowne ES":
-              school.students += 11;
+              school.students += 12 + 27 + 0;
               break;
             case "Relay ES":
-              school.students += 60;
+              school.students += 45 + 0 + 1;
               break;
             case "Westchester ES":
-              school.students += 13;
+              school.students += 11 + 11 + 0;
               break;
             case "Westowne ES":
-              school.students += 40;
+              school.students += 30 + 39 + 0;
               break;
             case "Woodbridge ES":
-              school.students += 41;
+              school.students += 28 + 21 + 1;
               break;
             default:
               break;

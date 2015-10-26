@@ -20,7 +20,10 @@
     "angular-leaflet-directive": "0.8.8",
     "linqjs": "~3.0.5",
     "ng-table": "~0.8.3",
-    "Leaflet.label": "git://github.com/Leaflet/Leaflet.label.git#master"
+    "Leaflet.label": "git://github.com/Leaflet/Leaflet.label.git#master",
+    "drmonty-leaflet-image": "https://github.com/drmonty/leaflet-image.git#~0.1.0",
+    "components-font-awesome": "~4.4.0",
+    "ng-table-export": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0"
