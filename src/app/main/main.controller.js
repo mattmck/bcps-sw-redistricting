@@ -196,6 +196,18 @@
     $scope.optionE1021 = {};
     $scope.optionF1021 = {};
     $scope.optionG1021 = {};
+    $scope.optionA1111 = {};
+    $scope.optionB1111 = {};
+    $scope.optionC1111 = {};
+    $scope.optionD1111 = {};
+    $scope.optionE1111 = {};
+    $scope.optionF1111 = {};
+    $scope.optionG1111 = {};
+    $scope.optionH1111 = {};
+    $scope.optionI1111 = {};
+    $scope.optionJ1111 = {};
+    $scope.optionK1111 = {};
+    $scope.optionL1111 = {};
     $scope.current = {};
 
     $scope.get0930Option = function(field, object){
@@ -240,7 +252,7 @@
         });
       });
     }
-    $scope.get1021Option('ES1516', $scope.current);
+    //$scope.get1021Option('ES1516', $scope.current);
     $scope.get1021Option('OptA', $scope.optionA1021);
     $scope.get1021Option('OptB', $scope.optionB1021);
     $scope.get1021Option('OptC', $scope.optionC1021);
@@ -248,6 +260,30 @@
     $scope.get1021Option('OptE', $scope.optionE1021);
     $scope.get1021Option('OptF', $scope.optionF1021);
     $scope.get1021Option('OptG', $scope.optionG1021);
+
+    $scope.get1111Option = function(field, object){
+      $resource('assets/151111.geo.json').get().$promise.then(function(data){
+        Enumerable.from(data.features).forEach(function(feature){
+          if(object[feature.properties[field]] === undefined){
+            object[feature.properties[field]] = [];
+          }
+          object[feature.properties[field]].push(feature.properties.PBID);
+        });
+      });
+    }
+    $scope.get1111Option('ES1516', $scope.current);
+    $scope.get1111Option('OptA', $scope.optionA1111);
+    $scope.get1111Option('OptB', $scope.optionB1111);
+    $scope.get1111Option('OptC', $scope.optionC1111);
+    $scope.get1111Option('OptD', $scope.optionD1111);
+    $scope.get1111Option('OptE', $scope.optionE1111);
+    $scope.get1111Option('OptF', $scope.optionF1111);
+    $scope.get1111Option('OptG', $scope.optionG1111);
+    $scope.get1111Option('OptH', $scope.optionH1111);
+    $scope.get1111Option('OptI', $scope.optionI1111);
+    $scope.get1111Option('OptJ', $scope.optionJ1111);
+    $scope.get1111Option('OptK', $scope.optionK1111);
+    $scope.get1111Option('OptL', $scope.optionL1111);
 
 
     $scope.loadOption = function(option){
@@ -257,7 +293,8 @@
             school.planningBlocks = option[school.NAME];
 
             Enumerable.from(school.planningBlocks).forEach(function(planningBlock){
-              $scope.planningBlockLayers[planningBlock].setStyle({fillColor: $scope.schoolColors[school.NAME]});
+              if($scope.planningBlockLayers[planningBlock] !== undefined)
+                $scope.planningBlockLayers[planningBlock].setStyle({fillColor: $scope.schoolColors[school.NAME]});
             });
           }
         });
@@ -334,6 +371,43 @@
     };
     $scope.loadOptionG1021 = function(){
       $scope.loadOption($scope.optionG1021);
+    };
+
+    $scope.loadOptionA1111 = function(){
+      $scope.loadOption($scope.optionA1111);
+    };
+    $scope.loadOptionB1111 = function(){
+      $scope.loadOption($scope.optionB1111);
+    };
+    $scope.loadOptionC1111 = function(){
+      $scope.loadOption($scope.optionC1111);
+    };
+    $scope.loadOptionD1111 = function(){
+      $scope.loadOption($scope.optionD1111);
+    };
+    $scope.loadOptionE1111 = function(){
+      $scope.loadOption($scope.optionE1111);
+    };
+    $scope.loadOptionF1111 = function(){
+      $scope.loadOption($scope.optionF1111);
+    };
+    $scope.loadOptionG1111 = function(){
+      $scope.loadOption($scope.optionG1111);
+    };
+    $scope.loadOptionH1111 = function(){
+      $scope.loadOption($scope.optionH1111);
+    };
+    $scope.loadOptionI1111 = function(){
+      $scope.loadOption($scope.optionI1111);
+    };
+    $scope.loadOptionJ1111 = function(){
+      $scope.loadOption($scope.optionJ1111);
+    };
+    $scope.loadOptionK1111 = function(){
+      $scope.loadOption($scope.optionK1111);
+    };
+    $scope.loadOptionL1111 = function(){
+      $scope.loadOption($scope.optionL1111);
     };
 
     $scope.getTableData = function getData($defer, params){
