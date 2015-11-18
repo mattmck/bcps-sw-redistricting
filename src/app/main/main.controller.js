@@ -211,35 +211,11 @@
       });
     });
 
+    $scope.current = {};
+// 09-30 options
     $scope.option1 = {};
     $scope.option2 = {};
     $scope.option3 = {};
-    $scope.optionA = {};
-    $scope.optionB = {};
-    $scope.optionC = {};
-    $scope.optionD = {};
-    $scope.optionE = {};
-    $scope.optionA1021 = {};
-    $scope.optionB1021 = {};
-    $scope.optionC1021 = {};
-    $scope.optionD1021 = {};
-    $scope.optionE1021 = {};
-    $scope.optionF1021 = {};
-    $scope.optionG1021 = {};
-    $scope.optionA1111 = {};
-    $scope.optionB1111 = {};
-    $scope.optionC1111 = {};
-    $scope.optionD1111 = {};
-    $scope.optionE1111 = {};
-    $scope.optionF1111 = {};
-    $scope.optionG1111 = {};
-    $scope.optionH1111 = {};
-    $scope.optionI1111 = {};
-    $scope.optionJ1111 = {};
-    $scope.optionK1111 = {};
-    $scope.optionL1111 = {};
-    $scope.current = {};
-
     $scope.get0930Option = function(field, object){
       $resource('assets/150930.geo.json').get().$promise.then(function(data){
         Enumerable.from(data.features).forEach(function(feature){
@@ -250,11 +226,17 @@
         });
       });
     }
+    //$scope.get0930Option('ES1516', $scope.current);
     $scope.get0930Option('Opt1', $scope.option1);
     $scope.get0930Option('Opt2', $scope.option2);
     $scope.get0930Option('Opt3', $scope.option3);
-    //$scope.get0930Option('ES1516', $scope.current);
 
+// 10-14 options
+    $scope.optionA = {};
+    $scope.optionB = {};
+    $scope.optionC = {};
+    $scope.optionD = {};
+    $scope.optionE = {};
     $scope.get1014Option = function(field, object){
       $resource('assets/151014.geo.json').get().$promise.then(function(data){
         Enumerable.from(data.features).forEach(function(feature){
@@ -272,6 +254,14 @@
     $scope.get1014Option('OptD', $scope.optionD);
     $scope.get1014Option('OptE', $scope.optionE);
 
+// 10-21 options
+    $scope.optionA1021 = {};
+    $scope.optionB1021 = {};
+    $scope.optionC1021 = {};
+    $scope.optionD1021 = {};
+    $scope.optionE1021 = {};
+    $scope.optionF1021 = {};
+    $scope.optionG1021 = {};
     $scope.get1021Option = function(field, object){
       $resource('assets/151021.geo.json').get().$promise.then(function(data){
         Enumerable.from(data.features).forEach(function(feature){
@@ -291,6 +281,19 @@
     $scope.get1021Option('OptF', $scope.optionF1021);
     $scope.get1021Option('OptG', $scope.optionG1021);
 
+// 11-11 options
+    $scope.optionA1111 = {};
+    $scope.optionB1111 = {};
+    $scope.optionC1111 = {};
+    $scope.optionD1111 = {};
+    $scope.optionE1111 = {};
+    $scope.optionF1111 = {};
+    $scope.optionG1111 = {};
+    $scope.optionH1111 = {};
+    $scope.optionI1111 = {};
+    $scope.optionJ1111 = {};
+    $scope.optionK1111 = {};
+    $scope.optionL1111 = {};
     $scope.get1111Option = function(field, object){
       $resource('assets/151111.geo.json').get().$promise.then(function(data){
         Enumerable.from(data.features).forEach(function(feature){
@@ -301,7 +304,7 @@
         });
       });
     }
-    $scope.get1111Option('ES1516', $scope.current);
+    //$scope.get1111Option('ES1516', $scope.current);
     $scope.get1111Option('OptA', $scope.optionA1111);
     $scope.get1111Option('OptB', $scope.optionB1111);
     $scope.get1111Option('OptC', $scope.optionC1111);
@@ -315,6 +318,26 @@
     $scope.get1111Option('OptK', $scope.optionK1111);
     $scope.get1111Option('OptL', $scope.optionL1111);
 
+// 11-18 options
+    $scope.option11118 = {};
+    $scope.option21118 = {};
+    $scope.option31118 = {};
+    $scope.option41118 = {};
+    $scope.get1118Option = function(field, object){
+      $resource('assets/151118.geo.json').get().$promise.then(function(data){
+        Enumerable.from(data.features).forEach(function(feature){
+          if(object[feature.properties[field]] === undefined){
+            object[feature.properties[field]] = [];
+          }
+          object[feature.properties[field]].push(feature.properties.PBID);
+        });
+      });
+    }
+    $scope.get1118Option('ES1516', $scope.current);
+    $scope.get1118Option('NovOpt1', $scope.option11118);
+    $scope.get1118Option('NovOpt2', $scope.option21118);
+    $scope.get1118Option('NovOpt3', $scope.option31118);
+    $scope.get1118Option('NovOpt4', $scope.option41118);
 
     $scope.loadOption = function(option){
       Enumerable.from($scope.schools).forEach(function(school){
@@ -438,6 +461,19 @@
     };
     $scope.loadOptionL1111 = function(){
       $scope.loadOption($scope.optionL1111);
+    };
+
+    $scope.loadOption11118 = function(){
+      $scope.loadOption($scope.option11118);
+    };
+    $scope.loadOption21118 = function(){
+      $scope.loadOption($scope.option21118);
+    };
+    $scope.loadOption31118 = function(){
+      $scope.loadOption($scope.option31118);
+    };
+    $scope.loadOption41118 = function(){
+      $scope.loadOption($scope.option41118);
     };
 
     $scope.getTableData = function getData($defer, params){

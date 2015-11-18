@@ -452,35 +452,11 @@
       });
     });
 
+    $scope.current = {};
+// 09-30 options
     $scope.option1 = {};
     $scope.option2 = {};
     $scope.option3 = {};
-    $scope.optionA = {};
-    $scope.optionB = {};
-    $scope.optionC = {};
-    $scope.optionD = {};
-    $scope.optionE = {};
-    $scope.optionA1021 = {};
-    $scope.optionB1021 = {};
-    $scope.optionC1021 = {};
-    $scope.optionD1021 = {};
-    $scope.optionE1021 = {};
-    $scope.optionF1021 = {};
-    $scope.optionG1021 = {};
-    $scope.optionA1111 = {};
-    $scope.optionB1111 = {};
-    $scope.optionC1111 = {};
-    $scope.optionD1111 = {};
-    $scope.optionE1111 = {};
-    $scope.optionF1111 = {};
-    $scope.optionG1111 = {};
-    $scope.optionH1111 = {};
-    $scope.optionI1111 = {};
-    $scope.optionJ1111 = {};
-    $scope.optionK1111 = {};
-    $scope.optionL1111 = {};
-    $scope.current = {};
-
     $scope.get0930Option = function(field, object){
       $resource('assets/150930.geo.json').get().$promise.then(function(data){
         Enumerable.from(data.features).forEach(function(feature){
@@ -491,11 +467,17 @@
         });
       });
     }
+    //$scope.get0930Option('ES1516', $scope.current);
     $scope.get0930Option('Opt1', $scope.option1);
     $scope.get0930Option('Opt2', $scope.option2);
     $scope.get0930Option('Opt3', $scope.option3);
-    //$scope.get0930Option('ES1516', $scope.current);
 
+// 10-14 options
+    $scope.optionA = {};
+    $scope.optionB = {};
+    $scope.optionC = {};
+    $scope.optionD = {};
+    $scope.optionE = {};
     $scope.get1014Option = function(field, object){
       $resource('assets/151014.geo.json').get().$promise.then(function(data){
         Enumerable.from(data.features).forEach(function(feature){
@@ -513,6 +495,14 @@
     $scope.get1014Option('OptD', $scope.optionD);
     $scope.get1014Option('OptE', $scope.optionE);
 
+// 10-21 options
+    $scope.optionA1021 = {};
+    $scope.optionB1021 = {};
+    $scope.optionC1021 = {};
+    $scope.optionD1021 = {};
+    $scope.optionE1021 = {};
+    $scope.optionF1021 = {};
+    $scope.optionG1021 = {};
     $scope.get1021Option = function(field, object){
       $resource('assets/151021.geo.json').get().$promise.then(function(data){
         Enumerable.from(data.features).forEach(function(feature){
@@ -532,6 +522,19 @@
     $scope.get1021Option('OptF', $scope.optionF1021);
     $scope.get1021Option('OptG', $scope.optionG1021);
 
+// 11-11 options
+    $scope.optionA1111 = {};
+    $scope.optionB1111 = {};
+    $scope.optionC1111 = {};
+    $scope.optionD1111 = {};
+    $scope.optionE1111 = {};
+    $scope.optionF1111 = {};
+    $scope.optionG1111 = {};
+    $scope.optionH1111 = {};
+    $scope.optionI1111 = {};
+    $scope.optionJ1111 = {};
+    $scope.optionK1111 = {};
+    $scope.optionL1111 = {};
     $scope.get1111Option = function(field, object){
       $resource('assets/151111.geo.json').get().$promise.then(function(data){
         Enumerable.from(data.features).forEach(function(feature){
@@ -542,7 +545,7 @@
         });
       });
     }
-    $scope.get1111Option('ES1516', $scope.current);
+    //$scope.get1111Option('ES1516', $scope.current);
     $scope.get1111Option('OptA', $scope.optionA1111);
     $scope.get1111Option('OptB', $scope.optionB1111);
     $scope.get1111Option('OptC', $scope.optionC1111);
@@ -556,6 +559,26 @@
     $scope.get1111Option('OptK', $scope.optionK1111);
     $scope.get1111Option('OptL', $scope.optionL1111);
 
+// 11-18 options
+    $scope.option11118 = {};
+    $scope.option21118 = {};
+    $scope.option31118 = {};
+    $scope.option41118 = {};
+    $scope.get1118Option = function(field, object){
+      $resource('assets/151118.geo.json').get().$promise.then(function(data){
+        Enumerable.from(data.features).forEach(function(feature){
+          if(object[feature.properties[field]] === undefined){
+            object[feature.properties[field]] = [];
+          }
+          object[feature.properties[field]].push(feature.properties.PBID);
+        });
+      });
+    }
+    $scope.get1118Option('ES1516', $scope.current);
+    $scope.get1118Option('NovOpt1', $scope.option11118);
+    $scope.get1118Option('NovOpt2', $scope.option21118);
+    $scope.get1118Option('NovOpt3', $scope.option31118);
+    $scope.get1118Option('NovOpt4', $scope.option41118);
 
     $scope.loadOption = function(option){
       Enumerable.from($scope.schools).forEach(function(school){
@@ -679,6 +702,19 @@
     };
     $scope.loadOptionL1111 = function(){
       $scope.loadOption($scope.optionL1111);
+    };
+
+    $scope.loadOption11118 = function(){
+      $scope.loadOption($scope.option11118);
+    };
+    $scope.loadOption21118 = function(){
+      $scope.loadOption($scope.option21118);
+    };
+    $scope.loadOption31118 = function(){
+      $scope.loadOption($scope.option31118);
+    };
+    $scope.loadOption41118 = function(){
+      $scope.loadOption($scope.option41118);
     };
 
     $scope.getTableData = function getData($defer, params){
@@ -846,5 +882,5 @@
 
 })();
 
-angular.module("redistricting").run(["$templateCache", function($templateCache) {$templateCache.put("app/main/main.html","<div class=\"container-fluid\"><div class=\"row\"><div class=\"col-md-12\"><leaflet defaults=\"defaults\" lf-center=\"center\" width=\"100%\" height=\"600px\"></leaflet></div></div><div class=\"row\"><div class=\"col-md-12\"><div class=\"panel panel-default\"><div class=\"panel-body\"><button ng-click=\"takeSnapshot()\" class=\"btn btn-primary\"><span ng-hide=\"snapshotInProgress\">Take Snapshot</span><i class=\"fa fa-cog fa-spin\" ng-hide=\"!snapshotInProgress\"></i></button> <button ng-click=\"loadCurrent()\" class=\"btn btn-primary\">Current Districting</button></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\">11/11/2015 Meeting Options</h4></div><div class=\"panel-body\"><button ng-click=\"loadOptionA1111()\" class=\"btn btn-primary\">Option A</button> <button ng-click=\"loadOptionB1111()\" class=\"btn btn-primary\">Option B</button> <button ng-click=\"loadOptionC1111()\" class=\"btn btn-primary\">Option C</button> <button ng-click=\"loadOptionD1111()\" class=\"btn btn-primary\">Option D</button> <button ng-click=\"loadOptionE1111()\" class=\"btn btn-primary\">Option E</button> <button ng-click=\"loadOptionF1111()\" class=\"btn btn-primary\">Option F</button> <button ng-click=\"loadOptionG1111()\" class=\"btn btn-primary\">Option G</button> <button ng-click=\"loadOptionH1111()\" class=\"btn btn-primary\">Option H</button> <button ng-click=\"loadOptionI1111()\" class=\"btn btn-primary\">Option I</button> <button ng-click=\"loadOptionJ1111()\" class=\"btn btn-primary\">Option J</button> <button ng-click=\"loadOptionK1111()\" class=\"btn btn-primary\">Option K</button> <button ng-click=\"loadOptionL1111()\" class=\"btn btn-primary\">Option L</button></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\">9/30/2015 Meeting Options</h4></div><div class=\"panel-body\"><button ng-click=\"loadOption1()\" class=\"btn btn-primary\">Option 1</button> <button ng-click=\"loadOption2()\" class=\"btn btn-primary\">Option 2</button> <button ng-click=\"loadOption3()\" class=\"btn btn-primary\">Option 3</button></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\">10/14/2015 Meeting Options</h4></div><div class=\"panel-body\"><button ng-click=\"loadOptionA()\" class=\"btn btn-primary\">Option A</button> <button ng-click=\"loadOptionB()\" class=\"btn btn-primary\">Option B</button> <button ng-click=\"loadOptionC()\" class=\"btn btn-primary\">Option C</button> <button ng-click=\"loadOptionD()\" class=\"btn btn-primary\">Option D</button> <button ng-click=\"loadOptionE()\" class=\"btn btn-primary\">Option E</button></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\">10/28/2015 Meeting Options</h4></div><div class=\"panel-body\"><button ng-click=\"loadOptionA1021()\" class=\"btn btn-primary\">Option A</button> <button ng-click=\"loadOptionB1021()\" class=\"btn btn-primary\">Option B</button> <button ng-click=\"loadOptionC1021()\" class=\"btn btn-primary\">Option C</button> <button ng-click=\"loadOptionD1021()\" class=\"btn btn-primary\">Option D</button> <button ng-click=\"loadOptionE1021()\" class=\"btn btn-primary\">Option E</button> <button ng-click=\"loadOptionF1021()\" class=\"btn btn-primary\">Option F</button> <button ng-click=\"loadOptionG1021()\" class=\"btn btn-primary\">Option G</button></div></div></div></div><div class=\"row col-md-12\"><table ng-table=\"tableParams\" class=\"table table-condensed table-bordered\"><tr ng-repeat=\"school in $data\" ng-class=\"{\'selected-row\':selectedSchoolName === school.NAME}\"><td title=\"\'Color\'\"><div style=\"height:20px; width:20px; background:{{schoolColors[school.NAME]}}; display:table\"><div></div></div></td><td title=\"\'School\'\" sortable=\"\'NAME\'\">{{school.NAME}}</td><td title=\"\'2015 Cap.\'\" sortable=\"\'school.SRC\'\">{{school.SRC}}</td><td title=\"\'2016 Cap.\'\" sortable=\"\'school.SRC2016 !== undefined ? school.SRC2016 : school.SRC\'\">{{school.SRC2016 !== undefined ? school.SRC2016 : school.SRC}}</td><td title=\"\'2017 Cap.\'\" sortable=\"\'school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC\'\">{{school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC}}</td><td title=\"\'2015 %\'\" sortable=\"\'school.SRC\'\"><em ng-class=\"{\'text-danger\':school.students / school.SRC > 1}\">{{Math.round(school.students / school.SRC * 100)}}%</em></td><td title=\"\'2016 %.\'\" sortable=\"\'school.SRC2016 !== undefined ? school.SRC2016 : school.SRC\'\"><em ng-class=\"{\'text-danger\':school.students / (school.SRC2016 !== undefined ? school.SRC2016 : school.SRC) > 1}\">{{Math.round(school.students / (school.SRC2016 !== undefined ? school.SRC2016 : school.SRC)*100)}}%</em></td><td title=\"\'2017 %\'\" sortable=\"\'school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC\'\"><em ng-class=\"{\'text-danger\':school.students / (school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC) > 1}\">{{Math.round(school.students / (school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC)*100)}}%</em></td><td title=\"\'Students\'\" sortable=\"\'school.students\'\">{{school.students}}</td><td title=\"\'% Walkable\'\" sortable=\"\'school.walkablePercent\'\">{{Math.round(school.walkablePercent*100)}}%</td></tr></table></div><div ng-hide=\"hideSnapshot\" id=\"snapshot\"></div></div>");
+angular.module("redistricting").run(["$templateCache", function($templateCache) {$templateCache.put("app/main/main.html","<div class=\"container-fluid\"><div class=\"row\"><div class=\"col-md-12\"><leaflet defaults=\"defaults\" lf-center=\"center\" width=\"100%\" height=\"400px\"></leaflet></div></div><div class=\"row\"><div class=\"col-md-12\"><div class=\"panel panel-default\"><div class=\"panel-body\"><button ng-click=\"takeSnapshot()\" class=\"btn btn-primary\"><span ng-hide=\"snapshotInProgress\">Take Snapshot</span><i class=\"fa fa-cog fa-spin\" ng-hide=\"!snapshotInProgress\"></i></button> <button ng-click=\"loadCurrent()\" class=\"btn btn-primary\">Current Districting</button></div></div></div></div><div class=\"row col-xs-12\"><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\">11/18/2015 Meeting</h4></div><div class=\"panel-body\"><button ng-click=\"loadOption11118()\" class=\"btn btn-primary\">Option 1</button> <button ng-click=\"loadOption21118()\" class=\"btn btn-primary\">Option 2</button> <button ng-click=\"loadOption31118()\" class=\"btn btn-primary\">Option 3</button> <button ng-click=\"loadOption41118()\" class=\"btn btn-primary\">Option 4</button></div></div></div><div class=\"row col-md-12\"><table ng-table=\"tableParams\" class=\"table table-condensed table-bordered\"><tr ng-repeat=\"school in $data\" ng-class=\"{\'selected-row\':selectedSchoolName === school.NAME}\"><td title=\"\'Color\'\"><div style=\"height:20px; width:20px; background:{{schoolColors[school.NAME]}}; display:table\"><div></div></div></td><td title=\"\'School\'\" sortable=\"\'NAME\'\">{{school.NAME}}</td><td title=\"\'2015 Cap.\'\" sortable=\"\'school.SRC\'\">{{school.SRC}}</td><td title=\"\'2016 Cap.\'\" sortable=\"\'school.SRC2016 !== undefined ? school.SRC2016 : school.SRC\'\">{{school.SRC2016 !== undefined ? school.SRC2016 : school.SRC}}</td><td title=\"\'2017 Cap.\'\" sortable=\"\'school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC\'\">{{school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC}}</td><td title=\"\'2015 %\'\" sortable=\"\'school.SRC\'\"><em ng-class=\"{\'text-danger\':school.students / school.SRC > 1}\">{{Math.round(school.students / school.SRC * 100)}}%</em></td><td title=\"\'2016 %.\'\" sortable=\"\'school.SRC2016 !== undefined ? school.SRC2016 : school.SRC\'\"><em ng-class=\"{\'text-danger\':school.students / (school.SRC2016 !== undefined ? school.SRC2016 : school.SRC) > 1}\">{{Math.round(school.students / (school.SRC2016 !== undefined ? school.SRC2016 : school.SRC)*100)}}%</em></td><td title=\"\'2017 %\'\" sortable=\"\'school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC\'\"><em ng-class=\"{\'text-danger\':school.students / (school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC) > 1}\">{{Math.round(school.students / (school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC)*100)}}%</em></td><td title=\"\'Students\'\" sortable=\"\'school.students\'\">{{school.students}}</td><td title=\"\'% Walkable\'\" sortable=\"\'school.walkablePercent\'\">{{Math.round(school.walkablePercent*100)}}%</td></tr></table></div><div class=\"row col-xs-12\"><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\">9/30/2015 Meeting</h4></div><div class=\"panel-body\"><button ng-click=\"loadOption1()\" class=\"btn btn-primary\">Option 1</button> <button ng-click=\"loadOption2()\" class=\"btn btn-primary\">Option 2</button> <button ng-click=\"loadOption3()\" class=\"btn btn-primary\">Option 3</button></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\">10/14/2015 Meeting</h4></div><div class=\"panel-body\"><button ng-click=\"loadOptionA()\" class=\"btn btn-primary\">Option A</button> <button ng-click=\"loadOptionB()\" class=\"btn btn-primary\">Option B</button> <button ng-click=\"loadOptionC()\" class=\"btn btn-primary\">Option C</button> <button ng-click=\"loadOptionD()\" class=\"btn btn-primary\">Option D</button> <button ng-click=\"loadOptionE()\" class=\"btn btn-primary\">Option E</button></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\">10/28/2015 Meeting</h4></div><div class=\"panel-body\"><button ng-click=\"loadOptionA1021()\" class=\"btn btn-primary\">Option A</button> <button ng-click=\"loadOptionB1021()\" class=\"btn btn-primary\">Option B</button> <button ng-click=\"loadOptionC1021()\" class=\"btn btn-primary\">Option C</button> <button ng-click=\"loadOptionD1021()\" class=\"btn btn-primary\">Option D</button> <button ng-click=\"loadOptionE1021()\" class=\"btn btn-primary\">Option E</button> <button ng-click=\"loadOptionF1021()\" class=\"btn btn-primary\">Option F</button> <button ng-click=\"loadOptionG1021()\" class=\"btn btn-primary\">Option G</button></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\">11/11/2015 Meeting</h4></div><div class=\"panel-body\"><button ng-click=\"loadOptionA1111()\" class=\"btn btn-primary\">Option A</button> <button ng-click=\"loadOptionB1111()\" class=\"btn btn-primary\">Option B</button> <button ng-click=\"loadOptionC1111()\" class=\"btn btn-primary\">Option C</button> <button ng-click=\"loadOptionD1111()\" class=\"btn btn-primary\">Option D</button> <button ng-click=\"loadOptionE1111()\" class=\"btn btn-primary\">Option E</button> <button ng-click=\"loadOptionF1111()\" class=\"btn btn-primary\">Option F</button> <button ng-click=\"loadOptionG1111()\" class=\"btn btn-primary\">Option G</button> <button ng-click=\"loadOptionH1111()\" class=\"btn btn-primary\">Option H</button> <button ng-click=\"loadOptionI1111()\" class=\"btn btn-primary\">Option I</button> <button ng-click=\"loadOptionJ1111()\" class=\"btn btn-primary\">Option J</button> <button ng-click=\"loadOptionK1111()\" class=\"btn btn-primary\">Option K</button> <button ng-click=\"loadOptionL1111()\" class=\"btn btn-primary\">Option L</button></div></div></div><div ng-hide=\"hideSnapshot\" id=\"snapshot\"></div></div>");
 $templateCache.put("app/components/navbar/navbar.html","<nav class=\"navbar navbar-static-top navbar-inverse\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\" href=\"https://github.com/Swiip/generator-gulp-angular\"><span class=\"glyphicon glyphicon-home\"></span> Gulp Angular</a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-6\"><ul class=\"nav navbar-nav\"><li class=\"active\"><a ng-href=\"#\">Home</a></li><li><a ng-href=\"#\">About</a></li><li><a ng-href=\"#\">Contact</a></li></ul><ul class=\"nav navbar-nav navbar-right acme-navbar-text\"><li>Application was created {{ vm.relativeDate }}.</li></ul></div></div></nav>");}]);
