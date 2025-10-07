@@ -1,12 +1,5 @@
 {
   "name": "animate.css",
   "main": "./animate.css",
-  "ignore": [
-    ".*",
-    "src",
-    "*.yml",
-    "Gemfile",
-    "Gemfile.lock",
-    "*.md"
-  ]
+  "ignore": [".*", "*.yml", "Gemfile", "Gemfile.lock", "*.md"]
 }
