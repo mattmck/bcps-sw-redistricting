@@ -1,0 +1,78 @@
+<div class="container-fluid">
+  <!-- Map Section -->
+  <div class="row">
+    <div class="col-md-12">
+      <app-map 
+        (schoolsUpdated)="onSchoolsUpdated($event)"
+        (schoolSelected)="onSchoolSelected($event)"
+        (planningBlockSelected)="onPlanningBlockSelected($event)">
+      </app-map>
+    </div>
+  </div>
+
+  <!-- Controls Section -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel">
+        <div class="panel-body">
+          <button 
+            class="btn btn-primary me-2" 
+            (click)="takeSnapshot()"
+            [disabled]="snapshotInProgress">
+            <span *ngIf="!snapshotInProgress">Take Snapshot</span>
+            <i *ngIf="snapshotInProgress" class="fa fa-spinner fa-spin"></i>
+          </button>
+          <button 
+            class="btn btn-secondary" 
+            (click)="loadCurrentDistricting()">
+            Current Districting
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Redistricting Options -->
+  <div class="row mt-3">
+    <div class="col-12" *ngFor="let meeting of redistrictingMeetings">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="card-title mb-0">{{ meeting.displayName }}</h5>
+        </div>
+        <div class="card-body">
+          <button 
+            *ngFor="let option of meeting.options" 
+            class="btn btn-outline-primary me-2 mb-2"
+            (click)="loadRedistrictingOption(option.dataFile, option.field)">
+            {{ option.displayName }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schools Data Table -->
+  <div class="row mt-3">
+    <div class="col-12">
+      <app-school-table 
+        [schools]="schools"
+        [schoolColors]="schoolColors"
+        [selectedSchoolName]="selectedSchoolName">
+      </app-school-table>
+    </div>
+  </div>
+
+  <!-- Snapshot Display -->
+  <div class="row mt-3" *ngIf="!hideSnapshot">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Map Snapshot</h5>
+        </div>
+        <div class="card-body" id="snapshot">
+          <!-- Snapshot will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
