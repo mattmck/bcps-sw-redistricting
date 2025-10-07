@@ -1,0 +1,3045 @@
+{
+  "displayFieldName": "NAME",
+  "fieldAliases": {
+    "NAME": "NAME",
+    "OBJECTID": "OBJECTID",
+    "NUMBER_": "NUMBER_",
+    "TYPE": "TYPE",
+    "AIRCOND": "AIRCOND",
+    "TITLEI": "TITLEI",
+    "OPENED": "OPENED",
+    "X": "X",
+    "Y": "Y",
+    "Central": "Central"
+  },
+  "geometryType": "esriGeometryPoint",
+  "spatialReference": {
+    "wkid": 102100
+  },
+  "features": [
+    {
+      "attributes": {
+        "NAME": "Arbutus ES",
+        "OBJECTID": 1,
+        "NUMBER_": "1302",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1925,
+        "X": -76.69756647,
+        "Y": 39.24793596,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8537933.9916,
+        "y": 4757250.0058
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Arbutus Middle",
+        "OBJECTID": 2,
+        "NUMBER_": "1356",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1958,
+        "X": -76.70353576,
+        "Y": 39.24856888,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8538598.4909,
+        "y": 4757340.985
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Baltimore Highlands ES",
+        "OBJECTID": 3,
+        "NUMBER_": "1307",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1960,
+        "X": -76.64225804,
+        "Y": 39.23627845,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8531777.0829,
+        "y": 4755574.4306
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Battle Grove ES",
+        "OBJECTID": 4,
+        "NUMBER_": "1517",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1959,
+        "X": -76.47530519,
+        "Y": 39.26948616,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8513191.9824,
+        "y": 4760348.3091
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Bear Creek ES",
+        "OBJECTID": 5,
+        "NUMBER_": "1206",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1955,
+        "X": -76.48138066,
+        "Y": 39.26863759,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8513868.3006,
+        "y": 4760226.2922
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Bedford ES",
+        "OBJECTID": 6,
+        "NUMBER_": "0303",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1962,
+        "X": -76.73038926,
+        "Y": 39.36006556,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8541587.8404,
+        "y": 4773381.1587
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Berkshire ES",
+        "OBJECTID": 7,
+        "NUMBER_": "1205",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1954,
+        "X": -76.51161117,
+        "Y": 39.28667394,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8517233.5502,
+        "y": 4762820.0525
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Campfield ECLDC",
+        "OBJECTID": 8,
+        "NUMBER_": "0062",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1954,
+        "X": -76.72390578,
+        "Y": 39.35181573,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8540866.0997,
+        "y": 4772193.4443
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Carney ES",
+        "OBJECTID": 9,
+        "NUMBER_": "1106",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1965,
+        "X": -76.520551,
+        "Y": 39.39262831,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8518228.754,
+        "y": 4778070.6301
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Carroll Manor ES",
+        "OBJECTID": 10,
+        "NUMBER_": "1001",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1935,
+        "X": -76.52364387,
+        "Y": 39.4978893,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8518573.0752,
+        "y": 4793244.3555
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Carver Center for Arts and Technology",
+        "OBJECTID": 11,
+        "NUMBER_": "0975",
+        "TYPE": "HS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1949,
+        "X": -76.61145912,
+        "Y": 39.40937442,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8528348.6063,
+        "y": 4780483.0644
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Old Catonsville ES",
+        "OBJECTID": 12,
+        "NUMBER_": "0101",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1910,
+        "X": -76.72940684,
+        "Y": 39.27108833,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8541478.4525,
+        "y": 4760578.6225
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Catonsville High",
+        "OBJECTID": 13,
+        "NUMBER_": "0174",
+        "TYPE": "HS",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1954,
+        "X": -76.7288507,
+        "Y": 39.25973276,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8541416.5407,
+        "y": 4758945.891
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Catonsville Middle",
+        "OBJECTID": 14,
+        "NUMBER_": "0151",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1963,
+        "X": -76.77189423,
+        "Y": 39.275065,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8546208.1303,
+        "y": 4761150.4482
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Cedarmere ES",
+        "OBJECTID": 15,
+        "NUMBER_": "0408",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1971,
+        "X": -76.8089718,
+        "Y": 39.43851937,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8550335.6344,
+        "y": 4784683.0295
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Chadwick ES",
+        "OBJECTID": 16,
+        "NUMBER_": "0113",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1966,
+        "X": -76.76534474,
+        "Y": 39.31364127,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8545479.0544,
+        "y": 4766699.3328
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Chapel Hill ES",
+        "OBJECTID": 17,
+        "NUMBER_": "1107",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1962,
+        "X": -76.43577104,
+        "Y": 39.40102208,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8508791.095,
+        "y": 4779279.7917
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Charlesmont ES",
+        "OBJECTID": 18,
+        "NUMBER_": "1212",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1962,
+        "X": -76.48575841,
+        "Y": 39.27290425,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8514355.6307,
+        "y": 4760839.8092
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Chase ES",
+        "OBJECTID": 19,
+        "NUMBER_": "1507",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1939,
+        "X": -76.39280849,
+        "Y": 39.34354637,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8504008.5095,
+        "y": 4771003.1517
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Chatsworth ES",
+        "OBJECTID": 20,
+        "NUMBER_": "0404",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1974,
+        "X": -76.82617028,
+        "Y": 39.46349133,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8552250.1687,
+        "y": 4788283.1036
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Chesapeake High",
+        "OBJECTID": 21,
+        "NUMBER_": "1574",
+        "TYPE": "HS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1977,
+        "X": -76.41948934,
+        "Y": 39.29171494,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8506978.5935,
+        "y": 4763545.1287
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Chesapeake Terrace ES",
+        "OBJECTID": 22,
+        "NUMBER_": "1511",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1930,
+        "X": -76.44928589,
+        "Y": 39.22232263,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8510295.5128,
+        "y": 4753568.91
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Church Lane ES",
+        "OBJECTID": 23,
+        "NUMBER_": "0207",
+        "TYPE": "ES",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1963,
+        "X": -76.78025821,
+        "Y": 39.36948067,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8547139.2314,
+        "y": 4774736.7909
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Cockeysville Middle",
+        "OBJECTID": 24,
+        "NUMBER_": "0853",
+        "TYPE": "MS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1967,
+        "X": -76.62931326,
+        "Y": 39.47156268,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8530336.1367,
+        "y": 4789447.0775
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Colgate ES",
+        "OBJECTID": 25,
+        "NUMBER_": "1503",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1924,
+        "X": -76.51778118,
+        "Y": 39.29480053,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8517920.3956,
+        "y": 4763988.9366
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Cromwell ES",
+        "OBJECTID": 26,
+        "NUMBER_": "0916",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1963,
+        "X": -76.58061455,
+        "Y": 39.40335619,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8524915.0018,
+        "y": 4779616.0149
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Deep Creek ES",
+        "OBJECTID": 27,
+        "NUMBER_": "1525",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1963,
+        "X": -76.45368485,
+        "Y": 39.30747951,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8510785.2262,
+        "y": 4765812.8996
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Deep Creek Middle",
+        "OBJECTID": 28,
+        "NUMBER_": "1557",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1963,
+        "X": -76.45297987,
+        "Y": 39.29204689,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8510706.744,
+        "y": 4763592.8683
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Deer Park ES",
+        "OBJECTID": 29,
+        "NUMBER_": "0216",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1970,
+        "X": -76.819684,
+        "Y": 39.38959783,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8551528.0981,
+        "y": 4777633.9945
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Deer Park Middle",
+        "OBJECTID": 30,
+        "NUMBER_": "0254",
+        "TYPE": "MS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1973,
+        "X": -76.81798665,
+        "Y": 39.38810166,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8551339.1495,
+        "y": 4777418.4932
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Dulaney High",
+        "OBJECTID": 31,
+        "NUMBER_": "0872",
+        "TYPE": "HS",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1964,
+        "X": -76.6109058,
+        "Y": 39.46074386,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8528287.0248,
+        "y": 4787887.0518
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Dumbarton Middle",
+        "OBJECTID": 32,
+        "NUMBER_": "0953",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1956,
+        "X": -76.61201266,
+        "Y": 39.38099825,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8528410.219,
+        "y": 4776395.4858
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Dundalk ES",
+        "OBJECTID": 33,
+        "NUMBER_": "1202",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1925,
+        "X": -76.51845778,
+        "Y": 39.25879239,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8517995.7049,
+        "y": 4758810.7465
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Dundalk High",
+        "OBJECTID": 34,
+        "NUMBER_": "1273",
+        "TYPE": "HS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1959,
+        "X": -76.51438272,
+        "Y": 39.26805804,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8517542.0742,
+        "y": 4760142.95
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Dundalk Middle",
+        "OBJECTID": 35,
+        "NUMBER_": "1251",
+        "TYPE": "MS",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1946,
+        "X": -76.51403271,
+        "Y": 39.25981548,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8517503.1089,
+        "y": 4758957.8378
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Eastern Technical High",
+        "OBJECTID": 36,
+        "NUMBER_": "1575",
+        "TYPE": "HS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1970,
+        "X": -76.47338719,
+        "Y": 39.32483772,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8512978.4855,
+        "y": 4768310.5161
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Eastwood Center",
+        "OBJECTID": 37,
+        "NUMBER_": "1218",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1963,
+        "X": -76.52531536,
+        "Y": 39.2909887,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8518759.0958,
+        "y": 4763440.6448
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Edgemere ES",
+        "OBJECTID": 38,
+        "NUMBER_": "1502",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1998,
+        "X": -76.44541906,
+        "Y": 39.23905476,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8509865.063,
+        "y": 4755973.5066
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Edmonson Heights ES",
+        "OBJECTID": 39,
+        "NUMBER_": "0104",
+        "TYPE": "ES",
+        "AIRCOND": "P",
+        "TITLEI": "Y",
+        "OPENED": 1957,
+        "X": -76.71881969,
+        "Y": 39.29967388,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8540299.9046,
+        "y": 4764689.8981
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Elmwood ES",
+        "OBJECTID": 40,
+        "NUMBER_": "1405",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1958,
+        "X": -76.51940107,
+        "Y": 39.3483359,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8518100.7332,
+        "y": 4771692.5748
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Essex ES",
+        "OBJECTID": 41,
+        "NUMBER_": "1508",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1995,
+        "X": -76.48077232,
+        "Y": 39.30875838,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8513800.5907,
+        "y": 4765996.8863
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Featherbed Lane ES",
+        "OBJECTID": 42,
+        "NUMBER_": "0203",
+        "TYPE": "ES",
+        "AIRCOND": "P",
+        "TITLEI": "Y",
+        "OPENED": 1958,
+        "X": -76.73750086,
+        "Y": 39.32279167,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8542379.4896,
+        "y": 4768016.0011
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Fifth District ES",
+        "OBJECTID": 43,
+        "NUMBER_": "0501",
+        "TYPE": "ES",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1932,
+        "X": -76.77533404,
+        "Y": 39.5997852,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8546591.1556,
+        "y": 4807954.7557
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Fort Garrison ES",
+        "OBJECTID": 44,
+        "NUMBER_": "0308",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1961,
+        "X": -76.70445995,
+        "Y": 39.40068784,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8538701.413,
+        "y": 4779231.5492
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Franklin ES",
+        "OBJECTID": 45,
+        "NUMBER_": "0403",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1956,
+        "X": -76.8321558,
+        "Y": 39.46231957,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8552916.474,
+        "y": 4788114.1455
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Franklin High",
+        "OBJECTID": 46,
+        "NUMBER_": "0472",
+        "TYPE": "HS",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1960,
+        "X": -76.81777812,
+        "Y": 39.44681411,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8551315.9526,
+        "y": 4785878.6934
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Franklin Middle",
+        "OBJECTID": 47,
+        "NUMBER_": "0451",
+        "TYPE": "MS",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1929,
+        "X": -76.83249108,
+        "Y": 39.46490138,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8552953.7975,
+        "y": 4788486.4187
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Fullerton ES",
+        "OBJECTID": 48,
+        "NUMBER_": "1404",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1976,
+        "X": -76.5191652,
+        "Y": 39.36094743,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8518074.4791,
+        "y": 4773508.2082
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "General John Stricker Middle",
+        "OBJECTID": 49,
+        "NUMBER_": "1255",
+        "TYPE": "MS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1968,
+        "X": -76.48985826,
+        "Y": 39.27390046,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8514812.0242,
+        "y": 4760983.0627
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Glenmar ES",
+        "OBJECTID": 50,
+        "NUMBER_": "1518",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1957,
+        "X": -76.44758606,
+        "Y": 39.34658847,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8510106.3219,
+        "y": 4771441.0433
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Glyndon ES",
+        "OBJECTID": 51,
+        "NUMBER_": "0407",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1978,
+        "X": -76.81065101,
+        "Y": 39.46677596,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8550522.5714,
+        "y": 4788756.7337
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Golden Ring Middle",
+        "OBJECTID": 52,
+        "NUMBER_": "1451",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1931,
+        "X": -76.49948348,
+        "Y": 39.33301783,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8515883.5131,
+        "y": 4769487.7385
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Grange ES",
+        "OBJECTID": 53,
+        "NUMBER_": "1210",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1960,
+        "X": -76.50235156,
+        "Y": 39.26532109,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8516202.77,
+        "y": 4759749.4203
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Gunpowder ES",
+        "OBJECTID": 54,
+        "NUMBER_": "1111",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1970,
+        "X": -76.47127022,
+        "Y": 39.41568279,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8512742.8479,
+        "y": 4781392.0613
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Halethorpe ES",
+        "OBJECTID": 55,
+        "NUMBER_": "1313",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1976,
+        "X": -76.68548556,
+        "Y": 39.24238173,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8536589.1499,
+        "y": 4756451.6389
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Hampton ES",
+        "OBJECTID": 56,
+        "NUMBER_": "0911",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1958,
+        "X": -76.603155,
+        "Y": 39.41713433,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8527424.1979,
+        "y": 4781601.1709
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Harford Hills ES",
+        "OBJECTID": 57,
+        "NUMBER_": "0915",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1962,
+        "X": -76.53735814,
+        "Y": 39.40033041,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8520099.7186,
+        "y": 4779180.1292
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Hawthorne ES",
+        "OBJECTID": 58,
+        "NUMBER_": "1515",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1954,
+        "X": -76.43661095,
+        "Y": 39.32573807,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8508884.573,
+        "y": 4768440.0875
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Hebbville ES",
+        "OBJECTID": 59,
+        "NUMBER_": "0209",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1961,
+        "X": -76.75230123,
+        "Y": 39.34485314,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8544027.0661,
+        "y": 4771191.1487
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Hereford High",
+        "OBJECTID": 60,
+        "NUMBER_": "0772",
+        "TYPE": "HS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1953,
+        "X": -76.65606278,
+        "Y": 39.59947053,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8533313.9419,
+        "y": 4807909.342
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Hereford Middle",
+        "OBJECTID": 61,
+        "NUMBER_": "0855",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1984,
+        "X": -76.65261761,
+        "Y": 39.57305666,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8532930.4139,
+        "y": 4804093.9644
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Hillcrest ES",
+        "OBJECTID": 62,
+        "NUMBER_": "0115",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1968,
+        "X": -76.74672591,
+        "Y": 39.26986952,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8543406.4021,
+        "y": 4760403.3624
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Halstead Academy ES",
+        "OBJECTID": 63,
+        "NUMBER_": "0912",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1962,
+        "X": -76.57198543,
+        "Y": 39.37628836,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8523954.4053,
+        "y": 4775717.2042
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Holabird Middle",
+        "OBJECTID": 64,
+        "NUMBER_": "1253",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1961,
+        "X": -76.51645319,
+        "Y": 39.27625788,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8517772.5594,
+        "y": 4761322.0585
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Johnnycake ES",
+        "OBJECTID": 65,
+        "NUMBER_": "0105",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1959,
+        "X": -76.73541432,
+        "Y": 39.29319387,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8542147.2085,
+        "y": 4763757.7686
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Southwest Academy Middle",
+        "OBJECTID": 66,
+        "NUMBER_": "0155",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1960,
+        "X": -76.73561503,
+        "Y": 39.2997768,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8542169.5529,
+        "y": 4764704.6992
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Joppa View ES",
+        "OBJECTID": 67,
+        "NUMBER_": "1109",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1990,
+        "X": -76.45582117,
+        "Y": 39.38636992,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8511023.061,
+        "y": 4777169.1957
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Kenwood High",
+        "OBJECTID": 68,
+        "NUMBER_": "1572",
+        "TYPE": "HS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1955,
+        "X": -76.46349471,
+        "Y": 39.32435012,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8511877.2589,
+        "y": 4768240.3503
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Kingsville ES",
+        "OBJECTID": 69,
+        "NUMBER_": "1104",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1954,
+        "X": -76.41748136,
+        "Y": 39.45722168,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8506755.1139,
+        "y": 4787379.2705
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Lansdowne ES",
+        "OBJECTID": 70,
+        "NUMBER_": "1311",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1965,
+        "X": -76.65691061,
+        "Y": 39.24982203,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8533408.2031,
+        "y": 4757521.1351
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Lansdowne High",
+        "OBJECTID": 71,
+        "NUMBER_": "1371",
+        "TYPE": "HS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1963,
+        "X": -76.65233581,
+        "Y": 39.24637211,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8532898.937,
+        "y": 4757025.221
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Lansdowne Middle",
+        "OBJECTID": 72,
+        "NUMBER_": "1351",
+        "TYPE": "MS",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1971,
+        "X": -76.65126878,
+        "Y": 39.24943643,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8532780.1566,
+        "y": 4757465.7069
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Loch Raven High",
+        "OBJECTID": 73,
+        "NUMBER_": "0973",
+        "TYPE": "HS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1972,
+        "X": -76.56191993,
+        "Y": 39.40597412,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8522833.927,
+        "y": 4779993.1875
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Loch Raven Academy Middle",
+        "OBJECTID": 74,
+        "NUMBER_": "0954",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1961,
+        "X": -76.57860907,
+        "Y": 39.38912993,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8524691.7492,
+        "y": 4777566.6961
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Logan ES",
+        "OBJECTID": 75,
+        "NUMBER_": "1217",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1968,
+        "X": -76.50948056,
+        "Y": 39.2569667,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8516996.3655,
+        "y": 4758548.2744
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Lutherville ES",
+        "OBJECTID": 76,
+        "NUMBER_": "0803",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1951,
+        "X": -76.62117664,
+        "Y": 39.42684928,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8529430.3609,
+        "y": 4783001.1361
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Maiden Choice Center",
+        "OBJECTID": 77,
+        "NUMBER_": "0111",
+        "TYPE": "SP",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1962,
+        "X": -76.69482456,
+        "Y": 39.25784256,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8537628.7671,
+        "y": 4758674.1473
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Mars Estates ES",
+        "OBJECTID": 78,
+        "NUMBER_": "1512",
+        "TYPE": "ES",
+        "AIRCOND": "P",
+        "TITLEI": "Y",
+        "OPENED": 1950,
+        "X": -76.45063338,
+        "Y": 39.31304161,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8510445.539,
+        "y": 4766613.146
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Martin Boulevard ES",
+        "OBJECTID": 79,
+        "NUMBER_": "1506",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1999,
+        "X": -76.442464,
+        "Y": 39.33434951,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8509536.1334,
+        "y": 4769679.4056
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "McCormick ES",
+        "OBJECTID": 80,
+        "NUMBER_": "1403",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1971,
+        "X": -76.52066676,
+        "Y": 39.34017694,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8518241.6271,
+        "y": 4770518.1339
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Middle River Middle",
+        "OBJECTID": 81,
+        "NUMBER_": "1556",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1959,
+        "X": -76.4520979,
+        "Y": 39.34484463,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8510608.5771,
+        "y": 4771190.0206
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Middleborough ES",
+        "OBJECTID": 82,
+        "NUMBER_": "1520",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1960,
+        "X": -76.4339307,
+        "Y": 39.3050795,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8508586.2023,
+        "y": 4765467.6222
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Middlesex ES",
+        "OBJECTID": 83,
+        "NUMBER_": "1514",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1956,
+        "X": -76.45380883,
+        "Y": 39.32438415,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8510799.0319,
+        "y": 4768245.2486
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Milbrook ES",
+        "OBJECTID": 84,
+        "NUMBER_": "9307",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1967,
+        "X": -76.7140255,
+        "Y": 39.36037717,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8539766.2342,
+        "y": 4773426.0295
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Milford Mill Academy",
+        "OBJECTID": 85,
+        "NUMBER_": "0271",
+        "TYPE": "HS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1949,
+        "X": -76.75051209,
+        "Y": 39.35521217,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8543827.9024,
+        "y": 4772682.3975
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Norwood ES",
+        "OBJECTID": 86,
+        "NUMBER_": "1207",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1957,
+        "X": -76.51874902,
+        "Y": 39.27675729,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8518028.1302,
+        "y": 4761393.8767
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Oakleigh ES",
+        "OBJECTID": 87,
+        "NUMBER_": "0910",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1955,
+        "X": -76.55168731,
+        "Y": 39.39430048,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8521694.8332,
+        "y": 4778311.487
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Old Court Middle",
+        "OBJECTID": 88,
+        "NUMBER_": "0252",
+        "TYPE": "MS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1966,
+        "X": -76.75616572,
+        "Y": 39.36408462,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8544457.2645,
+        "y": 4773959.8179
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Oliver Beach ES",
+        "OBJECTID": 89,
+        "NUMBER_": "1534",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1981,
+        "X": -76.35446259,
+        "Y": 39.36958193,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8499739.8729,
+        "y": 4774751.496
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Orems ES",
+        "OBJECTID": 90,
+        "NUMBER_": "1519",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1960,
+        "X": -76.46572175,
+        "Y": 39.33109642,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8512125.1743,
+        "y": 4769211.2148
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Overlea High",
+        "OBJECTID": 91,
+        "NUMBER_": "1473",
+        "TYPE": "HS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1961,
+        "X": -76.51191454,
+        "Y": 39.34925545,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8517267.3364,
+        "y": 4771824.9511
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Owings Mills ES",
+        "OBJECTID": 92,
+        "NUMBER_": "0402",
+        "TYPE": "ES",
+        "AIRCOND": "P",
+        "TITLEI": "Y",
+        "OPENED": 1926,
+        "X": -76.79030084,
+        "Y": 39.42671654,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8548257.1884,
+        "y": 4782981.9316
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Owings Mills High",
+        "OBJECTID": 93,
+        "NUMBER_": "0452",
+        "TYPE": "HS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1978,
+        "X": -76.79357717,
+        "Y": 39.42375532,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8548621.9068,
+        "y": 4782555.1845
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Padonia ES",
+        "OBJECTID": 94,
+        "NUMBER_": "0810",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1968,
+        "X": -76.63164485,
+        "Y": 39.46097113,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8530595.6862,
+        "y": 4787919.8093
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Parkville High",
+        "OBJECTID": 95,
+        "NUMBER_": "0972",
+        "TYPE": "HS",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1958,
+        "X": -76.53844639,
+        "Y": 39.38793449,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8520220.859,
+        "y": 4777394.5257
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Parkville Middle",
+        "OBJECTID": 96,
+        "NUMBER_": "1452",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1953,
+        "X": -76.52621682,
+        "Y": 39.37717333,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8518859.466,
+        "y": 4775844.6687
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Patapsco High",
+        "OBJECTID": 97,
+        "NUMBER_": "1272",
+        "TYPE": "HS",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1963,
+        "X": -76.48778802,
+        "Y": 39.26604849,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8514581.5639,
+        "y": 4759854.0122
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Perry Hall ES",
+        "OBJECTID": 98,
+        "NUMBER_": "1105",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1956,
+        "X": -76.47742391,
+        "Y": 39.39900691,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8513427.8695,
+        "y": 4778989.4849
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Perry Hall High",
+        "OBJECTID": 99,
+        "NUMBER_": "1171",
+        "TYPE": "HS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1967,
+        "X": -76.46517277,
+        "Y": 39.39168644,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8512064.0774,
+        "y": 4777934.9709
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Perry Hall Middle",
+        "OBJECTID": 100,
+        "NUMBER_": "1151",
+        "TYPE": "MS",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1963,
+        "X": -76.47422441,
+        "Y": 39.39852994,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8513071.7029,
+        "y": 4778920.7742
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Pikesville High",
+        "OBJECTID": 101,
+        "NUMBER_": "0371",
+        "TYPE": "HS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1964,
+        "X": -76.69840133,
+        "Y": 39.37754297,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8538026.9636,
+        "y": 4775897.8325
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Pikesville Middle",
+        "OBJECTID": 102,
+        "NUMBER_": "0352",
+        "TYPE": "MS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1968,
+        "X": -76.7055248,
+        "Y": 39.37792761,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8538819.9448,
+        "y": 4775953.2232
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Pine Grove ES",
+        "OBJECTID": 103,
+        "NUMBER_": "0921",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1969,
+        "X": -76.52926856,
+        "Y": 39.41049304,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8519199.1924,
+        "y": 4780644.2723
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Pine Grove Middle",
+        "OBJECTID": 104,
+        "NUMBER_": "0957",
+        "TYPE": "MS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1974,
+        "X": -76.52960196,
+        "Y": 39.4062992,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8519236.3053,
+        "y": 4780040.0366
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Pinewood ES",
+        "OBJECTID": 105,
+        "NUMBER_": "0811",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1966,
+        "X": -76.63737064,
+        "Y": 39.44392981,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8531233.0737,
+        "y": 4785462.9932
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Pleasant Plains ES",
+        "OBJECTID": 106,
+        "NUMBER_": "0909",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1958,
+        "X": -76.57247496,
+        "Y": 39.39219514,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8524008.9035,
+        "y": 4778008.2122
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Pot Spring ES",
+        "OBJECTID": 107,
+        "NUMBER_": "0808",
+        "TYPE": "ES",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1963,
+        "X": -76.61433728,
+        "Y": 39.45498009,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8528669.0136,
+        "y": 4787056.0329
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Powhatan ES",
+        "OBJECTID": 108,
+        "NUMBER_": "0210",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1966,
+        "X": -76.72060897,
+        "Y": 39.33481321,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8540499.0962,
+        "y": 4769746.0581
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Prettyboy ES",
+        "OBJECTID": 109,
+        "NUMBER_": "0601",
+        "TYPE": "ES",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1941,
+        "X": -76.71286612,
+        "Y": 39.6661818,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8539637.2882,
+        "y": 4817551.9883
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Randallstown ES",
+        "OBJECTID": 110,
+        "NUMBER_": "0202",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1908,
+        "X": -76.79730001,
+        "Y": 39.36650479,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8549036.3158,
+        "y": 4774308.279
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Randallstown High",
+        "OBJECTID": 111,
+        "NUMBER_": "0272",
+        "TYPE": "HS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1969,
+        "X": -76.79917125,
+        "Y": 39.38245824,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8549244.6257,
+        "y": 4776605.6835
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Red House Run ES",
+        "OBJECTID": 112,
+        "NUMBER_": "1406",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1966,
+        "X": -76.51082843,
+        "Y": 39.33393327,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8517146.4281,
+        "y": 4769619.4863
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Reisterstown ES",
+        "OBJECTID": 113,
+        "NUMBER_": "0406",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1963,
+        "X": -76.81629969,
+        "Y": 39.45532687,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8551151.3765,
+        "y": 4787105.9357
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Relay ES",
+        "OBJECTID": 114,
+        "NUMBER_": "1310",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1965,
+        "X": -76.700347,
+        "Y": 39.23222275,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8538243.5156,
+        "y": 4754991.537
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Riderwood ES",
+        "OBJECTID": 115,
+        "NUMBER_": "0809",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1965,
+        "X": -76.64989316,
+        "Y": 39.41370154,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8532627.0665,
+        "y": 4781106.5145
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Ridgely Middle",
+        "OBJECTID": 116,
+        "NUMBER_": "0852",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1960,
+        "X": -76.61366836,
+        "Y": 39.43116855,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8528594.5434,
+        "y": 4783623.6315
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Riverview ES",
+        "OBJECTID": 117,
+        "NUMBER_": "1308",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1957,
+        "X": -76.65610468,
+        "Y": 39.23585659,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8533318.4832,
+        "y": 4755513.7962
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Rodgers Forge ES",
+        "OBJECTID": 118,
+        "NUMBER_": "0907",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1951,
+        "X": -76.61464816,
+        "Y": 39.38189064,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8528703.6024,
+        "y": 4776524.0075
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Catonsville Alternative High",
+        "OBJECTID": 119,
+        "NUMBER_": "0069",
+        "TYPE": "AL",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 0,
+        "X": -76.72488232,
+        "Y": 39.25375759,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8540974.7803,
+        "y": 4758086.8747
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Rosedale Alternative Mid\/High",
+        "OBJECTID": 120,
+        "NUMBER_": "0072",
+        "TYPE": "AL",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1948,
+        "X": -76.50443511,
+        "Y": 39.32412973,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8516434.7243,
+        "y": 4768208.6279
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Ridge\/Ruxton",
+        "OBJECTID": 121,
+        "NUMBER_": "0922",
+        "TYPE": "SP",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1962,
+        "X": -76.63453116,
+        "Y": 39.40516711,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8530916.9739,
+        "y": 4779876.8876
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Sandalwood ES",
+        "OBJECTID": 122,
+        "NUMBER_": "1527",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1971,
+        "X": -76.45785223,
+        "Y": 39.29311618,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8511249.1332,
+        "y": 4763746.6726
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Sandy Plains ES",
+        "OBJECTID": 123,
+        "NUMBER_": "1216",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1966,
+        "X": -76.48635724,
+        "Y": 39.26023093,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8514422.2889,
+        "y": 4759017.5751
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Scotts Branch ES",
+        "OBJECTID": 124,
+        "NUMBER_": "0206",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1960,
+        "X": -76.76271919,
+        "Y": 39.3588079,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8545186.7924,
+        "y": 4773200.0742
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Seneca ES",
+        "OBJECTID": 125,
+        "NUMBER_": "1531",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1966,
+        "X": -76.38988191,
+        "Y": 39.32867312,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8503682.7197,
+        "y": 4768862.4769
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Seven Oaks ES",
+        "OBJECTID": 126,
+        "NUMBER_": "1110",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1992,
+        "X": -76.48889555,
+        "Y": 39.40591595,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8514704.8884,
+        "y": 4779984.8337
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Seventh District ES",
+        "OBJECTID": 127,
+        "NUMBER_": "0701",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1969,
+        "X": -76.64662843,
+        "Y": 39.68188317,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8532263.7606,
+        "y": 4819822.8866
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Shady Spring ES",
+        "OBJECTID": 128,
+        "NUMBER_": "1409",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1977,
+        "X": -76.50153055,
+        "Y": 39.34384703,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8516111.3951,
+        "y": 4771046.4147
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Sollers Point\/Southeastern Tech",
+        "OBJECTID": 129,
+        "NUMBER_": "1274",
+        "TYPE": "HS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1948,
+        "X": -76.507735,
+        "Y": 39.24338673,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8516802.0471,
+        "y": 4756596.1364
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Sparrows Point Middle",
+        "OBJECTID": 130,
+        "NUMBER_": "1559",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1956,
+        "X": -76.44104109,
+        "Y": 39.23890419,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8509377.7103,
+        "y": 4755951.867
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Stemmers Run Middle",
+        "OBJECTID": 131,
+        "NUMBER_": "1554",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1949,
+        "X": -76.45728717,
+        "Y": 39.32124103,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8511186.2384,
+        "y": 4767792.9509
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Stoneleigh ES",
+        "OBJECTID": 132,
+        "NUMBER_": "0905",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1930,
+        "X": -76.59775149,
+        "Y": 39.38200073,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8526822.673,
+        "y": 4776539.8697
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Sudbrook Magnet Middle",
+        "OBJECTID": 133,
+        "NUMBER_": "0353",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1956,
+        "X": -76.72756917,
+        "Y": 39.35907964,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8541273.909,
+        "y": 4773239.2109
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Summit Park ES",
+        "OBJECTID": 134,
+        "NUMBER_": "0310",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1966,
+        "X": -76.68003698,
+        "Y": 39.3811394,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8535982.6543,
+        "y": 4776415.7866
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Sussex ES",
+        "OBJECTID": 135,
+        "NUMBER_": "1513",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1955,
+        "X": -76.46921747,
+        "Y": 39.30388864,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8512514.3088,
+        "y": 4765296.2947
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Timber Grove ES",
+        "OBJECTID": 136,
+        "NUMBER_": "0405",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1968,
+        "X": -76.7931011,
+        "Y": 39.44365978,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8548568.9166,
+        "y": 4785423.9969
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Timonium ES",
+        "OBJECTID": 137,
+        "NUMBER_": "0805",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1959,
+        "X": -76.6114204,
+        "Y": 39.43902613,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8528344.304,
+        "y": 4784756.1623
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Towson High",
+        "OBJECTID": 138,
+        "NUMBER_": "0971",
+        "TYPE": "HS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1949,
+        "X": -76.59909468,
+        "Y": 39.39048722,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8526972.1987,
+        "y": 4777762.1889
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Victory Villa ES",
+        "OBJECTID": 139,
+        "NUMBER_": "1505",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1943,
+        "X": -76.45619641,
+        "Y": 39.34193411,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8511064.8206,
+        "y": 4770771.0716
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Villa Cresta ES",
+        "OBJECTID": 140,
+        "NUMBER_": "0908",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1952,
+        "X": -76.54806344,
+        "Y": 39.38189276,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8521291.4229,
+        "y": 4776524.3413
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Warren ES",
+        "OBJECTID": 141,
+        "NUMBER_": "0813",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1971,
+        "X": -76.60721855,
+        "Y": 39.47444474,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8527876.565,
+        "y": 4789862.7128
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Wellwood ES",
+        "OBJECTID": 142,
+        "NUMBER_": "0304",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1956,
+        "X": -76.69556199,
+        "Y": 39.37453848,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8537710.889,
+        "y": 4775465.1573
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Western School",
+        "OBJECTID": 143,
+        "NUMBER_": "0175",
+        "TYPE": "HS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1970,
+        "X": -76.71340409,
+        "Y": 39.26927859,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8539697.0336,
+        "y": 4760318.4002
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Westowne ES",
+        "OBJECTID": 144,
+        "NUMBER_": "0103",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1951,
+        "X": -76.72589409,
+        "Y": 39.28639466,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8541087.4196,
+        "y": 4762779.8241
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "White Oak",
+        "OBJECTID": 145,
+        "NUMBER_": "0923",
+        "TYPE": "SP",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1977,
+        "X": -76.55207026,
+        "Y": 39.39114947,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8521737.462,
+        "y": 4777857.6008
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Winand ES",
+        "OBJECTID": 146,
+        "NUMBER_": "0213",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1966,
+        "X": -76.76310417,
+        "Y": 39.37235322,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8545229.6523,
+        "y": 4775150.4435
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Winfield ES",
+        "OBJECTID": 147,
+        "NUMBER_": "0211",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1966,
+        "X": -76.77884285,
+        "Y": 39.35427688,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8546981.6701,
+        "y": 4772547.7377
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Woodbridge ES",
+        "OBJECTID": 148,
+        "NUMBER_": "0116",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1974,
+        "X": -76.75882258,
+        "Y": 39.29510028,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8544753.0052,
+        "y": 4764031.9829
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Woodlawn High",
+        "OBJECTID": 149,
+        "NUMBER_": "0172",
+        "TYPE": "HS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 1961,
+        "X": -76.73316263,
+        "Y": 39.31565259,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8541896.5577,
+        "y": 4766988.739
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Woodlawn Middle",
+        "OBJECTID": 150,
+        "NUMBER_": "0253",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1962,
+        "X": -76.73630476,
+        "Y": 39.33383911,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8542246.3434,
+        "y": 4769605.8573
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Woodmoor ES",
+        "OBJECTID": 151,
+        "NUMBER_": "0205",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": "Y",
+        "OPENED": 1956,
+        "X": -76.74135851,
+        "Y": 39.33790231,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8542808.9256,
+        "y": 4770190.6601
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "New Town ES",
+        "OBJECTID": 152,
+        "NUMBER_": "0217",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 2001,
+        "X": -76.81571284,
+        "Y": 39.40482639,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8551086.0345,
+        "y": 4779827.7263
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Dogwood ES",
+        "OBJECTID": 153,
+        "NUMBER_": "0112",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 2001,
+        "X": -76.76311159,
+        "Y": 39.31974607,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8545230.4632,
+        "y": 4767577.7392
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Jacksonville ES",
+        "OBJECTID": 154,
+        "NUMBER_": "1002",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1994,
+        "X": -76.55954386,
+        "Y": 39.5125557,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8522569.4545,
+        "y": 4795360.365
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Westchester ES",
+        "OBJECTID": 155,
+        "NUMBER_": "0102",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1998,
+        "X": -76.76995948,
+        "Y": 39.2730759,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8545992.7541,
+        "y": 4760864.4168
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Sparks ES",
+        "OBJECTID": 156,
+        "NUMBER_": "0801",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1998,
+        "X": -76.66287696,
+        "Y": 39.54552912,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8534072.4647,
+        "y": 4800119.2619
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Sparrows Point High",
+        "OBJECTID": 157,
+        "NUMBER_": "1573",
+        "TYPE": "HS",
+        "AIRCOND": "P",
+        "TITLEI": " ",
+        "OPENED": 1956,
+        "X": -76.44158677,
+        "Y": 39.2383457,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8509438.4545,
+        "y": 4755871.5965
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "New Town HS",
+        "OBJECTID": 158,
+        "NUMBER_": "0473",
+        "TYPE": "HS",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 2003,
+        "X": -76.81281685,
+        "Y": 39.40295326,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8550763.6535,
+        "y": 4779557.8703
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Hernwood ES",
+        "OBJECTID": 159,
+        "NUMBER_": "0214",
+        "TYPE": "ES",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 1967,
+        "X": -76.83173768,
+        "Y": 39.37398262,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8552869.9036,
+        "y": 4775385.0594
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Battle Monument",
+        "OBJECTID": 160,
+        "NUMBER_": "1215",
+        "TYPE": "SP",
+        "AIRCOND": "F",
+        "TITLEI": "Y",
+        "OPENED": 1962,
+        "X": -76.48387341,
+        "Y": 39.27336323,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8514145.7932,
+        "y": 4760905.811
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Meadowood Ed Center",
+        "OBJECTID": 161,
+        "NUMBER_": "0070",
+        "TYPE": "AL",
+        "AIRCOND": "F",
+        "TITLEI": " ",
+        "OPENED": 0,
+        "X": -76.72854,
+        "Y": 39.3151875,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8541381.9681,
+        "y": 4766921.8197
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Woodholme ES",
+        "OBJECTID": 162,
+        "NUMBER_": "0311",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 2005,
+        "X": -76.75011679,
+        "Y": 39.38965994,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8543783.9071,
+        "y": 4777642.9652
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Windsor Mill MS",
+        "OBJECTID": 163,
+        "NUMBER_": "0256",
+        "TYPE": "MS",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 2006,
+        "X": -76.78614865,
+        "Y": 39.35301549,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8547794.9478,
+        "y": 4772366.1411
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Vincent Farm ES",
+        "OBJECTID": 164,
+        "NUMBER_": "1533",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 0,
+        "X": -76.4143118,
+        "Y": 39.37050954,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8506402.2553,
+        "y": 4774885.063
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "West Towson ES",
+        "OBJECTID": 165,
+        "NUMBER_": "0925",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 2010,
+        "X": -76.63459584,
+        "Y": 39.4036953,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8530924.1743,
+        "y": 4779664.8464
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "Mays Chapel ES",
+        "OBJECTID": 166,
+        "NUMBER_": " ",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 0,
+        "X": 0,
+        "Y": 0,
+        "Central": "yes"
+      },
+      "geometry": {
+        "x": -8534660.2544,
+        "y": 4787506.6537
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "New NW Area ES",
+        "OBJECTID": 167,
+        "NUMBER_": " ",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 0,
+        "X": 0,
+        "Y": 0,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8549663.3031,
+        "y": 4778056.3534
+      }
+    },
+    {
+      "attributes": {
+        "NAME": "NewCatonsville ES",
+        "OBJECTID": 168,
+        "NUMBER_": " ",
+        "TYPE": "ES",
+        "AIRCOND": " ",
+        "TITLEI": " ",
+        "OPENED": 0,
+        "X": 0,
+        "Y": 0,
+        "Central": " "
+      },
+      "geometry": {
+        "x": -8541641.1533,
+        "y": 4760168.752
+      }
+    }
+  ]
+}
