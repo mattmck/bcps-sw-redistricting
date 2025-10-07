@@ -1,15 +1,16 @@
 {
-
   "attention_seekers": {
     "bounce": true,
     "flash": true,
     "pulse": true,
     "rubberBand": true,
     "shake": true,
+    "headShake": true,
     "swing": true,
     "tada": true,
     "wobble": true,
-    "jello": true
+    "jello": true,
+    "heartBeat": true
   },
 
   "bouncing_entrances": {
@@ -83,6 +84,7 @@
 
   "specials": {
     "hinge": true,
+    "jackInTheBox": true,
     "rollIn": true,
     "rollOut": true
   },

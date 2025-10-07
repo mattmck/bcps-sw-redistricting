@@ -42,10 +42,10 @@ module.exports = function(config) {
       moduleName: 'redistricting'
     },
 
-    browsers : ['PhantomJS'],
+    browsers : ['ChromeHeadless'],
 
     plugins : [
-      'karma-phantomjs-launcher',
+      'karma-chrome-launcher',
       'karma-angular-filesort',
       'karma-jasmine',
       'karma-ng-html2js-preprocessor'

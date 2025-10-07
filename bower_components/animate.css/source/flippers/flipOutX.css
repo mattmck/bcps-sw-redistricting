@@ -1,5 +1,5 @@
 @keyframes flipOutX {
-  0% {
+  from {
     transform: perspective(400px);
   }
 
@@ -8,13 +8,14 @@
     opacity: 1;
   }
 
-  100% {
+  to {
     transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
     opacity: 0;
   }
 }
 
 .flipOutX {
+  animation-duration: 0.75s;
   animation-name: flipOutX;
   backface-visibility: visible !important;
 }

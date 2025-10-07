@@ -7,13 +7,14 @@ var conf = require('./conf');
 var browserSync = require('browser-sync');
 
 var $ = require('gulp-load-plugins')();
+var sass = require('sass');
 
 var wiredep = require('wiredep').stream;
 var _ = require('lodash');
 
 gulp.task('styles', function () {
   var sassOptions = {
-    style: 'expanded'
+    outputStyle: 'expanded'
   };
 
   var injectFiles = gulp.src([
@@ -38,7 +39,7 @@ gulp.task('styles', function () {
     .pipe($.inject(injectFiles, injectOptions))
     .pipe(wiredep(_.extend({}, conf.wiredep)))
     .pipe($.sourcemaps.init())
-    .pipe($.sass(sassOptions)).on('error', conf.errorHandler('Sass'))
+    .pipe($.sass(sass)(sassOptions)).on('error', conf.errorHandler('Sass'))
     .pipe($.autoprefixer()).on('error', conf.errorHandler('Autoprefixer'))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/app/')))
