@@ -6,7 +6,7 @@
  *  of the tasks
  */
 
-var gutil = require('gulp-util');
+const chalk = require('chalk');
 
 /**
  *  The main paths of your project handle these with care
@@ -35,7 +35,7 @@ exports.errorHandler = function(title) {
   'use strict';
 
   return function(err) {
-    gutil.log(gutil.colors.red('[' + title + ']'), err.toString());
+    console.log(chalk.red('[' + title + ']'), err.toString());
     this.emit('end');
   };
 };

@@ -46,18 +46,27 @@ browserSync.use(browserSyncSpa({
   selector: '[ng-app]'// Only needed for angular apps
 }));
 
-gulp.task('serve', ['watch'], function () {
+function serve(cb) {
   browserSyncInit([path.join(conf.paths.tmp, '/serve'), conf.paths.src]);
-});
+  cb();
+}
 
-gulp.task('serve:dist', ['build'], function () {
+function serveDist(cb) {
   browserSyncInit(conf.paths.dist);
-});
+  cb();
+}
 
-gulp.task('serve:e2e', ['inject'], function () {
+function serveE2e(cb) {
   browserSyncInit([conf.paths.tmp + '/serve', conf.paths.src], []);
-});
+  cb();
+}
 
-gulp.task('serve:e2e-dist', ['build'], function () {
+function serveE2eDist(cb) {
   browserSyncInit(conf.paths.dist, []);
-});
+  cb();
+}
+
+exports.serve = gulp.series(require('./watch').watch, serve);
+exports['serve:dist'] = gulp.series(require('./build').build, serveDist);
+exports['serve:e2e'] = gulp.series(require('./inject').inject, serveE2e);
+exports['serve:e2e-dist'] = gulp.series(require('./build').build, serveE2eDist);
