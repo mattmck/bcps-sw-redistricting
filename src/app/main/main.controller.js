@@ -6,7 +6,7 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($timeout, $scope, $resource, $log, $anchorScroll, $location, webDevTec, toastr, leafletDirective, leafletData, NgTableParams) {
+  function MainController($timeout, $scope, $resource, $log, $anchorScroll, $location, webDevTec, toastr, leafletDirective, leafletData, NgTableParams, CONFIG) {
     var vm = this;
 
     $scope.Math = window.Math;
@@ -18,7 +18,7 @@
     activate();
 
     $scope.defaults = {
-        tileLayer: 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWF0dG1jayIsImEiOiJjaWZpaDlyejlibDB2c3htNzFnZG5pMGV2In0.v9hKZ_mdZB8WNJHE9FJGjg',
+        tileLayer: 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + CONFIG.MAPBOX_ACCESS_TOKEN,
         maxZoom: 22,
         path: {
             weight: 10,
@@ -41,20 +41,20 @@
     }
 
     $scope.distance = function(lat1, lon1, lat2, lon2, unit) {
-    	var radlat1 = Math.PI * lat1/180
-    	var radlat2 = Math.PI * lat2/180
-    	var radlon1 = Math.PI * lon1/180
-    	var radlon2 = Math.PI * lon2/180
-    	var theta = lon1-lon2
-    	var radtheta = Math.PI * theta/180
+    	var radlat1 = Math.PI * lat1/180;
+    	var radlat2 = Math.PI * lat2/180;
+    	var radlon1 = Math.PI * lon1/180;
+    	var radlon2 = Math.PI * lon2/180;
+    	var theta = lon1-lon2;
+    	var radtheta = Math.PI * theta/180;
     	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    	dist = Math.acos(dist)
-    	dist = dist * 180/Math.PI
-    	dist = dist * 60 * 1.1515
-    	if (unit=="K") { dist = dist * 1.609344 }
-    	if (unit=="N") { dist = dist * 0.8684 }
-    	return dist
-    }
+    	dist = Math.acos(dist);
+    	dist = dist * 180/Math.PI;
+    	dist = dist * 60 * 1.1515;
+    	if (unit=="K") { dist = dist * 1.609344; }
+    	if (unit=="N") { dist = dist * 0.8684; }
+    	return dist;
+    };
 
     $scope.colors = ['#4D4D4D','#5DA5DA','#FAA43A','#60BD68','#F17CB0','#B2912F','#B276B2','#DECF3F','#F15854'];
     $scope.currentColor = 0;
@@ -72,23 +72,27 @@
       $scope.planningBlockLayers[feature.properties.PBID] = layer;
       layer.bindLabel('Planning Block: '+feature.properties.PBID);
       layer.on({click: function(e){
-        $scope.selectedPlanningBlock = feature.properties;
-        $log.info("planning block " + feature.properties.OBJECTID + " clicked");
-        layer.setStyle({fillColor: $scope.selectedSchoolColor});
-        if($scope.selectedSchool === null) {
-          return;
-        }
+        $scope.$apply(function() {
+          $scope.selectedPlanningBlock = feature.properties;
+          $log.info("planning block " + feature.properties.OBJECTID + " clicked");
+          layer.setStyle({fillColor: $scope.selectedSchoolColor});
+          if($scope.selectedSchool === null) {
+            return;
+          }
 
-        $scope.selectedSchool.properties.planningBlocks.push($scope.selectedPlanningBlock.PBID);
+          $scope.selectedSchool.properties.planningBlocks.push($scope.selectedPlanningBlock.PBID);
 
-        Enumerable.from($scope.schools).forEach(function(school){
-          if(school.OBJECTID !== $scope.selectedSchool.properties.OBJECTID){
-            school.planningBlocks = Enumerable.from(school.planningBlocks).where(function(block){
-              return parseInt(block) != parseInt($scope.selectedPlanningBlock.PBID);
-            }).toArray();
+          Enumerable.from($scope.schools).forEach(function(school){
+            if(school.OBJECTID !== $scope.selectedSchool.properties.OBJECTID){
+              school.planningBlocks = Enumerable.from(school.planningBlocks).where(function(block){
+                return parseInt(block) != parseInt($scope.selectedPlanningBlock.PBID);
+              }).toArray();
+            }
+          });
+          if($scope.tableParams) {
+            $scope.tableParams.reload();
           }
         });
-        $scope.tableParams.reload();
       }});
     };
 
@@ -100,10 +104,12 @@
       layer.bindLabel(feature.properties.NAME);
       layer.on({
         click: function(e){
-          $scope.selectedSchool = feature;
-          $scope.selectedSchoolColor = layer.options.fillColor;
-          $log.info("school " + feature.properties.NAME + " clicked");
-          $scope.selectedSchoolName = feature.properties.NAME;
+          $scope.$apply(function() {
+            $scope.selectedSchool = feature;
+            $scope.selectedSchoolColor = layer.options.fillColor;
+            $log.info("school " + feature.properties.NAME + " clicked");
+            $scope.selectedSchoolName = feature.properties.NAME;
+          });
         }});
         $resource('assets/'+feature.properties.NAME.replace(' ','_')+'.walking.geo.json').get().$promise.then(function(data){
           leafletData.getMap().then(function(map) {
@@ -121,21 +127,21 @@
     $scope.shadeBlendConvert = function(p, from, to) {
       if(typeof(p)!="number"||p<-1||p>1||typeof(from)!="string"||(from[0]!='r'&&from[0]!='#')||(typeof(to)!="string"&&typeof(to)!="undefined"))return null; //ErrorCheck
       if(!$scope.sbcRip)$scope.sbcRip=function(d){
-          var l=d.length,RGB=new Object();
+          var l=d.length,RGB={};
           if(l>9){
               d=d.split(",");
               if(d.length<3||d.length>4)return null;//ErrorCheck
-              RGB[0]=i(d[0].slice(4)),RGB[1]=i(d[1]),RGB[2]=i(d[2]),RGB[3]=d[3]?parseFloat(d[3]):-1;
+              RGB[0]=i(d[0].slice(4));RGB[1]=i(d[1]);RGB[2]=i(d[2]);RGB[3]=d[3]?parseFloat(d[3]):-1;
           }else{
               switch(l){case 8:case 6:case 3:case 2:case 1:return null;} //ErrorCheck
               if(l<6)d="#"+d[1]+d[1]+d[2]+d[2]+d[3]+d[3]+(l>4?d[4]+""+d[4]:""); //3 digit
-              d=i(d.slice(1),16),RGB[0]=d>>16&255,RGB[1]=d>>8&255,RGB[2]=d&255,RGB[3]=l==9||l==5?r(((d>>24&255)/255)*10000)/10000:-1;
+              d=i(d.slice(1),16);RGB[0]=d>>16&255;RGB[1]=d>>8&255;RGB[2]=d&255;RGB[3]=l==9||l==5?r(((d>>24&255)/255)*10000)/10000:-1;
           }
-          return RGB;}
-      var i=parseInt,r=Math.round,h=from.length>9,h=typeof(to)=="string"?to.length>9?true:to=="c"?!h:false:h,b=p<0,p=b?p*-1:p,to=to&&to!="c"?to:b?"#000000":"#FFFFFF",f=$scope.sbcRip(from),t=$scope.sbcRip(to);
+          return RGB;};
+      var i=parseInt,r=Math.round,hh=from.length>9,h=typeof(to)=="string"?to.length>9?true:to=="c"?!hh:false:hh,b=p<0,pp=b?p*-1:p,too=to&&to!="c"?to:b?"#000000":"#FFFFFF",f=$scope.sbcRip(from),t=$scope.sbcRip(too);
       if(!f||!t)return null; //ErrorCheck
-      if(h)return "rgb("+r((t[0]-f[0])*p+f[0])+","+r((t[1]-f[1])*p+f[1])+","+r((t[2]-f[2])*p+f[2])+(f[3]<0&&t[3]<0?")":","+(f[3]>-1&&t[3]>-1?r(((t[3]-f[3])*p+f[3])*10000)/10000:t[3]<0?f[3]:t[3])+")");
-      else return "#"+(0x100000000+(f[3]>-1&&t[3]>-1?r(((t[3]-f[3])*p+f[3])*255):t[3]>-1?r(t[3]*255):f[3]>-1?r(f[3]*255):255)*0x1000000+r((t[0]-f[0])*p+f[0])*0x10000+r((t[1]-f[1])*p+f[1])*0x100+r((t[2]-f[2])*p+f[2])).toString(16).slice(f[3]>-1||t[3]>-1?1:3);
+      if(h)return "rgb("+r((t[0]-f[0])*pp+f[0])+","+r((t[1]-f[1])*pp+f[1])+","+r((t[2]-f[2])*pp+f[2])+(f[3]<0&&t[3]<0?")":","+(f[3]>-1&&t[3]>-1?r(((t[3]-f[3])*pp+f[3])*10000)/10000:t[3]<0?f[3]:t[3])+")");
+      else return "#"+(0x100000000+(f[3]>-1&&t[3]>-1?r(((t[3]-f[3])*pp+f[3])*255):t[3]>-1?r(t[3]*255):f[3]>-1?r(f[3]*255):255)*0x1000000+r((t[0]-f[0])*pp+f[0])*0x10000+r((t[1]-f[1])*pp+f[1])*0x100+r((t[2]-f[2])*pp+f[2])).toString(16).slice(f[3]>-1||t[3]>-1?1:3);
   };
 
     //add all planning blocks
@@ -193,7 +199,7 @@
                   $scope.currentColor++;
                   if($scope.currentColor >= $scope.colors.length-1){
                       $scope.currentColor = 0;
-                  };
+                  }
                   $scope.schoolColors[feature.properties.NAME] = $scope.colors[$scope.currentColor];
                   return L.circleMarker(latlng, {
                     radius: 10,
@@ -208,6 +214,13 @@
         });
 
         $scope.tableParams = new NgTableParams({}, { getData: $scope.getTableData, counts: [] });
+        
+        // Load current option after table is initialized
+        setTimeout(function() {
+          $scope.$apply(function() {
+            $scope.loadCurrent();
+          });
+        }, 500);
       });
     });
 
@@ -225,7 +238,7 @@
           object[feature.properties[field]].push(feature.properties.PBID);
         });
       });
-    }
+    };
     //$scope.get0930Option('ES1516', $scope.current);
     $scope.get0930Option('Opt1', $scope.option1);
     $scope.get0930Option('Opt2', $scope.option2);
@@ -246,7 +259,7 @@
           object[feature.properties[field]].push(feature.properties.PBID);
         });
       });
-    }
+    };
     //$scope.get1014Option('ES1516', $scope.current);
     $scope.get1014Option('OptA', $scope.optionA);
     $scope.get1014Option('OptB', $scope.optionB);
@@ -271,7 +284,7 @@
           object[feature.properties[field]].push(feature.properties.PBID);
         });
       });
-    }
+    };
     //$scope.get1021Option('ES1516', $scope.current);
     $scope.get1021Option('OptA', $scope.optionA1021);
     $scope.get1021Option('OptB', $scope.optionB1021);
@@ -303,7 +316,7 @@
           object[feature.properties[field]].push(feature.properties.PBID);
         });
       });
-    }
+    };
     //$scope.get1111Option('ES1516', $scope.current);
     $scope.get1111Option('OptA', $scope.optionA1111);
     $scope.get1111Option('OptB', $scope.optionB1111);
@@ -332,7 +345,7 @@
           object[feature.properties[field]].push(feature.properties.PBID);
         });
       });
-    }
+    };
     $scope.get1118Option('ES1516', $scope.current);
     $scope.get1118Option('NovOpt1', $scope.option11118);
     $scope.get1118Option('NovOpt2', $scope.option21118);
@@ -352,7 +365,9 @@
           }
         });
       });
-      $scope.tableParams.reload();
+      if($scope.tableParams) {
+        $scope.tableParams.reload();
+      }
     };
 
     $scope.takeSnapshot = function(){
@@ -476,11 +491,11 @@
       $scope.loadOption($scope.option41118);
     };
 
-    $scope.getTableData = function getData($defer, params){
+    $scope.getTableData = function getData(params){
         $scope.schools = Enumerable.from($scope.schools).select(function(school){
-          school.students = school.planningBlocks.length === 0 ? 0 : Enumerable.from(school.planningBlocks).sum(function(block){
+          school.students = school.planningBlocks.length === 0 ? 0 : Enumerable.from(school.planningBlocks).sum(function(blockId){
             var block = Enumerable.from($scope.planningBlocks).firstOrDefault(function(planningBlock){
-              return planningBlock.PBID === block;
+              return planningBlock.PBID === blockId;
             });
             if(block != null)
               return parseInt(block.K5LiveAtt);
@@ -529,9 +544,9 @@
         }).toArray();
 
         Enumerable.from($scope.schools).forEach(function(school){
-          school.walkablePlanningBlocks = Enumerable.from(school.planningBlocks).count(function(block){
+          school.walkablePlanningBlocks = Enumerable.from(school.planningBlocks).count(function(blockId){
             var block = Enumerable.from($scope.rawPlanningBlocks).firstOrDefault(function(planningBlock){
-              return planningBlock.properties.PBID === block;
+              return planningBlock.properties.PBID === blockId;
             });
             if(block === null)
               return false;
@@ -545,7 +560,7 @@
           school.walkablePercent = school.walkablePlanningBlocks / school.planningBlocks.length;
         });
 
-        $defer.resolve($scope.schools);
+        return $scope.schools;
     };
 
     function showToastr() {
@@ -561,6 +576,6 @@
       });
     }
 
-    setTimeout($scope.loadCurrent, 2000);
+    // loadCurrent is now called after tableParams is initialized
   }
 })();
