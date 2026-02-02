@@ -19,11 +19,16 @@ export const MainView = () => {
   const selectedSchoolRef = useRef<string>('')
   const listenersAddedRef = useRef(false)
   const isInitialMount = useRef(true)
+  const schoolsRef = useRef<School[]>([])
 
-  // Keep ref in sync with state
+  // Keep refs in sync with state
   useEffect(() => {
     selectedSchoolRef.current = selectedSchool
   }, [selectedSchool])
+  
+  useEffect(() => {
+    schoolsRef.current = schools
+  }, [schools])
 
   // Initialize map
   useEffect(() => {
@@ -287,23 +292,32 @@ export const MainView = () => {
       // Re-add event listeners
       addMapListeners(map)
       
-      // Restore current colors
-      if (schools.length > 0) {
+      // Restore current colors if we have schools data
+      const currentSchools = schoolsRef.current
+      if (currentSchools.length > 0) {
         const colorExpression: any[] = ['match', ['get', 'PBID']]
-        schools.forEach(school => {
+        let hasBlocks = false
+        
+        currentSchools.forEach(school => {
           const schoolColor = geoData.schoolColors[school.NAME] || '#888888'
           school.planningBlocks.forEach(bid => {
             colorExpression.push(bid, schoolColor)
+            hasBlocks = true
           })
         })
-        colorExpression.push('#888888')
-        map.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression as any)
+        
+        colorExpression.push('#888888') // default
+        
+        // Only update if we have planning blocks
+        if (hasBlocks && colorExpression.length > 3) {
+          map.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression as any)
+        }
       }
     })
     
     // Apply dark mode to page
     document.body.classList.toggle('dark-mode', darkMode)
-  }, [darkMode, geoData.planningBlocksGeoJSON, geoData.schoolsGeoJSON, geoData.schoolColors, schools])
+  }, [darkMode])
 
   const loadOption = (option: RedistrictingOption) => {
     console.log('loadOption called, option has', Object.keys(option).length, 'schools')
