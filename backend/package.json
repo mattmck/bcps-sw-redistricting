@@ -8,9 +8,15 @@
     "dev": "nodemon --exec tsx src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "migrate": "tsx scripts/migrate-data.ts"
   },
-  "keywords": ["redistricting", "postgis", "geospatial", "rest-api"],
+  "keywords": [
+    "redistricting",
+    "postgis",
+    "geospatial",
+    "rest-api"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -25,7 +31,7 @@
     "@types/node": "^20.11.17",
     "@types/pg": "^8.11.0",
     "nodemon": "^3.0.3",
-    "tsx": "^4.7.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.3.3"
   },
   "engines": {
