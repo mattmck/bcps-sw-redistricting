@@ -18,6 +18,7 @@ export const MainView = () => {
   const [darkMode, setDarkMode] = useState(false)
   const selectedSchoolRef = useRef<string>('')
   const listenersAddedRef = useRef(false)
+  const isInitialMount = useRef(true)
 
   // Keep ref in sync with state
   useEffect(() => {
@@ -213,6 +214,14 @@ export const MainView = () => {
   // Handle dark mode toggle
   useEffect(() => {
     if (!mapRef.current || !geoData.planningBlocksGeoJSON || !geoData.schoolsGeoJSON) return
+    
+    // Skip on initial mount - let the layer initialization effect handle it
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      // Still apply body class on initial mount
+      document.body.classList.toggle('dark-mode', darkMode)
+      return
+    }
     
     const map = mapRef.current
     const newStyle = darkMode 
