@@ -1,0 +1,114 @@
+name: Deploy to Azure Static Web Apps
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+# Permissions needed for Azure deployment
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js 22.20.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.20.0'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+        continue-on-error: true
+      
+      - name: Get Mapbox API Key from Key Vault
+        id: get-mapbox-key
+        run: |
+          set -e
+          MAPBOX_KEY=""
+          
+          # Try to get from Azure Key Vault first (production)
+          if command -v az &> /dev/null; then
+            echo "Azure CLI is available, attempting Key Vault retrieval..."
+            VAULT_NAME="bcps-redistricting-prod-kv"
+            
+            # Try to retrieve the secret
+            if MAPBOX_KEY=$(az keyvault secret show \
+              --name mapbox-api-key \
+              --vault-name "$VAULT_NAME" \
+              --query value -o tsv 2>/dev/null); then
+              
+              # Validate the key was retrieved and is not empty
+              if [ -n "$MAPBOX_KEY" ] && [ ${#MAPBOX_KEY} -gt 50 ]; then
+                echo "✓ Retrieved Mapbox key from Azure Key Vault (length: ${#MAPBOX_KEY})"
+                echo "::add-mask::$MAPBOX_KEY"
+                echo "MAPBOX_KEY=$MAPBOX_KEY" >> $GITHUB_OUTPUT
+                echo "SOURCE=Azure Key Vault" >> $GITHUB_OUTPUT
+                exit 0
+              else
+                echo "Warning: Key Vault returned invalid token (length: ${#MAPBOX_KEY})"
+              fi
+            else
+              echo "Warning: Could not retrieve secret from Key Vault"
+            fi
+          else
+            echo "Azure CLI not available"
+          fi
+          
+          # Fallback to GitHub Secret
+          echo "Using GitHub Secret for Mapbox token"
+          MAPBOX_KEY="${{ secrets.MAPBOX_API_KEY }}"
+          
+          # Validate GitHub Secret
+          if [ -z "$MAPBOX_KEY" ]; then
+            echo "Error: MAPBOX_API_KEY GitHub Secret is not set!"
+            exit 1
+          fi
+          
+          if [ ${#MAPBOX_KEY} -lt 50 ]; then
+            echo "Error: MAPBOX_API_KEY appears invalid (length: ${#MAPBOX_KEY}, expected 80+)"
+            echo "A valid Mapbox token should start with 'pk.ey' and be ~80-100 characters"
+            exit 1
+          fi
+          
+          echo "✓ Using Mapbox key from GitHub Secret (length: ${#MAPBOX_KEY})"
+          echo "::add-mask::$MAPBOX_KEY"
+          echo "MAPBOX_KEY=$MAPBOX_KEY" >> $GITHUB_OUTPUT
+          echo "SOURCE=GitHub Secret" >> $GITHUB_OUTPUT
+      
+      - name: Create environment file for build
+        run: |
+          echo "Building with Mapbox token from: ${{ steps.get-mapbox-key.outputs.SOURCE }}"
+          echo "VITE_MAPBOX_ACCESS_TOKEN=${{ steps.get-mapbox-key.outputs.MAPBOX_KEY }}" > .env.production
+      
+      - name: Build application
+        run: npm run build
+        env:
+          VITE_MAPBOX_ACCESS_TOKEN: ${{ steps.get-mapbox-key.outputs.MAPBOX_KEY }}
+      
+      - name: Deploy to Azure Static Web Apps
+        id: deploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/"
+          api_location: ""
+          output_location: "dist"
+          skip_app_build: true
