@@ -194,17 +194,51 @@ az staticwebapp upload --app-name bcps-redistricting --output-location dist
 - Rebuild and redeploy
 
 ### Azure Key Vault Access Denied
-**Symptom:** Workflow fails at "Get Mapbox API Key from Key Vault"
+**Symptom:** Workflow fails at "Get Mapbox API Key from Key Vault" or shows warning "Could not retrieve Mapbox key from Key Vault"
 
 **Solution:**
-1. Verify service principal has Key Vault read permissions:
+1. **If using Azure Key Vault:** Verify service principal has Key Vault read permissions:
    ```bash
    az keyvault set-policy \
      --name bcps-redistricting-prod-kv \
      --spn YOUR_SP_APP_ID \
      --secret-permissions get list
    ```
-2. Workflow will automatically fallback to GitHub Secret
+2. **Alternative:** Use GitHub Secret only (skip Key Vault):
+   - The workflow automatically falls back to `MAPBOX_API_KEY` GitHub Secret
+   - Ensure the GitHub Secret is set correctly (see below)
+
+### Invalid or Short Mapbox Token
+**Symptom:** Warning shows "Mapbox key retrieved (length: 18)" or similar short length
+
+**Solution:**
+1. **Check GitHub Secret is set correctly:**
+   ```bash
+   # Verify the secret exists
+   gh secret list | grep MAPBOX_API_KEY
+   
+   # Set/update the secret with a valid Mapbox token
+   gh secret set MAPBOX_API_KEY --body "pk.eyJ1Ijoibm..."
+   ```
+
+2. **Verify token format:**
+   - Valid Mapbox tokens start with `pk.ey`
+   - Tokens are typically 80-100 characters long
+   - Get your token from https://account.mapbox.com/access-tokens/
+
+3. **Common mistakes:**
+   - Using a placeholder value like "your_token_here"
+   - Using an incomplete token (copied only part of it)
+   - Using an old or revoked token
+
+4. **Test your token:**
+   ```bash
+   # Build locally with the token to verify it works
+   export VITE_MAPBOX_ACCESS_TOKEN="pk.your_token_here"
+   npm run build
+   npm run preview
+   # Open http://localhost:4173 and verify map loads
+   ```
 
 ## Monitoring
 
