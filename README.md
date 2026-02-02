@@ -41,6 +41,60 @@ A modern React 18 application for visualizing and analyzing Baltimore County Pub
 - **Preview build:** `npm run preview`
 - **Type check:** `npx tsc --noEmit`
 
+### Git Workflow
+
+This project uses **GitHub Flow** for version control:
+
+#### 1. Create Feature Request (GitHub Issue)
+```bash
+# Using GitHub CLI
+gh issue create --title "Feature: Your feature name" --body "Description..."
+
+# Or create manually at github.com
+```
+
+#### 2. Create Branch from Issue
+```bash
+# Option 1: Manual branch creation
+git checkout -b feature/your-feature-name
+
+# Option 2: Using GitHub CLI (auto-links to issue)
+gh issue develop <issue-number> --checkout
+```
+
+#### 3. Commit Changes
+```bash
+git add .
+git commit -m "Add feature description
+
+Detailed explanation of changes
+
+Co-Authored-By: Warp <agent@warp.dev>"
+```
+
+#### 4. Push and Create Pull Request
+```bash
+# Push branch
+git push -u origin feature/your-feature-name
+
+# Create PR (auto-links to issue with "Closes #123")
+gh pr create --title "Add feature name" --body "Closes #123
+
+Description of changes..."
+```
+
+#### Branch Naming Convention
+- `feature/description` - New features
+- `fix/description` - Bug fixes
+- `docs/description` - Documentation updates
+- `refactor/description` - Code refactoring
+
+#### Setup GitHub CLI
+```bash
+brew install gh
+gh auth login
+```
+
 ## Legacy AngularJS App
 
 The original AngularJS 1.4 application is preserved in the `angular-app/` directory.

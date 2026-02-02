@@ -246,6 +246,83 @@ export default defineConfig({
 })
 ```
 
+## Git Workflow
+
+This project uses **GitHub Flow** for version control:
+
+### Branch Strategy
+- **master** - Main production branch (always deployable)
+- **Feature branches** - Short-lived branches for each task
+- **Naming convention**:
+  - `feature/description` - New features
+  - `fix/description` - Bug fixes  
+  - `docs/description` - Documentation
+  - `refactor/description` - Code refactoring
+
+### Development Process
+
+#### 1. Create GitHub Issue
+```bash
+# Using GitHub CLI (recommended)
+gh issue create --title "Feature: Your feature" --body "Description..."
+
+# Or manually at github.com
+```
+
+#### 2. Create Branch from Issue
+```bash
+# Option 1: Manual
+git checkout -b feature/your-feature
+
+# Option 2: GitHub CLI (auto-links to issue)
+gh issue develop <issue-number> --checkout
+```
+
+#### 3. Commit with Co-Author Attribution
+```bash
+git add .
+git commit -m "Add feature summary
+
+Detailed explanation of changes.
+
+Co-Authored-By: Warp <agent@warp.dev>"
+```
+
+**IMPORTANT**: Always include `Co-Authored-By: Warp <agent@warp.dev>` in commit messages when AI-assisted.
+
+#### 4. Push and Create PR
+```bash
+# Push branch
+git push -u origin feature/your-feature
+
+# Create PR with auto-close syntax
+gh pr create --title "Feature title" --body "Closes #123
+
+Changes made..."
+```
+
+#### 5. After Merge
+```bash
+git checkout master
+git pull
+git branch -d feature/your-feature
+```
+
+### Quick Commands
+```bash
+# Setup GitHub CLI
+brew install gh
+gh auth login
+
+# Full workflow
+gh issue create --title "Fix: Bug description"
+gh issue develop 10 --checkout
+# ... make changes ...
+git add . && git commit -m "Fix bug\n\nCo-Authored-By: Warp <agent@warp.dev>"
+git push -u origin fix/bug-description
+gh pr create --title "Fix bug" --body "Closes #10"
+```
+
 ## When Working With This Codebase
 
 1. **Focus on data flow**: GeoJSON → useGeoData → React state → Map + Table
@@ -255,7 +332,7 @@ export default defineConfig({
 5. **Check console**: Debug logs throughout for troubleshooting
 6. **Preserve compatibility**: Don't change GeoJSON structure
 7. **Single component**: MainView handles everything (intentionally monolithic)
-8. **Commit format**: Include `Co-Authored-By: Warp <agent@warp.dev>`
+8. **Commit format**: ALWAYS include `Co-Authored-By: Warp <agent@warp.dev>` in commits
 
 ## Additional Documentation
 - [README.md](../README.md) - User guide and setup

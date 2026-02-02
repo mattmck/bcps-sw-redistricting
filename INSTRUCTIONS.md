@@ -227,6 +227,180 @@ Consider adding:
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Vite Guide](https://vitejs.dev/guide/)
 
+## Git Workflow
+
+This project uses **GitHub Flow** - a lightweight, branch-based workflow suitable for continuous delivery.
+
+### Branching Strategy
+
+- **`master`** - Main production branch (always deployable)
+- **Feature branches** - Short-lived branches for features, fixes, or docs
+- **Branch naming**:
+  - `feature/description` - New features
+  - `fix/description` - Bug fixes
+  - `docs/description` - Documentation updates
+  - `refactor/description` - Code refactoring
+
+### Development Process
+
+#### 1. Create a Feature Request
+
+Start with a GitHub issue to track the work:
+
+```bash
+# Using GitHub CLI (recommended)
+gh issue create --title "Feature: Add school boundary editing" \
+  --body "Allow drag-and-drop reassignment of planning blocks"
+
+# Or create manually at github.com/your-username/bcps-sw-redistricting/issues
+```
+
+Use labels like `enhancement`, `bug`, `documentation` to categorize.
+
+#### 2. Create Branch from Issue
+
+```bash
+# Option 1: Manual branch creation
+git checkout -b feature/school-boundary-editing
+
+# Option 2: Using GitHub CLI (automatically links branch to issue)
+gh issue develop <issue-number> --checkout
+```
+
+#### 3. Make Changes and Commit
+
+Write meaningful commit messages with co-author attribution:
+
+```bash
+# Stage your changes
+git add src/components/MainView.tsx
+
+# Commit with descriptive message
+git commit -m "Add drag-and-drop for planning blocks
+
+Implements interactive boundary editing with visual feedback.
+Updates map colors in real-time as blocks are reassigned.
+
+Co-Authored-By: Warp <agent@warp.dev>"
+```
+
+**Commit message format:**
+- First line: Brief summary (50 chars or less)
+- Blank line
+- Detailed explanation (wrap at 72 chars)
+- Blank line
+- `Co-Authored-By: Warp <agent@warp.dev>` (if AI-assisted)
+
+#### 4. Push Branch to Remote
+
+```bash
+# First push (creates remote branch)
+git push -u origin feature/school-boundary-editing
+
+# Subsequent pushes
+git push
+```
+
+#### 5. Create Pull Request
+
+```bash
+# Using GitHub CLI
+gh pr create --title "Add school boundary editing" \
+  --body "Closes #42
+
+## Changes
+- Implemented drag-and-drop for planning blocks
+- Added visual feedback during reassignment
+- Updated map rendering logic
+
+## Testing
+- [x] Manual testing with all 33 redistricting options
+- [x] Verified student count recalculation
+- [x] Checked snapshot export functionality"
+
+# Or create manually at github.com
+```
+
+**PR best practices:**
+- Reference the issue with `Closes #123` (auto-closes on merge)
+- Include a summary of changes
+- List testing done
+- Add screenshots for UI changes
+- Keep PRs focused (one feature/fix per PR)
+
+#### 6. Code Review and Merge
+
+```bash
+# After PR approval, merge via GitHub UI or CLI
+gh pr merge --squash  # Squash commits into one
+# or
+gh pr merge --merge   # Keep all commits
+# or
+gh pr merge --rebase  # Rebase and merge
+```
+
+#### 7. Clean Up
+
+```bash
+# Switch back to master
+git checkout master
+
+# Pull latest changes
+git pull
+
+# Delete local feature branch
+git branch -d feature/school-boundary-editing
+
+# Delete remote branch (if not auto-deleted)
+git push origin --delete feature/school-boundary-editing
+```
+
+### Quick Reference
+
+```bash
+# Full workflow example
+gh issue create --title "Fix: Student count calculation"
+gh issue develop 15 --checkout  # Creates branch for issue #15
+
+# Make changes...
+git add .
+git commit -m "Fix student count calculation
+
+Co-Authored-By: Warp <agent@warp.dev>"
+
+git push -u origin fix/student-count-calculation
+gh pr create --title "Fix student count calculation" --body "Closes #15"
+
+# After merge...
+git checkout master
+git pull
+git branch -d fix/student-count-calculation
+```
+
+### GitHub CLI Setup
+
+Install and authenticate:
+
+```bash
+# Install (macOS)
+brew install gh
+
+# Authenticate with GitHub
+gh auth login
+
+# Verify setup
+gh auth status
+```
+
+### Tips
+
+- **Keep branches short-lived**: Merge within days, not weeks
+- **Commit often**: Small, focused commits are easier to review
+- **Write clear messages**: Future you will thank present you
+- **Test before pushing**: Run `npm run build` and test manually
+- **Stay updated**: Regularly pull from master to avoid conflicts
+- **Co-author attribution**: Always include `Co-Authored-By: Warp <agent@warp.dev>` when AI-assisted
+
 ## Support
 
 For questions or issues:
