@@ -27,7 +27,9 @@ export const MainView = () => {
     if (!mapContainerRef.current || mapRef.current) return
 
     console.log('Initializing Mapbox map...')
+    console.log('Token being set:', MAPBOX_ACCESS_TOKEN ? `${MAPBOX_ACCESS_TOKEN.substring(0, 20)}...` : 'UNDEFINED')
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN
+    console.log('mapboxgl.accessToken after setting:', mapboxgl.accessToken ? `${mapboxgl.accessToken.substring(0, 20)}...` : 'UNDEFINED')
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
