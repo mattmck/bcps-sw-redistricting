@@ -3,6 +3,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { testConnection, closePool } from './db/connection.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import schoolsRouter from './routes/schools.js';
+import planningBlocksRouter from './routes/planningBlocks.js';
+import optionsRouter from './routes/options.js';
 
 // Load environment variables
 dotenv.config();
@@ -46,7 +49,12 @@ app.get('/health', async (_req: Request, res: Response) => {
   }
 });
 
-// API routes placeholder
+// API routes
+app.use('/api/schools', schoolsRouter);
+app.use('/api/planning-blocks', planningBlocksRouter);
+app.use('/api/options', optionsRouter);
+
+// API info endpoint
 app.get('/api', (_req: Request, res: Response) => {
   res.json({
     message: 'BCPS Redistricting API',
@@ -54,8 +62,15 @@ app.get('/api', (_req: Request, res: Response) => {
     endpoints: {
       health: '/health',
       schools: '/api/schools',
+      schoolById: '/api/schools/:id',
       planningBlocks: '/api/planning-blocks',
+      planningBlockById: '/api/planning-blocks/:id',
       options: '/api/options',
+      optionById: '/api/options/:id',
+      optionStats: '/api/options/:id/stats',
+      createOption: 'POST /api/options',
+      updateOption: 'PUT /api/options/:id',
+      deleteOption: 'DELETE /api/options/:id',
     },
   });
 });
