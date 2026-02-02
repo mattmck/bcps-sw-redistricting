@@ -16,7 +16,6 @@ export const MainView = () => {
   const [snapshotUrl, setSnapshotUrl] = useState<string>('')
   const [takingSnapshot, setTakingSnapshot] = useState(false)
   const selectedSchoolRef = useRef<string>('')
-  const layersRef = useRef<Record<string, any>>({})
 
   // Keep ref in sync with state
   useEffect(() => {
@@ -79,7 +78,7 @@ export const MainView = () => {
         console.log('Adding planning-blocks source and layers')
         map.addSource('planning-blocks', {
           type: 'geojson',
-          data: geoData.planningBlocksGeoJSON!
+          data: geoData.planningBlocksGeoJSON as any
         })
 
         map.addLayer({
@@ -109,7 +108,7 @@ export const MainView = () => {
         console.log('School colors:', geoData.schoolColors)
         map.addSource('schools', {
           type: 'geojson',
-          data: geoData.schoolsGeoJSON!
+          data: geoData.schoolsGeoJSON as any
         })
 
         map.addLayer({
@@ -246,7 +245,7 @@ export const MainView = () => {
       colorExpression.push('#888888') // default
       
       console.log('Updating map colors for', totalBlocks, 'planning blocks')
-      map.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression)
+      map.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression as any)
       console.log('Map colors updated successfully')
     } catch (error) {
       console.error('Error updating map colors:', error)
@@ -291,7 +290,7 @@ export const MainView = () => {
         })
         colorExpression.push('#888888')
         
-        mapRef.current.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression)
+        mapRef.current.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression as any)
         console.log('Map colors updated')
       }
       
