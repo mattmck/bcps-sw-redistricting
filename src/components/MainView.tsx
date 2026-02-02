@@ -15,6 +15,7 @@ export const MainView = () => {
   const [selectedSchool, setSelectedSchool] = useState<string>('')
   const [snapshotUrl, setSnapshotUrl] = useState<string>('')
   const [takingSnapshot, setTakingSnapshot] = useState(false)
+  const [darkMode, setDarkMode] = useState(false)
   const selectedSchoolRef = useRef<string>('')
 
   // Keep ref in sync with state
@@ -36,6 +37,9 @@ export const MainView = () => {
       zoom: 12,
       preserveDrawingBuffer: true
     })
+
+    // Store map instance for dark mode style switching
+    mapRef.current = map
 
     map.on('load', () => {
       console.log('Map style loaded successfully')
@@ -193,6 +197,88 @@ export const MainView = () => {
       map.once('load', initializeLayers)
     }
   }, [geoData.loading, geoData.planningBlocksGeoJSON, geoData.schoolsGeoJSON, geoData.schoolColors, geoData.schools])
+
+  // Handle dark mode toggle
+  useEffect(() => {
+    if (!mapRef.current) return
+    
+    const map = mapRef.current
+    const newStyle = darkMode 
+      ? 'mapbox://styles/mapbox/dark-v11'
+      : 'mapbox://styles/mapbox/streets-v12'
+    
+    map.setStyle(newStyle)
+    
+    // Re-add layers and data after style loads
+    map.once('style.load', () => {
+      if (!geoData.planningBlocksGeoJSON || !geoData.schoolsGeoJSON) return
+      
+      // Re-add planning blocks
+      map.addSource('planning-blocks', {
+        type: 'geojson',
+        data: geoData.planningBlocksGeoJSON as any
+      })
+      
+      map.addLayer({
+        id: 'planning-blocks-fill',
+        type: 'fill',
+        source: 'planning-blocks',
+        paint: {
+          'fill-color': '#888888',
+          'fill-opacity': 0.5
+        }
+      })
+      
+      map.addLayer({
+        id: 'planning-blocks-line',
+        type: 'line',
+        source: 'planning-blocks',
+        paint: {
+          'line-color': darkMode ? '#ffffff' : '#000000',
+          'line-width': 1
+        }
+      })
+      
+      // Re-add schools
+      map.addSource('schools', {
+        type: 'geojson',
+        data: geoData.schoolsGeoJSON as any
+      })
+      
+      map.addLayer({
+        id: 'schools-circle',
+        type: 'circle',
+        source: 'schools',
+        paint: {
+          'circle-radius': 10,
+          'circle-color': [
+            'match',
+            ['get', 'NAME'],
+            ...Object.entries(geoData.schoolColors).flat(),
+            '#000000'
+          ],
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#ffffff'
+        }
+      })
+      
+      // Restore current colors
+      if (schools.length > 0) {
+        const colorExpression: any[] = ['match', ['get', 'PBID']]
+        schools.forEach(school => {
+          const schoolColor = geoData.schoolColors[school.NAME] || '#888888'
+          school.planningBlocks.forEach(bid => {
+            colorExpression.push(bid, schoolColor)
+          })
+        })
+        colorExpression.push('#888888')
+        map.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression as any)
+      }
+    })
+    
+    // Apply dark mode to page
+    document.body.classList.toggle('dark-mode', darkMode)
+  }, [darkMode, geoData.planningBlocksGeoJSON, geoData.schoolsGeoJSON, geoData.schoolColors, schools])
 
   const loadOption = (option: RedistrictingOption) => {
     console.log('loadOption called, option has', Object.keys(option).length, 'schools')
@@ -376,6 +462,16 @@ export const MainView = () => {
           {takingSnapshot ? '📸 Taking Snapshot...' : '📸 Take Snapshot'}
         </button>
         <button onClick={() => loadOption(geoData.options.current)} className="btn">Load Current Districting</button>
+        <label className="dark-mode-toggle">
+          <span>Dark Mode</span>
+          <input 
+            type="checkbox" 
+            checked={darkMode} 
+            onChange={(e) => setDarkMode(e.target.checked)}
+            className="dark-mode-checkbox"
+          />
+          <span className="slider"></span>
+        </label>
       </div>
 
       <div className="options-panel">
