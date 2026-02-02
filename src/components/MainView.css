@@ -1,0 +1,107 @@
+.main-view {
+  padding: 1rem;
+}
+
+.map-container {
+  height: 400px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 1rem;
+  color: #666;
+}
+
+.options-panel {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.options-panel h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.options-panel .btn {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.options-panel .btn:hover {
+  background: #e9ecef;
+  border-color: #999;
+}
+
+.school-table {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.school-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.school-table th {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 0.5rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.school-table td {
+  border: 1px solid #dee2e6;
+  padding: 0.5rem;
+}
+
+.school-table tr:hover {
+  background: #f8f9fa;
+}
+
+.school-table tr.selected {
+  background: #e7f3ff;
+}
+
+.school-table .over-capacity {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.selected-school-banner {
+  background: #e7f3ff;
+  border: 2px solid #0066cc;
+  border-radius: 4px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.snapshot-container {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.snapshot-container h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}

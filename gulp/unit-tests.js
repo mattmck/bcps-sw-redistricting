@@ -7,19 +7,23 @@ var conf = require('./conf');
 var karma = require('karma');
 
 function runTests (singleRun, done) {
-  karma.server.start({
+  const server = new karma.Server({
     configFile: path.join(__dirname, '/../karma.conf.js'),
     singleRun: singleRun,
     autoWatch: !singleRun
   }, function() {
     done();
   });
+  server.start();
 }
 
-gulp.task('test', ['scripts'], function(done) {
+function test(done) {
   runTests(true, done);
-});
+}
 
-gulp.task('test:auto', ['watch'], function(done) {
+function testAuto(done) {
   runTests(false, done);
-});
+}
+
+exports.test = gulp.series(require('./scripts').scripts, test);
+exports['test:auto'] = gulp.series(require('./watch').watch, testAuto);

@@ -6,32 +6,45 @@
 
 'use strict';
 
-var gulp = require('gulp');
-var wrench = require('wrench');
-var connect = require('gulp-connect');
+const gulp = require('gulp');
+const wrench = require('wrench');
+const connect = require('gulp-connect');
 
 /**
  *  This will load all js or coffee files in the gulp directory
  *  in order to load all gulp tasks
  */
-wrench.readdirSyncRecursive('./gulp').filter(function(file) {
+const modules = wrench.readdirSyncRecursive('./gulp').filter(function(file) {
   return (/\.(js|coffee)$/i).test(file);
 }).map(function(file) {
-  require('./gulp/' + file);
+  return require('./gulp/' + file);
 });
 
-gulp.task('webserver', function() {
+// Re-export all tasks from modules
+modules.forEach(function(module) {
+  if (module && typeof module === 'object') {
+    Object.keys(module).forEach(function(key) {
+      exports[key] = module[key];
+    });
+  }
+});
+
+function webserver(cb) {
   connect.server({
     livereload: true,
     root: ['dist']
   });
-});
-
+  cb();
+}
 
 /**
  *  Default task clean temporaries directories and launch the
  *  main optimization build task
  */
-gulp.task('default', ['clean'], function () {
-  gulp.start('build');
-});
+const defaultTask = gulp.series(
+  require('./gulp/build').clean,
+  require('./gulp/build').build
+);
+
+exports.webserver = webserver;
+exports.default = defaultTask;

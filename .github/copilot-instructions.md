@@ -1,25 +1,49 @@
 # BCPS School Redistricting Tool - AI Coding Instructions
 
 ## Project Overview
-This is an AngularJS 1.4 application for visualizing and analyzing Baltimore County Public Schools (BCPS) elementary school redistricting scenarios. The app displays geographic maps with school locations, planning blocks, and various redistricting proposals from 2015 meetings.
+This is a **React 18 + TypeScript** application for visualizing and analyzing Baltimore County Public Schools (BCPS) elementary school redistricting scenarios. The app displays interactive maps with school locations, planning blocks, and various redistricting proposals from 2015 meetings.
+
+**Status:** ✅ Fully modernized from AngularJS 1.4 to React 18 (February 2026)
+
+**Legacy Note:** The original AngularJS app is preserved in `angular-app/` directory.
 
 ## Architecture & Tech Stack
-- **Frontend**: AngularJS 1.4 with UI-Router for routing
-- **Build System**: Gulp 3.x with modularized tasks in `gulp/` directory
-- **Mapping**: Leaflet with angular-leaflet-directive for interactive maps
-- **Data**: GeoJSON files in `src/assets/` containing school boundaries and planning blocks
-- **Styling**: Bootstrap 3 with SASS, Font Awesome icons
-- **Testing**: Karma + Jasmine with PhantomJS
+
+### Modern Stack (Current)
+- **Frontend**: React 18 with TypeScript (strict mode)
+- **Build System**: Vite 7 with hot module replacement
+- **Mapping**: Mapbox GL JS for GPU-accelerated vector maps
+- **Data**: GeoJSON files in `angular-app/public/assets/` (shared with legacy app)
+- **Styling**: Plain CSS (no framework)
+- **State**: React Hooks (useState, useEffect, useRef)
+- **Package Manager**: npm (Node 18+)
+
+### Legacy Stack (Preserved)
+- **Frontend**: AngularJS 1.4 with UI-Router
+- **Build**: Gulp 3.x
+- **Mapping**: Leaflet 0.7.5
+- **Location**: `angular-app/` directory
 
 ## Key File Structure
 ```
-src/app/
-├── index.module.js         # Main app module definition
-├── index.route.js          # UI-Router configuration
-├── main/
-│   ├── main.controller.js  # Primary map and data controller
-│   └── main.html          # Main map view template
-└── components/            # Reusable components
+src/
+├── components/
+│   ├── MainView.tsx          # Main map and data table component
+│   └── MainView.css          # Component styles
+├── hooks/
+│   └── useGeoData.ts         # Custom hook for GeoJSON loading
+├── types/
+│   └── index.ts              # TypeScript interfaces
+├── utils/
+│   └── calculations.ts       # Distance and color utilities
+├── App.tsx                   # Root component
+├── main.tsx                  # Entry point
+└── vite-env.d.ts            # Vite type definitions
+
+angular-app/public/assets/   # GeoJSON data (shared)
+├── schoolLocations.geo.json
+├── planningBlocks.geo.json
+└── [YYMMDD].geo.json        # Redistricting options
 ```
 
 ## Data Architecture
@@ -35,77 +59,206 @@ The core data model revolves around:
 
 ## Development Workflow
 
-### Development Server
+### Quick Start
 ```bash
-gulp serve              # Start dev server with live reload
-gulp serve:dist         # Serve production build
+npm install            # Install dependencies
+npm run dev            # Start dev server at http://localhost:3000
+npm run build          # Production build to dist/
+npm run preview        # Preview production build
 ```
 
-### Build Process
-```bash
-gulp build             # Production build to dist/
-gulp test              # Run unit tests
-gulp inject            # Update bower dependencies in index.html
-```
-
-### Key Gulp Tasks
-- **serve**: Development server with BrowserSync live reload
-- **inject**: Auto-injects bower dependencies and app files into index.html
-- **build**: Minifies, concatenates, and optimizes for production
-- **watch**: Monitors file changes during development
+### Development Commands
+- **dev**: Vite dev server with HMR (Hot Module Replacement)
+- **build**: TypeScript compilation + Vite production build
+- **preview**: Serve production build locally
+- **Type checking**: `npx tsc --noEmit`
 
 ## Map Integration Patterns
 
-### Leaflet Setup
-Maps use Mapbox tiles with custom styling. Configure in `main.controller.js`:
-```javascript
-$scope.defaults = {
-    tileLayer: 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=...',
-    maxZoom: 22
-};
+### Mapbox GL Setup
+Maps use Mapbox GL JS with vector tiles. Configure in `MainView.tsx`:
+```typescript
+const map = new mapboxgl.Map({
+  container: mapContainerRef.current,
+  style: 'mapbox://styles/mapbox/streets-v12',
+  center: [-76.730514, 39.271697],
+  zoom: 12,
+  preserveDrawingBuffer: true  // Required for snapshots
+})
 ```
 
 ### GeoJSON Layer Management
-- Use `$resource` to load GeoJSON data asynchronously
-- Add layers via `L.geoJson()` with `onEachFeature` callbacks for interactivity
-- Store layer references in scope for dynamic styling (e.g., `$scope.planningBlockLayers`)
+- Load data via `useGeoData` custom hook (runs once on mount)
+- Add layers using Mapbox GL sources and layers API
+- Use Mapbox expressions for dynamic styling (not callbacks)
+- Store map reference in `useRef` for persistence
 
 ### Interactive Features
-- Click handlers on map features update selected school/planning block
-- Color-coding planning blocks by assigned school
-- Walking distance calculations for school boundaries
+- Click handlers on map layers (schools-circle, planning-blocks-fill)
+- **Important**: Use `selectedSchoolRef.current` in event handlers (not state)
+- Color-coding via Mapbox expressions with ['match', ['get', 'PBID'], ...]
+- Real-time updates using functional setState
+
+### Critical Patterns
+```typescript
+// ✅ Correct - using ref in event handler
+map.on('click', 'layer-name', (e) => {
+  const selected = selectedSchoolRef.current
+  // Use selected...
+})
+
+// ❌ Wrong - using state directly (stale closure)
+map.on('click', 'layer-name', (e) => {
+  if (selectedSchool) { }  // May be stale
+})
+
+// ✅ Correct - functional state update
+setSchools(currentSchools => currentSchools.map(...))
+
+// ❌ Wrong - direct state update
+setSchools(schools.map(...))  // Uses stale schools
+```
 
 ## State Management Patterns
 
-### Redistricting Options
-Each redistricting scenario is loaded via pattern:
-```javascript
-$scope.get[DATE]Option = function(field, object) {
-    $resource('assets/[DATE].geo.json').get().$promise.then(function(data) {
-        // Parse features and group planning blocks by school
-    });
+### Data Loading
+All GeoJSON loaded via `useGeoData` custom hook:
+```typescript
+export function useGeoData() {
+  const [data, setData] = useState<GeoDataState>({ loading: true, ... })
+  
+  useEffect(() => {
+    const loadData = async () => {
+      const planningBlocks = await fetch('/assets/planningBlocks.geo.json')
+      const schools = await fetch('/assets/schoolLocations.geo.json')
+      const options = await loadOptions()  // Load all 33 options
+      setData({ schools, planningBlocks, options, loading: false })
+    }
+    loadData()
+  }, [])
+  
+  return data
 }
 ```
 
-### Dynamic Data Binding
-- `$scope.schools` array drives the data table with computed properties
-- Student counts recalculated when planning block assignments change
-- Table uses ngTable with sorting and filtering
+### State Architecture
+```typescript
+// Component state
+const [schools, setSchools] = useState<School[]>([])           // School data
+const [selectedSchool, setSelectedSchool] = useState<string>('')  // UI state
+const selectedSchoolRef = useRef<string>('')                   // For closures
 
-## Testing Conventions
-- Unit tests in `*.spec.js` files alongside components
-- Use angular-mocks for dependency injection in tests
-- Karma configuration loads bower dependencies automatically via wiredep
+// Sync ref with state
+useEffect(() => {
+  selectedSchoolRef.current = selectedSchool
+}, [selectedSchool])
+```
 
-## Dependencies & Bower
-- Run `bower install` to install client-side dependencies
-- Key libraries: Angular ecosystem, Leaflet mapping, LinqJS for data queries, ng-table
-- Bower dependencies auto-injected into `index.html` via gulp inject task
+### Data Updates
+- Student counts calculated on-demand in `calculateStudents()`
+- Planning block reassignment updates schools array immutably
+- Map colors updated via `setPaintProperty()` with new expression
+- Table re-renders automatically when schools state changes
 
-## Styling Architecture
-- SASS files compiled via gulp-sass
-- Bootstrap 3 framework with custom overrides in `src/app/index.scss`
-- Font Awesome icons for UI elements
-- Responsive design with Bootstrap grid system
+## TypeScript & Type Safety
 
-When working with this codebase, focus on the geographic data flow from GeoJSON files → Angular services → Leaflet map layers → UI interactions. The main controller handles most business logic, so consider refactoring complex functions into separate services for maintainability.
+### Key Interfaces
+```typescript
+interface School {
+  NAME: string
+  SRC: number                    // 2015 capacity
+  SRC2016?: number               // 2016 capacity
+  SRC2017?: number               // 2017 capacity
+  students: number               // Calculated enrollment
+  planningBlocks: string[]       // Assigned PBID list
+}
+
+interface PlanningBlock {
+  PBID: string                   // Unique identifier
+  K5LiveAtt: string              // Student count (string in data)
+}
+
+interface RedistrictingOption {
+  [schoolName: string]: string[] // School name -> PBID array
+}
+```
+
+### Type Checking
+- Strict mode enabled in tsconfig.json
+- All props and state typed
+- GeoJSON types from custom interfaces
+- Run `npx tsc --noEmit` to check types
+
+## Testing
+
+### Manual Testing Checklist
+No automated tests currently. Verify:
+- [ ] Map loads with planning blocks and schools
+- [ ] Current districting loads on page load
+- [ ] School click selects (banner shows)
+- [ ] Planning block click reassigns to selected school
+- [ ] Student counts update in table
+- [ ] All 33 options load correctly
+- [ ] Snapshot captures map state
+- [ ] Build succeeds: `npm run build`
+
+## Styling
+- Plain CSS, no framework
+- Component-specific: `MainView.css`
+- Global styles: `App.css`
+- No CSS modules or styled-components
+- Minimal inline styles (only for dynamic colors)
+
+## Important Notes
+
+### Closure Issues
+Always use refs for values accessed in event handlers that are set up once:
+```typescript
+const selectedSchoolRef = useRef<string>('')
+
+useEffect(() => {
+  selectedSchoolRef.current = selectedSchool  // Keep in sync
+}, [selectedSchool])
+
+map.on('click', () => {
+  const current = selectedSchoolRef.current  // Always fresh
+})
+```
+
+### Mapbox Expressions
+Use expressions for performance (evaluated on GPU):
+```typescript
+'fill-color': [
+  'match',
+  ['get', 'PBID'],
+  '123', '#FF0000',
+  '456', '#00FF00',
+  '#888888'  // default
+]
+```
+
+### Asset Loading
+Vite configured to serve from `angular-app/public/`:
+```typescript
+// vite.config.ts
+export default defineConfig({
+  publicDir: 'angular-app/public'
+})
+```
+
+## When Working With This Codebase
+
+1. **Focus on data flow**: GeoJSON → useGeoData → React state → Map + Table
+2. **Use functional updates**: Always when new state depends on old state
+3. **Refs for events**: Use refs in event handlers, not direct state
+4. **Test interactively**: Click schools, reassign blocks, verify table updates
+5. **Check console**: Debug logs throughout for troubleshooting
+6. **Preserve compatibility**: Don't change GeoJSON structure
+7. **Single component**: MainView handles everything (intentionally monolithic)
+8. **Commit format**: Include `Co-Authored-By: Warp <agent@warp.dev>`
+
+## Additional Documentation
+- [README.md](../README.md) - User guide and setup
+- [INSTRUCTIONS.md](../INSTRUCTIONS.md) - Detailed developer docs
+- [MODERNIZATION_ROADMAP.md](../MODERNIZATION_ROADMAP.md) - Migration details
+- [VUE_TO_REACT_MIGRATION.md](../VUE_TO_REACT_MIGRATION.md) - React conversion notes
