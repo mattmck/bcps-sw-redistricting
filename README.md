@@ -97,7 +97,9 @@ gh auth login
 
 ## Legacy AngularJS App
 
-The original AngularJS 1.4 application is preserved in the `angular-app/` directory.
+⚠️ **Security Notice**: The original AngularJS 1.4 application is preserved in the `angular-app/` directory for reference only. It contains known security vulnerabilities in outdated dependencies and should NOT be used in production. See `angular-app/SECURITY.md` for details.
+
+**Use the modern React 18 app for all production needs.**
 
 <details>
 <summary>Click to see legacy setup instructions</summary>
