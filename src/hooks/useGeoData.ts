@@ -19,6 +19,29 @@ export interface GeoDataState {
     optionC: RedistrictingOption
     optionD: RedistrictingOption
     optionE: RedistrictingOption
+    optionA1021: RedistrictingOption
+    optionB1021: RedistrictingOption
+    optionC1021: RedistrictingOption
+    optionD1021: RedistrictingOption
+    optionE1021: RedistrictingOption
+    optionF1021: RedistrictingOption
+    optionG1021: RedistrictingOption
+    optionA1111: RedistrictingOption
+    optionB1111: RedistrictingOption
+    optionC1111: RedistrictingOption
+    optionD1111: RedistrictingOption
+    optionE1111: RedistrictingOption
+    optionF1111: RedistrictingOption
+    optionG1111: RedistrictingOption
+    optionH1111: RedistrictingOption
+    optionI1111: RedistrictingOption
+    optionJ1111: RedistrictingOption
+    optionK1111: RedistrictingOption
+    optionL1111: RedistrictingOption
+    option11118: RedistrictingOption
+    option21118: RedistrictingOption
+    option31118: RedistrictingOption
+    option41118: RedistrictingOption
   }
   loading: boolean
 }
@@ -40,7 +63,30 @@ export function useGeoData() {
       optionB: {},
       optionC: {},
       optionD: {},
-      optionE: {}
+      optionE: {},
+      optionA1021: {},
+      optionB1021: {},
+      optionC1021: {},
+      optionD1021: {},
+      optionE1021: {},
+      optionF1021: {},
+      optionG1021: {},
+      optionA1111: {},
+      optionB1111: {},
+      optionC1111: {},
+      optionD1111: {},
+      optionE1111: {},
+      optionF1111: {},
+      optionG1111: {},
+      optionH1111: {},
+      optionI1111: {},
+      optionJ1111: {},
+      optionK1111: {},
+      optionL1111: {},
+      option11118: {},
+      option21118: {},
+      option31118: {},
+      option41118: {}
     },
     loading: true
   })
@@ -48,16 +94,21 @@ export function useGeoData() {
   useEffect(() => {
     const loadData = async () => {
       try {
+        console.log('useGeoData: Starting to load data...')
         // Load planning blocks
         const planningBlocksRes = await fetch('/assets/planningBlocks.geo.json')
+        console.log('useGeoData: Planning blocks response:', planningBlocksRes.status)
         const planningBlocksData: GeoJSONData = await planningBlocksRes.json()
+        console.log('useGeoData: Planning blocks loaded, features:', planningBlocksData.features.length)
         
         const blocks: PlanningBlock[] = planningBlocksData.features.map(f => f.properties)
         const rawBlocks = planningBlocksData.features
 
         // Load schools
         const schoolsRes = await fetch('/assets/schoolLocations.geo.json')
+        console.log('useGeoData: Schools response:', schoolsRes.status)
         const schoolsData: GeoJSONData = await schoolsRes.json()
+        console.log('useGeoData: Schools loaded, total features:', schoolsData.features.length)
 
         // Filter elementary schools in the southwest area
         const filteredFeatures = schoolsData.features.filter(feature => {
@@ -132,8 +183,11 @@ export function useGeoData() {
         }
 
         // Load redistricting options
+        console.log('useGeoData: Loading redistricting options...')
         const optionsData = await loadOptions()
+        console.log('useGeoData: Options loaded')
 
+        console.log('useGeoData: Setting data, schools:', schools.length)
         setData({
           schools,
           planningBlocks: blocks,
@@ -144,6 +198,7 @@ export function useGeoData() {
           options: optionsData,
           loading: false
         })
+        console.log('useGeoData: Data loading complete!')
       } catch (error) {
         console.error('Error loading geo data:', error)
         setData(prev => ({ ...prev, loading: false }))
@@ -157,7 +212,7 @@ export function useGeoData() {
 }
 
 async function loadOptions() {
-  const options = {
+  const options: any = {
     current: {},
     option1: {},
     option2: {},
@@ -166,13 +221,40 @@ async function loadOptions() {
     optionB: {},
     optionC: {},
     optionD: {},
-    optionE: {}
+    optionE: {},
+    optionA1021: {},
+    optionB1021: {},
+    optionC1021: {},
+    optionD1021: {},
+    optionE1021: {},
+    optionF1021: {},
+    optionG1021: {},
+    optionA1111: {},
+    optionB1111: {},
+    optionC1111: {},
+    optionD1111: {},
+    optionE1111: {},
+    optionF1111: {},
+    optionG1111: {},
+    optionH1111: {},
+    optionI1111: {},
+    optionJ1111: {},
+    optionK1111: {},
+    optionL1111: {},
+    option11118: {},
+    option21118: {},
+    option31118: {},
+    option41118: {}
   }
 
   try {
     // Load 11/18/2015 options (current and options 1-4)
     const data1118 = await fetch('/assets/151118.geo.json').then(r => r.json())
     options.current = buildOption(data1118, 'ES1516')
+    options.option11118 = buildOption(data1118, 'NovOpt1')
+    options.option21118 = buildOption(data1118, 'NovOpt2')
+    options.option31118 = buildOption(data1118, 'NovOpt3')
+    options.option41118 = buildOption(data1118, 'NovOpt4')
 
     // Load 9/30/2015 options
     const data0930 = await fetch('/assets/150930.geo.json').then(r => r.json())
@@ -187,6 +269,31 @@ async function loadOptions() {
     options.optionC = buildOption(data1014, 'OptC')
     options.optionD = buildOption(data1014, 'OptD')
     options.optionE = buildOption(data1014, 'OptE')
+
+    // Load 10/21/2015 options
+    const data1021 = await fetch('/assets/151021.geo.json').then(r => r.json())
+    options.optionA1021 = buildOption(data1021, 'OptA')
+    options.optionB1021 = buildOption(data1021, 'OptB')
+    options.optionC1021 = buildOption(data1021, 'OptC')
+    options.optionD1021 = buildOption(data1021, 'OptD')
+    options.optionE1021 = buildOption(data1021, 'OptE')
+    options.optionF1021 = buildOption(data1021, 'OptF')
+    options.optionG1021 = buildOption(data1021, 'OptG')
+
+    // Load 11/11/2015 options
+    const data1111 = await fetch('/assets/151111.geo.json').then(r => r.json())
+    options.optionA1111 = buildOption(data1111, 'OptA')
+    options.optionB1111 = buildOption(data1111, 'OptB')
+    options.optionC1111 = buildOption(data1111, 'OptC')
+    options.optionD1111 = buildOption(data1111, 'OptD')
+    options.optionE1111 = buildOption(data1111, 'OptE')
+    options.optionF1111 = buildOption(data1111, 'OptF')
+    options.optionG1111 = buildOption(data1111, 'OptG')
+    options.optionH1111 = buildOption(data1111, 'OptH')
+    options.optionI1111 = buildOption(data1111, 'OptI')
+    options.optionJ1111 = buildOption(data1111, 'OptJ')
+    options.optionK1111 = buildOption(data1111, 'OptK')
+    options.optionL1111 = buildOption(data1111, 'OptL')
   } catch (error) {
     console.error('Error loading options:', error)
   }

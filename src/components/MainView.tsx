@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
 import type { School, PlanningBlock, RedistrictingOption } from '@/types'
 import { useGeoData } from '@/hooks/useGeoData'
 import './MainView.css'
@@ -12,37 +13,70 @@ export const MainView = () => {
   const geoData = useGeoData()
   const [schools, setSchools] = useState<School[]>([])
   const [selectedSchool, setSelectedSchool] = useState<string>('')
+  const [snapshotUrl, setSnapshotUrl] = useState<string>('')
+  const [takingSnapshot, setTakingSnapshot] = useState(false)
+  const selectedSchoolRef = useRef<string>('')
   const layersRef = useRef<Record<string, any>>({})
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    selectedSchoolRef.current = selectedSchool
+  }, [selectedSchool])
 
   // Initialize map
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return
 
+    console.log('Initializing Mapbox map...')
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN
 
-    mapRef.current = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mapbox/streets-v12',
       center: [-76.730514, 39.271697],
-      zoom: 12
+      zoom: 12,
+      preserveDrawingBuffer: true
     })
 
-    mapRef.current.addControl(new mapboxgl.NavigationControl(), 'top-right')
+    map.on('load', () => {
+      console.log('Map style loaded successfully')
+    })
+
+    map.on('error', (e) => {
+      console.error('Map error:', e)
+    })
+
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right')
+
+    mapRef.current = map
 
     return () => {
       mapRef.current?.remove()
+      mapRef.current = null
     }
   }, [])
 
+  // Set schools state when data loads
+  useEffect(() => {
+    if (!geoData.loading && geoData.schools.length > 0 && schools.length === 0) {
+      console.log('Setting initial schools state:', geoData.schools.length)
+      setSchools(geoData.schools)
+    }
+  }, [geoData.loading, geoData.schools])
+
   // Load GeoJSON layers when data is ready
   useEffect(() => {
+    console.log('Layer effect - mapRef.current:', !!mapRef.current, 'loading:', geoData.loading, 'planningBlocks:', !!geoData.planningBlocksGeoJSON, 'schools:', !!geoData.schoolsGeoJSON)
     if (!mapRef.current || geoData.loading || !geoData.planningBlocksGeoJSON || !geoData.schoolsGeoJSON) return
 
+    console.log('All data ready, proceeding with layer initialization')
     const map = mapRef.current
 
     const initializeLayers = () => {
+      console.log('Initializing map layers... map loaded:', map.loaded())
       // Add planning blocks
       if (!map.getSource('planning-blocks')) {
+        console.log('Adding planning-blocks source and layers')
         map.addSource('planning-blocks', {
           type: 'geojson',
           data: geoData.planningBlocksGeoJSON!
@@ -71,6 +105,8 @@ export const MainView = () => {
 
       // Add schools
       if (!map.getSource('schools')) {
+        console.log('Adding schools source with', geoData.schoolsGeoJSON!.features.length, 'features')
+        console.log('School colors:', geoData.schoolColors)
         map.addSource('schools', {
           type: 'geojson',
           data: geoData.schoolsGeoJSON!
@@ -88,17 +124,68 @@ export const MainView = () => {
               ...Object.entries(geoData.schoolColors).flat(),
               '#000000'
             ],
-            'circle-stroke-width': 1,
+            'circle-stroke-width': 2,
             'circle-stroke-color': '#ffffff'
           }
         })
+        console.log('Schools layer added successfully')
+
+        // Add click handler for schools
+        map.on('click', 'schools-circle', (e) => {
+          if (e.features && e.features.length > 0) {
+            const schoolName = e.features[0].properties?.NAME
+            if (schoolName) {
+              console.log('School clicked:', schoolName)
+              setSelectedSchool(schoolName)
+            }
+          }
+        })
+
+        // Change cursor on hover
+        map.on('mouseenter', 'schools-circle', () => {
+          map.getCanvas().style.cursor = 'pointer'
+        })
+        map.on('mouseleave', 'schools-circle', () => {
+          map.getCanvas().style.cursor = ''
+        })
       }
 
+      // Add click handler for planning blocks (must be after layer is added)
+      console.log('Adding planning block click handler')
+      map.on('click', 'planning-blocks-fill', (e) => {
+        const currentSelectedSchool = selectedSchoolRef.current
+        console.log('Planning block layer clicked, features:', e.features?.length, 'selectedSchool:', currentSelectedSchool)
+        if (e.features && e.features.length > 0) {
+          const blockId = e.features[0].properties?.PBID
+          console.log('Block ID:', blockId, 'Selected school:', currentSelectedSchool)
+          if (blockId && currentSelectedSchool) {
+            console.log('Calling handleBlockClick for block:', blockId)
+            handleBlockClick(blockId)
+          } else if (!currentSelectedSchool) {
+            console.log('No school selected - please click a school first')
+          }
+        }
+      })
+
+      map.on('mouseenter', 'planning-blocks-fill', () => {
+        map.getCanvas().style.cursor = 'pointer'
+      })
+      map.on('mouseleave', 'planning-blocks-fill', () => {
+        map.getCanvas().style.cursor = ''
+      })
+
       // Load current districting after layers are added
-      setSchools(geoData.schools)
+      console.log('Layers initialized, loading current option')
+      console.log('Current option data:', Object.keys(geoData.options.current).length, 'schools')
+      // Use a longer timeout to ensure map is fully ready
       setTimeout(() => {
-        loadOption(geoData.options.current)
-      }, 100)
+        console.log('Loading current redistricting option')
+        if (Object.keys(geoData.options.current).length > 0) {
+          loadOption(geoData.options.current)
+        } else {
+          console.warn('Current option is empty!')
+        }
+      }, 500)
     }
 
     if (map.loaded()) {
@@ -106,12 +193,24 @@ export const MainView = () => {
     } else {
       map.once('load', initializeLayers)
     }
-  }, [geoData.loading, geoData.planningBlocksGeoJSON, geoData.schoolsGeoJSON])
+  }, [geoData.loading, geoData.planningBlocksGeoJSON, geoData.schoolsGeoJSON, geoData.schoolColors, geoData.schools])
 
   const loadOption = (option: RedistrictingOption) => {
-    if (!mapRef.current || !geoData.planningBlocksGeoJSON) return
+    console.log('loadOption called, option has', Object.keys(option).length, 'schools')
+    if (!mapRef.current || !geoData.planningBlocksGeoJSON) {
+      console.log('loadOption aborted - map or data not ready')
+      return
+    }
+    
+    // Use geoData.schools if local schools state is empty
+    const schoolsToUpdate = schools.length > 0 ? schools : geoData.schools
+    if (schoolsToUpdate.length === 0) {
+      console.log('No schools available yet, skipping option load')
+      return
+    }
+    console.log('Loading option for', schoolsToUpdate.length, 'schools')
 
-    const updatedSchools = schools.map(school => {
+    const updatedSchools = schoolsToUpdate.map(school => {
       const planningBlocks = option[school.NAME] || []
       const students = calculateStudents(school, planningBlocks, geoData.planningBlocks)
       
@@ -134,9 +233,11 @@ export const MainView = () => {
 
     try {
       const colorExpression: any[] = ['match', ['get', 'PBID']]
+      let totalBlocks = 0
       
       Object.entries(option).forEach(([schoolName, blockIds]) => {
         const color = geoData.schoolColors[schoolName] || '#888888'
+        totalBlocks += blockIds.length
         blockIds.forEach(blockId => {
           colorExpression.push(blockId, color)
         })
@@ -144,10 +245,59 @@ export const MainView = () => {
       
       colorExpression.push('#888888') // default
       
+      console.log('Updating map colors for', totalBlocks, 'planning blocks')
       map.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression)
+      console.log('Map colors updated successfully')
     } catch (error) {
       console.error('Error updating map colors:', error)
     }
+  }
+
+  const handleBlockClick = (blockId: string) => {
+    const currentSelectedSchool = selectedSchoolRef.current
+    if (!currentSelectedSchool) return
+
+    console.log('Assigning block', blockId, 'to', currentSelectedSchool)
+
+    // Use functional update to get current schools state
+    setSchools(currentSchools => {
+      console.log('Current schools count:', currentSchools.length)
+      
+      // Update schools - remove block from all schools and add to selected school
+      const updatedSchools = currentSchools.map(school => {
+        const newBlocks = school.NAME === currentSelectedSchool
+          ? [...school.planningBlocks.filter(b => b !== blockId), blockId] // Add to selected school
+          : school.planningBlocks.filter(b => b !== blockId) // Remove from other schools
+        
+        const students = calculateStudents(school, newBlocks, geoData.planningBlocks)
+        
+        return {
+          ...school,
+          planningBlocks: newBlocks,
+          students
+        }
+      })
+
+      console.log('Updated schools, block now in:', updatedSchools.find(s => s.planningBlocks.includes(blockId))?.NAME)
+      
+      // Update map color immediately
+      if (mapRef.current && mapRef.current.getLayer('planning-blocks-fill')) {
+        const colorExpression: any[] = ['match', ['get', 'PBID']]
+        updatedSchools.forEach(school => {
+          const schoolColor = geoData.schoolColors[school.NAME] || '#888888'
+          school.planningBlocks.forEach(bid => {
+            colorExpression.push(bid, schoolColor)
+          })
+        })
+        colorExpression.push('#888888')
+        
+        mapRef.current.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression)
+        console.log('Map colors updated')
+      }
+      
+      return updatedSchools
+    })
+
   }
 
   const calculateStudents = (school: School, planningBlocks: string[], allBlocks: PlanningBlock[]): number => {
@@ -174,15 +324,59 @@ export const MainView = () => {
     return students + (adjustments[school.NAME] || 0)
   }
 
+  const takeSnapshot = () => {
+    if (!mapRef.current) return
+    
+    setTakingSnapshot(true)
+    const map = mapRef.current
+    
+    // Wait a bit for any animations to finish
+    setTimeout(() => {
+      const canvas = map.getCanvas()
+      const dataUrl = canvas.toDataURL('image/png')
+      setSnapshotUrl(dataUrl)
+      setTakingSnapshot(false)
+      
+      // Scroll to snapshot
+      setTimeout(() => {
+        document.getElementById('snapshot')?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    }, 100)
+  }
+
+  console.log('MainView render - schools count:', schools.length, 'geoData.schools:', geoData.schools.length, 'loading:', geoData.loading)
+
   return (
     <div className="main-view">
       <div ref={mapContainerRef} className="map-container"></div>
       
       {geoData.loading && <div className="loading">Loading map data...</div>}
+      {!geoData.loading && schools.length === 0 && <div className="loading">Data loaded but no schools found</div>}
+      
+      {selectedSchool && (
+        <div className="selected-school-banner">
+          <strong>Selected School:</strong> {selectedSchool}
+          <span style={{
+            display: 'inline-block',
+            width: '20px',
+            height: '20px',
+            backgroundColor: geoData.schoolColors[selectedSchool],
+            marginLeft: '10px',
+            verticalAlign: 'middle',
+            border: '2px solid white'
+          }} />
+          <span style={{ marginLeft: '10px', fontSize: '0.9em', color: '#666' }}>
+            (Click planning blocks on the map to assign them to this school)
+          </span>
+        </div>
+      )}
       
       <div className="options-panel">
-        <h4>Current Districting</h4>
-        <button onClick={() => loadOption(geoData.options.current)} className="btn">Current</button>
+        <h4>Actions</h4>
+        <button onClick={takeSnapshot} className="btn" disabled={takingSnapshot}>
+          {takingSnapshot ? '📸 Taking Snapshot...' : '📸 Take Snapshot'}
+        </button>
+        <button onClick={() => loadOption(geoData.options.current)} className="btn">Load Current Districting</button>
       </div>
 
       <div className="options-panel">
@@ -201,7 +395,45 @@ export const MainView = () => {
         <button onClick={() => loadOption(geoData.options.optionE)} className="btn">Option E</button>
       </div>
 
+      <div className="options-panel">
+        <h4>10/28/2015 Meeting</h4>
+        <button onClick={() => loadOption(geoData.options.optionA1021)} className="btn">Option A</button>
+        <button onClick={() => loadOption(geoData.options.optionB1021)} className="btn">Option B</button>
+        <button onClick={() => loadOption(geoData.options.optionC1021)} className="btn">Option C</button>
+        <button onClick={() => loadOption(geoData.options.optionD1021)} className="btn">Option D</button>
+        <button onClick={() => loadOption(geoData.options.optionE1021)} className="btn">Option E</button>
+        <button onClick={() => loadOption(geoData.options.optionF1021)} className="btn">Option F</button>
+        <button onClick={() => loadOption(geoData.options.optionG1021)} className="btn">Option G</button>
+      </div>
+
+      <div className="options-panel">
+        <h4>11/11/2015 Meeting</h4>
+        <button onClick={() => loadOption(geoData.options.optionA1111)} className="btn">Option A</button>
+        <button onClick={() => loadOption(geoData.options.optionB1111)} className="btn">Option B</button>
+        <button onClick={() => loadOption(geoData.options.optionC1111)} className="btn">Option C</button>
+        <button onClick={() => loadOption(geoData.options.optionD1111)} className="btn">Option D</button>
+        <button onClick={() => loadOption(geoData.options.optionE1111)} className="btn">Option E</button>
+        <button onClick={() => loadOption(geoData.options.optionF1111)} className="btn">Option F</button>
+        <button onClick={() => loadOption(geoData.options.optionG1111)} className="btn">Option G</button>
+        <button onClick={() => loadOption(geoData.options.optionH1111)} className="btn">Option H</button>
+        <button onClick={() => loadOption(geoData.options.optionI1111)} className="btn">Option I</button>
+        <button onClick={() => loadOption(geoData.options.optionJ1111)} className="btn">Option J</button>
+        <button onClick={() => loadOption(geoData.options.optionK1111)} className="btn">Option K</button>
+        <button onClick={() => loadOption(geoData.options.optionL1111)} className="btn">Option L</button>
+      </div>
+
+      <div className="options-panel">
+        <h4>11/18/2015 Meeting</h4>
+        <button onClick={() => loadOption(geoData.options.option11118)} className="btn">Option 1</button>
+        <button onClick={() => loadOption(geoData.options.option21118)} className="btn">Option 2</button>
+        <button onClick={() => loadOption(geoData.options.option31118)} className="btn">Option 3</button>
+        <button onClick={() => loadOption(geoData.options.option41118)} className="btn">Option 4</button>
+      </div>
+
       <div className="school-table">
+        {schools.length === 0 ? (
+          <div className="loading">No school data loaded yet...</div>
+        ) : (
         <table>
           <thead>
             <tr>
@@ -249,7 +481,23 @@ export const MainView = () => {
             })}
           </tbody>
         </table>
+        )}
       </div>
+
+      {snapshotUrl && (
+        <div id="snapshot" className="snapshot-container">
+          <h3>Map Snapshot</h3>
+          <img src={snapshotUrl} alt="Map snapshot" style={{ maxWidth: '100%', border: '1px solid #ccc' }} />
+          <div style={{ marginTop: '10px' }}>
+            <a href={snapshotUrl} download="redistricting-map.png" className="btn">
+              Download Image
+            </a>
+            <button onClick={() => setSnapshotUrl('')} className="btn" style={{ marginLeft: '10px' }}>
+              Clear Snapshot
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
