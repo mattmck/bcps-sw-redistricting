@@ -1,0 +1,62 @@
+version: 2
+updates:
+  # Enable version updates for npm (modern React app)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "mattmck"
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    # Group minor and patch updates together
+    groups:
+      development-dependencies:
+        patterns:
+          - "@types/*"
+          - "@vitejs/*"
+          - "vite"
+          - "typescript"
+        update-types:
+          - "minor"
+          - "patch"
+      production-dependencies:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "mapbox-gl"
+          - "leaflet"
+        update-types:
+          - "minor"
+          - "patch"
+    # Ignore legacy dependencies (they're intentionally outdated)
+    ignore:
+      - dependency-name: "gulp*"
+      - dependency-name: "jade"
+      - dependency-name: "karma*"
+      - dependency-name: "browser-sync"
+      - dependency-name: "browser-sync-spa"
+      - dependency-name: "lodash"
+        versions: ["< 5.0.0"]
+      - dependency-name: "chalk"
+        versions: ["< 5.0.0"]
+      - dependency-name: "wrench"
+      - dependency-name: "main-bower-files"
+      - dependency-name: "wiredep"
+      - dependency-name: "uglify-save-license"
+
+  # Enable security updates for GitHub Actions (if you add workflows)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "github-actions"
