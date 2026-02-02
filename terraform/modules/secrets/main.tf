@@ -4,7 +4,9 @@
 data "azurerm_client_config" "current" {}
 
 locals {
-  vault_name = "${var.app_name}-${var.environment}-kv"
+  # Azure Key Vault names must be 3-24 chars, alphanumeric and dashes only
+  # Use shortened name to stay within limit
+  vault_name = "bcps-redis-${var.environment}-kv"
 }
 
 resource "azurerm_key_vault" "main" {
@@ -43,7 +45,7 @@ resource "azurerm_key_vault" "main" {
 
 # Store each secret
 resource "azurerm_key_vault_secret" "secrets" {
-  for_each = var.secrets
+  for_each = nonsensitive(var.secrets)
   
   name         = each.key
   value        = each.value

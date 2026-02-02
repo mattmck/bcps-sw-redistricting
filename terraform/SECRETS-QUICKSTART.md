@@ -4,7 +4,7 @@
 
 **Mapbox API Key (Production)**: 
 ```
-***REMOVED***
+<Your Mapbox API key - get from https://account.mapbox.com/access-tokens/>
 ```
 
 This key is:

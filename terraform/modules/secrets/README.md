@@ -17,7 +17,7 @@ module "secrets" {
   location    = "eastus"
   
   secrets = {
-    mapbox-api-key = "***REMOVED***"
+    mapbox-api-key = var.mapbox_api_key  # Provided via terraform.tfvars
   }
   
   tags = {

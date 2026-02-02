@@ -12,11 +12,12 @@ Secrets like the Mapbox API key are:
 
 ## Current Setup
 
-**Mapbox API Key**: `***REMOVED***`
+**Mapbox API Key**: Get your production key from https://account.mapbox.com/access-tokens/
 
-This production key is:
-- Used in `.env.local` for local development
-- Stored in Azure Key Vault for production builds
+The production key should be:
+- Stored in `.env.local` for local development (gitignored)
+- Provided in `terraform/terraform.tfvars` for deployment (gitignored)
+- Stored in Azure Key Vault for production builds via Terraform
 - Managed via Terraform in `terraform/modules/secrets/`
 
 ## Local Development

@@ -255,7 +255,7 @@ If you want automatic deployments on git push:
      ```
    - Add `MAPBOX_API_KEY` (fallback):
      ```
-     ***REMOVED***
+     <Your Mapbox API key from https://account.mapbox.com/access-tokens/>
      ```
 
 3. **Test GitHub Actions**

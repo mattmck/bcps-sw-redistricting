@@ -121,8 +121,8 @@ environment  = "prod"
 location     = "eastus"  # Choose closest region
 sku_tier     = "Free"    # or "Standard" ($9/month)
 
-# Required: Mapbox API key
-mapbox_api_key = "***REMOVED***"
+# Required: Mapbox API key (get from https://account.mapbox.com/access-tokens/)
+mapbox_api_key = "YOUR_MAPBOX_API_KEY_HERE"
 
 # Optional: Custom domain
 # custom_domain = "redistricting.yourschool.org"

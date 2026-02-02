@@ -23,10 +23,10 @@ This branch adds complete infrastructure-as-code deployment to Azure using Terra
 
 ### 🔐 Secrets Management
 
-- Production Mapbox API key: `***REMOVED***`
-- Stored securely in Azure Key Vault
+- Production Mapbox API key stored securely in Azure Key Vault
 - Retrieved automatically during build
 - Cloud-agnostic design (swap to AWS/GCP easily)
+- Keys must be provided via terraform.tfvars (gitignored)
 
 ### 🚀 Deployment Tools
 
