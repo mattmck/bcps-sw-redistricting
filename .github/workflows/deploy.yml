@@ -55,6 +55,12 @@ jobs:
             MAPBOX_KEY=${{ secrets.MAPBOX_API_KEY }}
           fi
           
+          if [ -z "$MAPBOX_KEY" ]; then
+            echo "ERROR: No Mapbox API key found in Key Vault or GitHub Secrets"
+            exit 1
+          fi
+          
+          echo "Mapbox key retrieved (length: ${#MAPBOX_KEY})"
           echo "::add-mask::$MAPBOX_KEY"
           echo "MAPBOX_KEY=$MAPBOX_KEY" >> $GITHUB_OUTPUT
 
