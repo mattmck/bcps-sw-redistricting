@@ -193,6 +193,22 @@ az staticwebapp upload --app-name bcps-redistricting --output-location dist
 - Check `vite.config.ts` base path configuration
 - Rebuild and redeploy
 
+### Azure SWA Deployment: "An unknown exception has occurred"
+**Symptom:** Azure Static Web Apps deployment fails with "An unknown exception has occurred" after detecting Data API Files Directory
+
+**Cause:** The presence of a `swa-db-connections/` directory with an empty or incomplete `staticwebapp.database.config.json` file causes Azure to attempt Data API Builder processing, which fails when the configuration is not properly set up.
+
+**Solution:**
+1. **For static-only sites (no database):** Remove the `swa-db-connections/` directory entirely
+   ```bash
+   rm -rf swa-db-connections
+   git add swa-db-connections
+   git commit -m "Remove unused database config directory"
+   ```
+2. **If you need Data API Builder:** Properly configure the `staticwebapp.database.config.json` file with valid connection strings and entity definitions according to [Azure Data API Builder documentation](https://learn.microsoft.com/en-us/azure/data-api-builder/)
+
+**Note:** This app is a static-only React application with no backend database, so the database configuration directory is not needed.
+
 ### Azure Key Vault Access Denied
 **Symptom:** Workflow fails at "Get Mapbox API Key from Key Vault" or shows warning "Could not retrieve Mapbox key from Key Vault"
 
