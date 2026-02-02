@@ -1,5 +1,54 @@
 .main-view {
+  display: flex;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  background: #fff;
+  border: 2px solid #0066cc;
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s;
+}
+
+.sidebar-toggle:hover {
+  background: #f0f0f0;
+}
+
+.sidebar {
+  width: 320px;
+  background: #f8f9fa;
+  border-right: 2px solid #dee2e6;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
+  flex-shrink: 0;
+}
+
+.sidebar.closed {
+  margin-left: -320px;
+}
+
+.sidebar-content {
+  padding: 4rem 1rem 1rem 1rem;
+}
+
+.main-content {
+  flex: 1;
   padding: 1rem;
+  min-width: 0;
 }
 
 .map-container {
@@ -47,9 +96,30 @@
   border-color: #999;
 }
 
+.options-panel .option-select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.options-panel .option-select:hover {
+  border-color: #999;
+}
+
+.options-panel .option-select:focus {
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
 .school-table {
   overflow-x: auto;
   margin-top: 1rem;
+  max-width: 100%;
 }
 
 .school-table table {
@@ -232,4 +302,34 @@ body.dark-mode .loading {
 
 body.dark-mode .map-container {
   border-color: #444;
+}
+
+body.dark-mode .sidebar {
+  background: #2a2a2a;
+  border-right-color: #444;
+}
+
+body.dark-mode .sidebar-toggle {
+  background: #3a3a3a;
+  border-color: #0088ff;
+  color: #e0e0e0;
+}
+
+body.dark-mode .sidebar-toggle:hover {
+  background: #4a4a4a;
+}
+
+body.dark-mode .options-panel .option-select {
+  background: #3a3a3a;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+body.dark-mode .options-panel .option-select:hover {
+  border-color: #666;
+}
+
+body.dark-mode .options-panel .option-select:focus {
+  border-color: #0088ff;
+  box-shadow: 0 0 0 3px rgba(0, 136, 255, 0.1);
 }

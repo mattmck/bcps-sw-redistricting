@@ -15,6 +15,8 @@ export const MainView = () => {
   const [selectedSchool, setSelectedSchool] = useState<string>('')
   const [snapshotUrl, setSnapshotUrl] = useState<string>('')
   const [takingSnapshot, setTakingSnapshot] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [selectedDropdown, setSelectedDropdown] = useState<string>('')
   const [darkMode, setDarkMode] = useState(false)
   const selectedSchoolRef = useRef<string>('')
   const listenersAddedRef = useRef(false)
@@ -35,7 +37,9 @@ export const MainView = () => {
     if (!mapContainerRef.current || mapRef.current) return
 
     console.log('Initializing Mapbox map...')
+    console.log('Token being set:', MAPBOX_ACCESS_TOKEN ? `${MAPBOX_ACCESS_TOKEN.substring(0, 20)}...` : 'UNDEFINED')
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN
+    console.log('mapboxgl.accessToken after setting:', mapboxgl.accessToken ? `${mapboxgl.accessToken.substring(0, 20)}...` : 'UNDEFINED')
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
@@ -477,99 +481,177 @@ export const MainView = () => {
 
   return (
     <div className="main-view">
-      <div ref={mapContainerRef} className="map-container"></div>
-      
-      {geoData.loading && <div className="loading">Loading map data...</div>}
-      {!geoData.loading && schools.length === 0 && <div className="loading">Data loaded but no schools found</div>}
-      
-      {selectedSchool && (
-        <div className="selected-school-banner">
-          <strong>Selected School:</strong> {selectedSchool}
-          <span style={{
-            display: 'inline-block',
-            width: '20px',
-            height: '20px',
-            backgroundColor: geoData.schoolColors[selectedSchool],
-            marginLeft: '10px',
-            verticalAlign: 'middle',
-            border: '2px solid white'
-          }} />
-          <span style={{ marginLeft: '10px', fontSize: '0.9em', color: '#666' }}>
-            (Click planning blocks on the map to assign them to this school)
-          </span>
-        </div>
-      )}
-      
-      <div className="options-panel">
-        <h4>Actions</h4>
-        <button onClick={takeSnapshot} className="btn" disabled={takingSnapshot}>
-          {takingSnapshot ? '📸 Taking Snapshot...' : '📸 Take Snapshot'}
-        </button>
-        <button onClick={() => loadOption(geoData.options.current)} className="btn">Load Current Districting</button>
-        <label className="dark-mode-toggle">
-          <span>Dark Mode</span>
-          <input 
-            type="checkbox" 
-            checked={darkMode} 
-            onChange={(e) => setDarkMode(e.target.checked)}
-            className="dark-mode-checkbox"
-          />
-          <span className="slider"></span>
-        </label>
-      </div>
+      <button 
+        className="sidebar-toggle"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        aria-label="Toggle sidebar"
+      >
+        {sidebarOpen ? '◀' : '▶'}
+      </button>
 
-      <div className="options-panel">
-        <h4>9/30/2015 Meeting</h4>
-        <button onClick={() => loadOption(geoData.options.option1)} className="btn">Option 1</button>
-        <button onClick={() => loadOption(geoData.options.option2)} className="btn">Option 2</button>
-        <button onClick={() => loadOption(geoData.options.option3)} className="btn">Option 3</button>
+      <div className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
+        <div className="sidebar-content">
+          <div className="options-panel">
+            <h4>Actions</h4>
+            <button onClick={takeSnapshot} className="btn" disabled={takingSnapshot}>
+              {takingSnapshot ? '📸 Taking Snapshot...' : '📸 Take Snapshot'}
+            </button>
+            <button onClick={() => loadOption(geoData.options.current)} className="btn">Load Current Districting</button>
+            <label className="dark-mode-toggle">
+              <span>Dark Mode</span>
+              <input 
+                type="checkbox" 
+                checked={darkMode} 
+                onChange={(e) => setDarkMode(e.target.checked)}
+                className="dark-mode-checkbox"
+              />
+              <span className="slider"></span>
+            </label>
+          </div>
+
+          <div className="options-panel">
+            <h4>9/30/2015 Meeting</h4>
+        <select 
+          value={selectedDropdown.startsWith('option') && !selectedDropdown.includes('1021') && !selectedDropdown.includes('1111') && !selectedDropdown.includes('1118') && !['optionA', 'optionB', 'optionC', 'optionD', 'optionE'].includes(selectedDropdown) ? selectedDropdown : ''}
+          onChange={(e) => {
+            const key = e.target.value
+            if (key) {
+              setSelectedDropdown(key)
+              loadOption(geoData.options[key as keyof typeof geoData.options] as RedistrictingOption)
+            }
+          }}
+          className="option-select"
+        >
+          <option value="">Select Option...</option>
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
       </div>
 
       <div className="options-panel">
         <h4>10/14/2015 Meeting</h4>
-        <button onClick={() => loadOption(geoData.options.optionA)} className="btn">Option A</button>
-        <button onClick={() => loadOption(geoData.options.optionB)} className="btn">Option B</button>
-        <button onClick={() => loadOption(geoData.options.optionC)} className="btn">Option C</button>
-        <button onClick={() => loadOption(geoData.options.optionD)} className="btn">Option D</button>
-        <button onClick={() => loadOption(geoData.options.optionE)} className="btn">Option E</button>
+        <select 
+          value={['optionA', 'optionB', 'optionC', 'optionD', 'optionE'].includes(selectedDropdown) ? selectedDropdown : ''}
+          onChange={(e) => {
+            const key = e.target.value
+            if (key) {
+              setSelectedDropdown(key)
+              loadOption(geoData.options[key as keyof typeof geoData.options] as RedistrictingOption)
+            }
+          }}
+          className="option-select"
+        >
+          <option value="">Select Option...</option>
+          <option value="optionA">Option A</option>
+          <option value="optionB">Option B</option>
+          <option value="optionC">Option C</option>
+          <option value="optionD">Option D</option>
+          <option value="optionE">Option E</option>
+        </select>
       </div>
 
       <div className="options-panel">
         <h4>10/28/2015 Meeting</h4>
-        <button onClick={() => loadOption(geoData.options.optionA1021)} className="btn">Option A</button>
-        <button onClick={() => loadOption(geoData.options.optionB1021)} className="btn">Option B</button>
-        <button onClick={() => loadOption(geoData.options.optionC1021)} className="btn">Option C</button>
-        <button onClick={() => loadOption(geoData.options.optionD1021)} className="btn">Option D</button>
-        <button onClick={() => loadOption(geoData.options.optionE1021)} className="btn">Option E</button>
-        <button onClick={() => loadOption(geoData.options.optionF1021)} className="btn">Option F</button>
-        <button onClick={() => loadOption(geoData.options.optionG1021)} className="btn">Option G</button>
+        <select 
+          value={selectedDropdown.includes('1021') ? selectedDropdown : ''}
+          onChange={(e) => {
+            const key = e.target.value
+            if (key) {
+              setSelectedDropdown(key)
+              loadOption(geoData.options[key as keyof typeof geoData.options] as RedistrictingOption)
+            }
+          }}
+          className="option-select"
+        >
+          <option value="">Select Option...</option>
+          <option value="optionA1021">Option A</option>
+          <option value="optionB1021">Option B</option>
+          <option value="optionC1021">Option C</option>
+          <option value="optionD1021">Option D</option>
+          <option value="optionE1021">Option E</option>
+          <option value="optionF1021">Option F</option>
+          <option value="optionG1021">Option G</option>
+        </select>
       </div>
 
       <div className="options-panel">
         <h4>11/11/2015 Meeting</h4>
-        <button onClick={() => loadOption(geoData.options.optionA1111)} className="btn">Option A</button>
-        <button onClick={() => loadOption(geoData.options.optionB1111)} className="btn">Option B</button>
-        <button onClick={() => loadOption(geoData.options.optionC1111)} className="btn">Option C</button>
-        <button onClick={() => loadOption(geoData.options.optionD1111)} className="btn">Option D</button>
-        <button onClick={() => loadOption(geoData.options.optionE1111)} className="btn">Option E</button>
-        <button onClick={() => loadOption(geoData.options.optionF1111)} className="btn">Option F</button>
-        <button onClick={() => loadOption(geoData.options.optionG1111)} className="btn">Option G</button>
-        <button onClick={() => loadOption(geoData.options.optionH1111)} className="btn">Option H</button>
-        <button onClick={() => loadOption(geoData.options.optionI1111)} className="btn">Option I</button>
-        <button onClick={() => loadOption(geoData.options.optionJ1111)} className="btn">Option J</button>
-        <button onClick={() => loadOption(geoData.options.optionK1111)} className="btn">Option K</button>
-        <button onClick={() => loadOption(geoData.options.optionL1111)} className="btn">Option L</button>
+        <select 
+          value={selectedDropdown.includes('1111') ? selectedDropdown : ''}
+          onChange={(e) => {
+            const key = e.target.value
+            if (key) {
+              setSelectedDropdown(key)
+              loadOption(geoData.options[key as keyof typeof geoData.options] as RedistrictingOption)
+            }
+          }}
+          className="option-select"
+        >
+          <option value="">Select Option...</option>
+          <option value="optionA1111">Option A</option>
+          <option value="optionB1111">Option B</option>
+          <option value="optionC1111">Option C</option>
+          <option value="optionD1111">Option D</option>
+          <option value="optionE1111">Option E</option>
+          <option value="optionF1111">Option F</option>
+          <option value="optionG1111">Option G</option>
+          <option value="optionH1111">Option H</option>
+          <option value="optionI1111">Option I</option>
+          <option value="optionJ1111">Option J</option>
+          <option value="optionK1111">Option K</option>
+          <option value="optionL1111">Option L</option>
+        </select>
       </div>
 
       <div className="options-panel">
         <h4>11/18/2015 Meeting</h4>
-        <button onClick={() => loadOption(geoData.options.option11118)} className="btn">Option 1</button>
-        <button onClick={() => loadOption(geoData.options.option21118)} className="btn">Option 2</button>
-        <button onClick={() => loadOption(geoData.options.option31118)} className="btn">Option 3</button>
-        <button onClick={() => loadOption(geoData.options.option41118)} className="btn">Option 4</button>
+        <select 
+          value={selectedDropdown.includes('1118') ? selectedDropdown : ''}
+          onChange={(e) => {
+            const key = e.target.value
+            if (key) {
+              setSelectedDropdown(key)
+              loadOption(geoData.options[key as keyof typeof geoData.options] as RedistrictingOption)
+            }
+          }}
+          className="option-select"
+        >
+          <option value="">Select Option...</option>
+          <option value="option11118">Option 1</option>
+          <option value="option21118">Option 2</option>
+          <option value="option31118">Option 3</option>
+          <option value="option41118">Option 4</option>
+        </select>
+      </div>
+        </div>
       </div>
 
-      <div className="school-table">
+      <div className="main-content">
+        <div ref={mapContainerRef} className="map-container"></div>
+        
+        {geoData.loading && <div className="loading">Loading map data...</div>}
+        {!geoData.loading && schools.length === 0 && <div className="loading">Data loaded but no schools found</div>}
+        
+        {selectedSchool && (
+          <div className="selected-school-banner">
+            <strong>Selected School:</strong> {selectedSchool}
+            <span style={{
+              display: 'inline-block',
+              width: '20px',
+              height: '20px',
+              backgroundColor: geoData.schoolColors[selectedSchool],
+              marginLeft: '10px',
+              verticalAlign: 'middle',
+              border: '2px solid white'
+            }} />
+            <span style={{ marginLeft: '10px', fontSize: '0.9em', color: '#666' }}>
+              (Click planning blocks on the map to assign them to this school)
+            </span>
+          </div>
+        )}
+
+        <div className="school-table">
         {schools.length === 0 ? (
           <div className="loading">No school data loaded yet...</div>
         ) : (
@@ -621,9 +703,9 @@ export const MainView = () => {
           </tbody>
         </table>
         )}
-      </div>
+        </div>
 
-      {snapshotUrl && (
+        {snapshotUrl && (
         <div id="snapshot" className="snapshot-container">
           <h3>Map Snapshot</h3>
           <img src={snapshotUrl} alt="Map snapshot" style={{ maxWidth: '100%', border: '1px solid #ccc' }} />
@@ -636,7 +718,8 @@ export const MainView = () => {
             </button>
           </div>
         </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
