@@ -5,7 +5,7 @@ import type { School, PlanningBlock, RedistrictingOption } from '@/types'
 import { useGeoData } from '@/hooks/useGeoData'
 import './MainView.css'
 
-const MAPBOX_ACCESS_TOKEN = '***REMOVED_MAPBOX_PUBLIC_KEY***'
+const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
 
 export const MainView = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
