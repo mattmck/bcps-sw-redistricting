@@ -35,9 +35,6 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
-
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -61,12 +58,6 @@ jobs:
           echo "::add-mask::$MAPBOX_KEY"
           echo "MAPBOX_KEY=$MAPBOX_KEY" >> $GITHUB_OUTPUT
 
-      - name: Build application
-        run: npm run build
-        env:
-          NODE_ENV: production
-          VITE_MAPBOX_ACCESS_TOKEN: ${{ steps.get-mapbox-key.outputs.MAPBOX_KEY }}
-
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -76,8 +67,10 @@ jobs:
           app_location: '/'
           api_location: ''  # No API
           output_location: 'dist'
-          skip_app_build: true  # We already built it
-          skip_api_build: true  # No API or database connections
+          app_build_command: 'npm run build'
+        env:
+          NODE_ENV: production
+          VITE_MAPBOX_ACCESS_TOKEN: ${{ steps.get-mapbox-key.outputs.MAPBOX_KEY }}
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
