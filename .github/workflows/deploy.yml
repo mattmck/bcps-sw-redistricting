@@ -18,6 +18,10 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
     
     steps:
       - name: Checkout code
@@ -78,6 +82,9 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request
+    permissions:
+      contents: read
+      pull-requests: write
     
     steps:
       - name: Close Pull Request
