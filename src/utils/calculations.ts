@@ -19,8 +19,6 @@ export function distance(
 ): number {
   const radlat1 = (Math.PI * lat1) / 180
   const radlat2 = (Math.PI * lat2) / 180
-  const radlon1 = (Math.PI * lon1) / 180
-  const radlon2 = (Math.PI * lon2) / 180
   const theta = lon1 - lon2
   const radtheta = (Math.PI * theta) / 180
   let dist =
