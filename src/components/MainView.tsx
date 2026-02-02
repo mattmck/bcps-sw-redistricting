@@ -17,6 +17,7 @@ export const MainView = () => {
   const [takingSnapshot, setTakingSnapshot] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const selectedSchoolRef = useRef<string>('')
+  const listenersAddedRef = useRef(false)
 
   // Keep ref in sync with state
   useEffect(() => {
@@ -66,6 +67,57 @@ export const MainView = () => {
       setSchools(geoData.schools)
     }
   }, [geoData.loading, geoData.schools])
+
+  // Add event listeners once
+  const addMapListeners = (map: mapboxgl.Map) => {
+    if (listenersAddedRef.current) return
+    
+    console.log('Adding map event listeners')
+    
+    // Click handler for schools
+    map.on('click', 'schools-circle', (e) => {
+      if (e.features && e.features.length > 0) {
+        const schoolName = e.features[0].properties?.NAME
+        if (schoolName) {
+          console.log('School clicked:', schoolName)
+          setSelectedSchool(schoolName)
+        }
+      }
+    })
+
+    // Change cursor on hover for schools
+    map.on('mouseenter', 'schools-circle', () => {
+      map.getCanvas().style.cursor = 'pointer'
+    })
+    map.on('mouseleave', 'schools-circle', () => {
+      map.getCanvas().style.cursor = ''
+    })
+    
+    // Click handler for planning blocks
+    map.on('click', 'planning-blocks-fill', (e) => {
+      const currentSelectedSchool = selectedSchoolRef.current
+      console.log('Planning block layer clicked, features:', e.features?.length, 'selectedSchool:', currentSelectedSchool)
+      if (e.features && e.features.length > 0) {
+        const blockId = e.features[0].properties?.PBID
+        console.log('Block ID:', blockId, 'Selected school:', currentSelectedSchool)
+        if (blockId && currentSelectedSchool) {
+          console.log('Calling handleBlockClick for block:', blockId)
+          handleBlockClick(blockId)
+        } else if (!currentSelectedSchool) {
+          console.log('No school selected - please click a school first')
+        }
+      }
+    })
+
+    map.on('mouseenter', 'planning-blocks-fill', () => {
+      map.getCanvas().style.cursor = 'pointer'
+    })
+    map.on('mouseleave', 'planning-blocks-fill', () => {
+      map.getCanvas().style.cursor = ''
+    })
+    
+    listenersAddedRef.current = true
+  }
 
   // Load GeoJSON layers when data is ready
   useEffect(() => {
@@ -132,50 +184,10 @@ export const MainView = () => {
           }
         })
         console.log('Schools layer added successfully')
-
-        // Add click handler for schools
-        map.on('click', 'schools-circle', (e) => {
-          if (e.features && e.features.length > 0) {
-            const schoolName = e.features[0].properties?.NAME
-            if (schoolName) {
-              console.log('School clicked:', schoolName)
-              setSelectedSchool(schoolName)
-            }
-          }
-        })
-
-        // Change cursor on hover
-        map.on('mouseenter', 'schools-circle', () => {
-          map.getCanvas().style.cursor = 'pointer'
-        })
-        map.on('mouseleave', 'schools-circle', () => {
-          map.getCanvas().style.cursor = ''
-        })
       }
 
-      // Add click handler for planning blocks (must be after layer is added)
-      console.log('Adding planning block click handler')
-      map.on('click', 'planning-blocks-fill', (e) => {
-        const currentSelectedSchool = selectedSchoolRef.current
-        console.log('Planning block layer clicked, features:', e.features?.length, 'selectedSchool:', currentSelectedSchool)
-        if (e.features && e.features.length > 0) {
-          const blockId = e.features[0].properties?.PBID
-          console.log('Block ID:', blockId, 'Selected school:', currentSelectedSchool)
-          if (blockId && currentSelectedSchool) {
-            console.log('Calling handleBlockClick for block:', blockId)
-            handleBlockClick(blockId)
-          } else if (!currentSelectedSchool) {
-            console.log('No school selected - please click a school first')
-          }
-        }
-      })
-
-      map.on('mouseenter', 'planning-blocks-fill', () => {
-        map.getCanvas().style.cursor = 'pointer'
-      })
-      map.on('mouseleave', 'planning-blocks-fill', () => {
-        map.getCanvas().style.cursor = ''
-      })
+      // Add event listeners once
+      addMapListeners(map)
 
       // Load current districting after layers are added
       console.log('Layers initialized, loading current option')
@@ -200,20 +212,21 @@ export const MainView = () => {
 
   // Handle dark mode toggle
   useEffect(() => {
-    if (!mapRef.current) return
+    if (!mapRef.current || !geoData.planningBlocksGeoJSON || !geoData.schoolsGeoJSON) return
     
     const map = mapRef.current
     const newStyle = darkMode 
       ? 'mapbox://styles/mapbox/dark-v11'
       : 'mapbox://styles/mapbox/streets-v12'
     
+    // setStyle removes all sources/layers, so we need to reset listener flag
+    listenersAddedRef.current = false
+    
     map.setStyle(newStyle)
     
     // Re-add layers and data after style loads
     map.once('style.load', () => {
-      if (!geoData.planningBlocksGeoJSON || !geoData.schoolsGeoJSON) return
-      
-      // Re-add planning blocks
+      // Re-add planning blocks (sources are cleared by setStyle)
       map.addSource('planning-blocks', {
         type: 'geojson',
         data: geoData.planningBlocksGeoJSON as any
@@ -261,6 +274,9 @@ export const MainView = () => {
           'circle-stroke-color': '#ffffff'
         }
       })
+      
+      // Re-add event listeners
+      addMapListeners(map)
       
       // Restore current colors
       if (schools.length > 0) {
