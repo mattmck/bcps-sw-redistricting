@@ -67,10 +67,10 @@ jobs:
           app_location: '/'
           api_location: ''  # No API
           output_location: 'dist'
-          app_build_command: 'npm run build'
+          app_build_command: 'npm install && npm run build'
         env:
-          NODE_ENV: production
           VITE_MAPBOX_ACCESS_TOKEN: ${{ steps.get-mapbox-key.outputs.MAPBOX_KEY }}
+          PRE_BUILD_COMMAND: 'npm install'
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
