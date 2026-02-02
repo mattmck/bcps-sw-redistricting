@@ -21,13 +21,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Request logging middleware
-app.use((req, res, next) => {
+app.use((req, _res, next) => {
   console.log(`${req.method} ${req.path}`);
   next();
 });
 
 // Health check endpoint
-app.get('/health', async (req: Request, res: Response) => {
+app.get('/health', async (_req: Request, res: Response) => {
   try {
     const dbHealthy = await testConnection();
     
@@ -47,7 +47,7 @@ app.get('/health', async (req: Request, res: Response) => {
 });
 
 // API routes placeholder
-app.get('/api', (req: Request, res: Response) => {
+app.get('/api', (_req: Request, res: Response) => {
   res.json({
     message: 'BCPS Redistricting API',
     version: '1.0.0',
