@@ -214,7 +214,7 @@ az staticwebapp upload --app-name bcps-redistricting --output-location dist
 - **Logs:** Available in Azure Portal
 
 ### GitHub Pages
-- **URL:** `https://mattmck.github.io/bcps-sw-redistricting/`
+- **URL:** `https://<USERNAME>.github.io/bcps-sw-redistricting/` (replace `<USERNAME>` with your GitHub username)
 - **Status:** Repository → Settings → Pages
 - **Logs:** Repository → Actions → Deploy to GitHub Pages workflow
 
