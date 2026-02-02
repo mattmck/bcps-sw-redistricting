@@ -14,7 +14,7 @@ variable "environment" {
 variable "location" {
   description = "Cloud provider region"
   type        = string
-  default     = "eastus"
+  default     = "eastus2"
 }
 
 variable "tags" {

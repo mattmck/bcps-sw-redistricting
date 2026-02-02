@@ -2,7 +2,7 @@
 
 project_name = "bcps-redistricting"
 environment  = "prod"
-location     = "eastus"  # Options: eastus, westus2, centralus, westeurope, eastasia
+location     = "eastus2"  # Options: eastus2, westus2, centralus, westeurope, eastasia
 
 # SKU tier: "Free" for development, "Standard" for production
 sku_tier = "Free"
