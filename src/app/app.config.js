@@ -4,6 +4,6 @@
   angular
     .module('redistricting')
     .constant('CONFIG', {
-      MAPBOX_ACCESS_TOKEN: '***REMOVED_MAPBOX_SECRET_KEY***'
+      MAPBOX_ACCESS_TOKEN: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
     });
 })();
