@@ -18,7 +18,7 @@ export const MainView = () => {
   const [darkMode, setDarkMode] = useState(false)
   const selectedSchoolRef = useRef<string>('')
   const listenersAddedRef = useRef(false)
-  const isInitialMount = useRef(true)
+  const darkModeInitialized = useRef(false)
   const schoolsRef = useRef<School[]>([])
 
   // Keep refs in sync with state
@@ -220,10 +220,9 @@ export const MainView = () => {
   useEffect(() => {
     if (!mapRef.current || !geoData.planningBlocksGeoJSON || !geoData.schoolsGeoJSON) return
     
-    // Skip on initial mount - let the layer initialization effect handle it
-    if (isInitialMount.current) {
-      isInitialMount.current = false
-      // Still apply body class on initial mount
+    // On first run when data is ready, just mark as initialized
+    if (!darkModeInitialized.current) {
+      darkModeInitialized.current = true
       document.body.classList.toggle('dark-mode', darkMode)
       return
     }
@@ -323,7 +322,7 @@ export const MainView = () => {
     
     // Apply dark mode to page
     document.body.classList.toggle('dark-mode', darkMode)
-  }, [darkMode])
+  }, [darkMode, geoData.planningBlocksGeoJSON, geoData.schoolsGeoJSON, geoData.schoolColors])
 
   const loadOption = (option: RedistrictingOption) => {
     console.log('loadOption called, option has', Object.keys(option).length, 'schools')
