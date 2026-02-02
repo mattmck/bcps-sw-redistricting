@@ -20,3 +20,8 @@ tags = {
   Application = "Redistricting Tool"
   Owner       = "Infrastructure Team"
 }
+
+# Required: Mapbox API key for production
+# Get your token from https://account.mapbox.com/access-tokens/
+# This will be stored in Azure Key Vault
+mapbox_api_key = "***REMOVED***"

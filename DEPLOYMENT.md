@@ -121,6 +121,9 @@ environment  = "prod"
 location     = "eastus"  # Choose closest region
 sku_tier     = "Free"    # or "Standard" ($9/month)
 
+# Required: Mapbox API key
+mapbox_api_key = "***REMOVED***"
+
 # Optional: Custom domain
 # custom_domain = "redistricting.yourschool.org"
 
@@ -131,6 +134,8 @@ tags = {
   Owner       = "your-email@example.com"
 }
 ```
+
+**Important**: The `terraform.tfvars` file is gitignored and will not be committed. The Mapbox API key will be stored securely in Azure Key Vault.
 
 ### Available Regions
 

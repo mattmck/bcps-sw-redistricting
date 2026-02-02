@@ -47,10 +47,10 @@ variable "custom_domain" {
 }
 
 variable "mapbox_api_key" {
-  description = "Mapbox API key for production (stored in Key Vault)"
+  description = "Mapbox API key for production (stored in Key Vault). Must be provided via terraform.tfvars or TF_VAR_mapbox_api_key environment variable."
   type        = string
   sensitive   = true
-  default     = "***REMOVED***"
+  # No default - must be provided to avoid committing secrets to git
 }
 
 variable "enable_secrets_manager" {
