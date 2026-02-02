@@ -4,6 +4,14 @@ A modern React 18 application for visualizing and analyzing Baltimore County Pub
 
 **Status:** ✅ Fully migrated from AngularJS 1.4 to React 18 (January 2026)
 
+## 🚀 Production Deployment
+
+This app supports deployment to **Azure Static Web Apps** or **GitHub Pages**. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed setup instructions.
+
+**Quick Deploy Options:**
+- **Azure Static Web Apps** (Primary) - Custom domain, enterprise features
+- **GitHub Pages** (Alternative) - Free, simple hosting
+
 ## Quick Start (Modern React App)
 
 ### Prerequisites

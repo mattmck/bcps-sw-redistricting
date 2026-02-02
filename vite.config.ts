@@ -6,6 +6,9 @@ import { resolve } from 'path'
 export default defineConfig({
   plugins: [react()],
   publicDir: 'angular-app/public',
+  // Set base path for GitHub Pages deployment (repo name)
+  // For custom domain or Azure Static Web Apps, this will be '/'
+  base: process.env.GITHUB_PAGES === 'true' ? '/bcps-sw-redistricting/' : '/',
   resolve: {
     alias: {
       '@': resolve(__dirname, './src')

@@ -1,518 +1,269 @@
-# BCPS Redistricting Tool - Azure Deployment Guide
+# Production Deployment Guide
 
-This guide covers deploying the BCPS School Redistricting Tool to Azure using Terraform in a cloud-agnostic way.
+This application supports two deployment options:
 
-## Overview
+## Option 1: Azure Static Web Apps (Primary)
 
-**Infrastructure**: Azure Static Web Apps (cloud-agnostic abstraction)  
-**IaC Tool**: Terraform >= 1.0  
-**CI/CD**: GitHub Actions (optional)  
-**Cost**: Free tier available (100 GB bandwidth/month)
+### Prerequisites
+- Azure subscription
+- Azure Static Web Apps resource created
+- Azure Key Vault for secrets (optional, recommended for production)
 
-## Quick Start
+### Required GitHub Secrets
+1. `AZURE_STATIC_WEB_APPS_API_TOKEN` - Deployment token from Azure Static Web Apps
+2. `MAPBOX_API_KEY` - Mapbox API token for map functionality
+3. `AZURE_CREDENTIALS` - Azure service principal credentials (if using Key Vault)
 
-### Option 1: Automated Script (Recommended)
+### Setup Steps
 
+#### 1. Create Azure Static Web App
 ```bash
-# Full deployment (infrastructure + app)
-./deploy.sh
-
-# Deploy app only (after infrastructure exists)
-./deploy.sh --deploy-only
-
-# Deploy infrastructure only
-./deploy.sh --infra-only
+az staticwebapp create \
+  --name bcps-redistricting \
+  --resource-group bcps-redistricting-prod \
+  --location eastus2 \
+  --sku Free
 ```
 
-### Option 2: Manual Steps
-
+#### 2. Get Deployment Token
 ```bash
-# 1. Login to Azure
-az login
+az staticwebapp secrets list \
+  --name bcps-redistricting \
+  --query "properties.apiKey" -o tsv
+```
 
-# 2. Initialize Terraform
-cd terraform
-terraform init
+#### 3. Add GitHub Secrets
+```bash
+# Add deployment token
+gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN --body "YOUR_DEPLOYMENT_TOKEN"
 
-# 3. Configure deployment
-cp terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars with your settings
+# Add Mapbox API key
+gh secret set MAPBOX_API_KEY --body "pk.your_mapbox_token"
 
-# 4. Deploy infrastructure
-terraform plan -out=tfplan
-terraform apply tfplan
+# Add Azure credentials (if using Key Vault)
+gh secret set AZURE_CREDENTIALS --body "$(az ad sp create-for-rbac --name bcps-redistricting-github --sdk-auth)"
+```
 
-# 5. Build app
-cd ..
-npm install
+### Deployment Workflow
+The `deploy.yml` workflow automatically deploys to Azure Static Web Apps when:
+- Code is pushed to `master` or `main` branch
+- Manually triggered via GitHub Actions UI
+
+**Workflow file:** `.github/workflows/deploy.yml`
+
+## Option 2: GitHub Pages (Alternative)
+
+### Prerequisites
+- GitHub repository with Pages enabled
+- MAPBOX_API_KEY secret configured
+
+### Setup Steps
+
+#### 1. Enable GitHub Pages
+Go to repository Settings → Pages:
+- Source: GitHub Actions
+- No custom domain needed (uses `username.github.io/repo-name`)
+
+#### 2. Add Mapbox Secret
+```bash
+gh secret set MAPBOX_API_KEY --body "pk.your_mapbox_token"
+```
+
+#### 3. Disable Azure Workflow (to avoid conflicts)
+Rename or delete `.github/workflows/deploy.yml` to prevent both workflows from running:
+```bash
+mv .github/workflows/deploy.yml .github/workflows/deploy.yml.disabled
+```
+
+### Deployment Workflow
+The `deploy-pages.yml` workflow automatically deploys to GitHub Pages when:
+- Code is pushed to `master` or `main` branch
+- Manually triggered via GitHub Actions UI
+
+**Workflow file:** `.github/workflows/deploy-pages.yml`
+
+**Live URL:** `https://username.github.io/bcps-sw-redistricting/`
+
+## Choosing a Deployment Option
+
+### Use Azure Static Web Apps if:
+- You need custom domain with SSL
+- You want serverless API integration
+- You need enterprise features (authentication, staging environments)
+- You have existing Azure infrastructure
+
+### Use GitHub Pages if:
+- You want free, simple hosting
+- You don't need custom domain
+- You have a public repository
+- You want zero infrastructure management
+
+## Environment Variables
+
+### VITE_MAPBOX_ACCESS_TOKEN
+The Mapbox API token is required for map functionality:
+- **Source:** GitHub Secret `MAPBOX_API_KEY`
+- **Build-time injection:** Vite bundles this into the JavaScript
+- **Security:** Token is masked in logs via `::add-mask::`
+
+### GITHUB_PAGES
+Controls the base path for assets:
+- `true`: Uses `/bcps-sw-redistricting/` base path for GitHub Pages
+- Not set or `false`: Uses `/` for custom domain or Azure
+
+## Deployment Process
+
+### Azure Static Web Apps
+1. Workflow triggers on push to master/main
+2. Node.js environment setup
+3. Dependencies installed via `npm ci`
+4. Azure login (if using Key Vault)
+5. Mapbox token retrieved from Key Vault or GitHub Secret
+6. Application built with `npm run build`
+7. Built files uploaded to Azure Static Web Apps
+8. Deployment complete ✅
+
+### GitHub Pages
+1. Workflow triggers on push to master/main
+2. Node.js environment setup
+3. Dependencies installed via `npm ci`
+4. Mapbox token retrieved from GitHub Secret
+5. Application built with `npm run build` (with GITHUB_PAGES=true)
+6. Built files uploaded as Pages artifact
+7. Artifact deployed to GitHub Pages
+8. Deployment complete ✅
+
+## Manual Deployment
+
+### Trigger via GitHub Actions UI
+1. Go to repository → Actions
+2. Select workflow (Deploy to Azure or Deploy to GitHub Pages)
+3. Click "Run workflow"
+4. Select branch (master/main)
+5. Click "Run workflow" button
+
+### Local Build and Deploy
+```bash
+# Install dependencies
+npm ci
+
+# Set Mapbox token
+export VITE_MAPBOX_ACCESS_TOKEN="pk.your_token_here"
+
+# Build for production
 npm run build
 
-# 6. Deploy app
-DEPLOYMENT_TOKEN=$(cd terraform && terraform output -raw deployment_token)
-npx @azure/static-web-apps-cli deploy \
-  --app-location ./dist \
-  --deployment-token "$DEPLOYMENT_TOKEN"
+# For GitHub Pages, also set:
+export GITHUB_PAGES=true
+npm run build
 
-# 7. Get app URL
-cd terraform && terraform output application_url
+# Preview locally
+npm run preview
+
+# Deploy manually (Azure CLI)
+az staticwebapp upload --app-name bcps-redistricting --output-location dist
 ```
 
-## Prerequisites
+## Troubleshooting
 
-### Required Tools
+### Map Not Loading
+**Symptom:** Blank map or console errors about Mapbox token
 
-1. **Azure CLI** (for authentication)
+**Solution:**
+1. Verify `MAPBOX_API_KEY` secret is set in GitHub
+2. Check GitHub Actions logs for token masking (`***`)
+3. Verify token in dist/assets/*.js files (look for `pk.ey`)
+4. Check Mapbox dashboard for API usage/restrictions
+
+### Deployment Failed
+**Symptom:** GitHub Actions workflow fails
+
+**Solution:**
+1. Check workflow logs for specific error
+2. Verify all required secrets are configured
+3. For Azure: Verify Azure credentials and Static Web Apps token
+4. For GitHub Pages: Verify Pages is enabled in repository settings
+
+### Wrong Base Path (404 on Assets)
+**Symptom:** App loads but assets return 404
+
+**Solution:**
+- **GitHub Pages:** Ensure `GITHUB_PAGES=true` in workflow
+- **Azure/Custom Domain:** Ensure `GITHUB_PAGES` is NOT set
+- Check `vite.config.ts` base path configuration
+- Rebuild and redeploy
+
+### Azure Key Vault Access Denied
+**Symptom:** Workflow fails at "Get Mapbox API Key from Key Vault" or shows warning "Could not retrieve Mapbox key from Key Vault"
+
+**Solution:**
+1. **If using Azure Key Vault:** Verify service principal has Key Vault read permissions:
    ```bash
-   # macOS
-   brew install azure-cli
+   az keyvault set-policy \
+     --name bcps-redistricting-prod-kv \
+     --spn YOUR_SP_APP_ID \
+     --secret-permissions get list
+   ```
+2. **Alternative:** Use GitHub Secret only (skip Key Vault):
+   - The workflow automatically falls back to `MAPBOX_API_KEY` GitHub Secret
+   - Ensure the GitHub Secret is set correctly (see below)
+
+### Invalid or Short Mapbox Token
+**Symptom:** Warning shows "Mapbox key retrieved (length: 18)" or similar short length
+
+**Solution:**
+1. **Check GitHub Secret is set correctly:**
+   ```bash
+   # Verify the secret exists
+   gh secret list | grep MAPBOX_API_KEY
    
-   # Windows
-   winget install Microsoft.AzureCLI
-   
-   # Linux
-   curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+   # Set/update the secret with a valid Mapbox token
+   gh secret set MAPBOX_API_KEY --body "pk.eyJ1Ijoibm..."
    ```
 
-2. **Terraform** >= 1.0
+2. **Verify token format:**
+   - Valid Mapbox tokens start with `pk.ey`
+   - Tokens are typically 80-100 characters long
+   - Get your token from https://account.mapbox.com/access-tokens/
+
+3. **Common mistakes:**
+   - Using a placeholder value like "your_token_here"
+   - Using an incomplete token (copied only part of it)
+   - Using an old or revoked token
+
+4. **Test your token:**
    ```bash
-   # macOS
-   brew install terraform
-   
-   # Windows
-   winget install Hashicorp.Terraform
-   
-   # Linux
-   wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-   echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-   sudo apt update && sudo apt install terraform
+   # Build locally with the token to verify it works
+   export VITE_MAPBOX_ACCESS_TOKEN="pk.your_token_here"
+   npm run build
+   npm run preview
+   # Open http://localhost:4173 and verify map loads
    ```
 
-3. **Node.js** >= 18
-   ```bash
-   # macOS
-   brew install node
-   
-   # Windows
-   winget install OpenJS.NodeJS
-   
-   # Linux (via nvm)
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-   nvm install 18
-   ```
-
-### Azure Setup
-
-1. **Azure Subscription**: You need an active Azure subscription
-   - Free tier: https://azure.microsoft.com/free/
-
-2. **Permissions**: Your account needs:
-   - Contributor role on the subscription (or)
-   - Permission to create resource groups and Static Web Apps
-
-## Configuration
-
-### terraform.tfvars
-
-Create `terraform/terraform.tfvars` from the example:
-
-```hcl
-project_name = "bcps-redistricting"
-environment  = "prod"
-location     = "eastus"  # Choose closest region
-sku_tier     = "Free"    # or "Standard" ($9/month)
-
-# Required: Mapbox API key (get from https://account.mapbox.com/access-tokens/)
-mapbox_api_key = "YOUR_MAPBOX_API_KEY_HERE"
-
-# Optional: Custom domain
-# custom_domain = "redistricting.yourschool.org"
-
-# Optional: Custom tags
-tags = {
-  Project     = "BCPS Redistricting"
-  Department  = "IT"
-  Owner       = "your-email@example.com"
-}
-```
-
-**Important**: The `terraform.tfvars` file is gitignored and will not be committed. The Mapbox API key will be stored securely in Azure Key Vault.
-
-### Available Regions
-
-Choose a region close to your users:
-- `eastus` - US East (Virginia)
-- `eastus2` - US East 2 (Virginia)
-- `centralus` - US Central (Iowa)
-- `westus2` - US West 2 (Washington)
-- `westeurope` - West Europe (Netherlands)
-- `eastasia` - East Asia (Hong Kong)
-
-Full list: https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/
-
-## Architecture
-
-```
-┌─────────────────────────────────────────────────┐
-│                  Users                           │
-└─────────────────┬───────────────────────────────┘
-                  │ HTTPS
-                  ▼
-┌─────────────────────────────────────────────────┐
-│     Azure Static Web Apps (with CDN)            │
-│  ┌───────────────────────────────────────────┐  │
-│  │  React SPA (Vite Build)                   │  │
-│  │  - HTML, JS, CSS                          │  │
-│  │  - GeoJSON data files                     │  │
-│  │  - Mapbox GL integration                  │  │
-│  └───────────────────────────────────────────┘  │
-│                                                   │
-│  Features:                                        │
-│  - Global CDN                                     │
-│  - Auto SSL (Let's Encrypt)                      │
-│  - Custom domains                                 │
-│  - Preview URLs for PRs                          │
-└─────────────────────────────────────────────────┘
-```
-
-### Cloud-Agnostic Design
-
-The Terraform configuration uses cloud-agnostic patterns:
-
-**Current: Azure**
-- `azurerm_static_web_app` - Managed static hosting with CDN
-
-**Equivalent: AWS**
-- `aws_s3_bucket` - Static file storage
-- `aws_cloudfront_distribution` - Global CDN
-- `aws_acm_certificate` - SSL certificate
-- `aws_route53_record` - DNS management
-
-**Equivalent: GCP**
-- `google_storage_bucket` - Static file storage
-- `google_compute_backend_bucket` - CDN integration
-- `google_compute_url_map` - Load balancing
-- `google_dns_record_set` - DNS management
-
-The module structure in `terraform/modules/static-hosting/` provides a consistent interface that can be swapped between providers.
-
-## Deployment Workflows
-
-### Development Workflow
-
-```bash
-# Make code changes
-git checkout -b feature/my-changes
-
-# Test locally
-npm run dev
-
-# Build and deploy to preview
-npm run build
-./deploy.sh --deploy-only
-
-# Verify changes
-# Get preview URL from output
-
-# Merge to master for production deployment
-```
-
-### CI/CD with GitHub Actions
-
-The included `.github/workflows/deploy.yml` automatically:
-1. Builds the app on every push to `master`
-2. Deploys to Azure Static Web Apps
-3. Creates preview URLs for pull requests
-4. Cleans up preview environments when PRs close
-
-**Setup**:
-1. Deploy infrastructure once: `cd terraform && terraform apply`
-2. Get deployment token: `terraform output -raw deployment_token`
-3. Add to GitHub Secrets as `AZURE_STATIC_WEB_APPS_API_TOKEN`
-4. Push to master - automatic deployments!
-
-## Cost Breakdown
-
-### Free Tier (Default)
-- **Hosting**: 100 GB bandwidth/month
-- **Storage**: 0.5 GB
-- **Custom domains**: 2 domains
-- **SSL**: Automatic, included
-- **Preview URLs**: 3 staging environments
-- **Cost**: $0/month
-
-### Standard Tier
-- **Hosting**: Unlimited bandwidth
-- **Storage**: 2 GB
-- **Custom domains**: Unlimited
-- **SSL**: Automatic, included
-- **Preview URLs**: 10 staging environments
-- **SLA**: 99.95% uptime guarantee
-- **Cost**: ~$9/month
-
-> For this project (mostly static GeoJSON files), the Free tier is sufficient for moderate traffic.
-
-## Custom Domain Setup
-
-### 1. Add Domain to Terraform
-
-Edit `terraform/terraform.tfvars`:
-```hcl
-custom_domain = "redistricting.yourschool.org"
-```
-
-Apply changes:
-```bash
-cd terraform
-terraform apply
-```
-
-### 2. Configure DNS
-
-Add a CNAME record in your DNS provider:
-
-```
-Type:  CNAME
-Name:  redistricting
-Value: <hostname from terraform output>
-TTL:   3600
-```
-
-Example:
-```
-redistricting.yourschool.org → bcps-redistricting-prod-swa.azurestaticapps.net
-```
-
-### 3. Wait for Validation
-
-Azure will automatically provision an SSL certificate. This takes 5-15 minutes.
-
-Check status:
-```bash
-az staticwebapp show \
-  --name $(cd terraform && terraform output -raw static_web_app_name) \
-  --resource-group $(cd terraform && terraform output -raw resource_group_name) \
-  --query customDomains
-```
-
-## Updating the Application
-
-### Code Changes Only
-
-```bash
-# Make changes, test locally
-npm run dev
-
-# Build and deploy
-npm run build
-./deploy.sh --deploy-only
-```
-
-### Infrastructure Changes
-
-```bash
-# Edit terraform/*.tf files
-cd terraform
-
-# Plan changes
-terraform plan
-
-# Apply changes
-terraform apply
-```
-
-## Monitoring & Troubleshooting
-
-### View Application Logs
-
-```bash
-az monitor activity-log list \
-  --resource-group $(cd terraform && terraform output -raw resource_group_name) \
-  --output table
-```
-
-### Check Build Status
-
-Visit Azure Portal:
-1. Go to resource group
-2. Click on Static Web App
-3. Check "Deployments" section
-
-### Common Issues
-
-**Issue**: Build succeeds but app shows blank page
-- **Cause**: Mapbox API key not configured or invalid
-- **Solution**: Check console for errors, verify Mapbox key in code
-
-**Issue**: 404 errors for routes
-- **Cause**: Static Web App not configured for SPA routing
-- **Solution**: Add `staticwebapp.config.json` (already included)
-
-**Issue**: Large GeoJSON files load slowly
-- **Cause**: Files served without compression
-- **Solution**: Azure Static Web Apps automatically compresses; check browser network tab
-
-### Rollback
-
-If deployment fails or has issues:
-
-```bash
-# Option 1: Redeploy previous version
-git checkout <previous-commit>
-npm run build
-./deploy.sh --deploy-only
-
-# Option 2: Destroy and recreate
-cd terraform
-terraform destroy
-terraform apply
-```
-
-## Security Considerations
-
-### Mapbox API Key
-
-The Mapbox API key is embedded in the client-side code. Protect it:
-
-1. **URL Restrictions**: In Mapbox dashboard, restrict key to your domain
-   - Add: `https://your-app.azurestaticapps.net`
-   - Add: `https://redistricting.yourschool.org` (if using custom domain)
-
-2. **Rate Limiting**: Enable rate limits in Mapbox dashboard
-
-3. **Separate Keys**: Use different keys for dev/staging/prod
-
-### Terraform State
-
-The Terraform state file contains sensitive data (deployment tokens).
-
-**For Production**:
-1. Use remote backend (Azure Storage)
-2. Enable encryption at rest
-3. Restrict access with Azure RBAC
-
-Edit `terraform/main.tf`:
-```hcl
-terraform {
-  backend "azurerm" {
-    resource_group_name  = "terraform-state-rg"
-    storage_account_name = "tfstate<unique>"
-    container_name       = "tfstate"
-    key                  = "redistricting.terraform.tfstate"
-  }
-}
-```
-
-Create backend storage:
-```bash
-# Create resource group
-az group create --name terraform-state-rg --location eastus
-
-# Create storage account
-az storage account create \
-  --name tfstate$(uuidgen | tr -d '-' | tr '[:upper:]' '[:lower:]' | cut -c1-10) \
-  --resource-group terraform-state-rg \
-  --location eastus \
-  --sku Standard_LRS \
-  --encryption-services blob
-
-# Create container
-az storage container create \
-  --name tfstate \
-  --account-name <storage-account-name>
-```
-
-## Cleanup
-
-### Remove Application (Keep Infrastructure)
-
-The application can be removed from Azure Static Web Apps, but the infrastructure remains:
-- Use for maintenance windows
-- Reduces costs temporarily
-
-```bash
-# No direct "remove app" command - redeploy empty dist/ to effectively clear
-```
-
-### Destroy All Infrastructure
-
-**Warning**: This deletes everything and cannot be undone!
-
-```bash
-cd terraform
-terraform destroy
-```
-
-You'll be prompted to confirm. Type `yes` to proceed.
-
-Cost: $0 after destruction (free tier has no residual costs)
-
-## Multi-Environment Setup
-
-To deploy multiple environments (dev, staging, prod):
-
-### Option 1: Separate State Files
-
-```bash
-# Dev
-cd terraform
-terraform workspace new dev
-terraform apply -var="environment=dev" -var="sku_tier=Free"
-
-# Staging
-terraform workspace new staging
-terraform apply -var="environment=staging" -var="sku_tier=Free"
-
-# Prod
-terraform workspace new prod
-terraform apply -var="environment=prod" -var="sku_tier=Standard"
-```
-
-### Option 2: Separate Directories
-
-```
-terraform/
-├── dev/
-│   ├── main.tf
-│   └── terraform.tfvars
-├── staging/
-│   ├── main.tf
-│   └── terraform.tfvars
-└── prod/
-    ├── main.tf
-    └── terraform.tfvars
-```
-
-## Secrets Management
-
-The Mapbox API key and other secrets are managed securely:
-- **Local development**: Stored in `.env.local` (gitignored)
-- **Production**: Stored in Azure Key Vault
-- **CI/CD**: Retrieved automatically during build
-
-See [SECRETS.md](./SECRETS.md) for complete secrets management documentation, including:
-- How to update API keys
-- Cloud-agnostic alternatives (AWS Secrets Manager, GCP Secret Manager)
-- Security best practices
-- Troubleshooting
-
-## Additional Resources
-
-- [Azure Static Web Apps Docs](https://docs.microsoft.com/en-us/azure/static-web-apps/)
-- [Terraform Azure Provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs)
-- [Vite Build Configuration](https://vitejs.dev/guide/build.html)
-- [Mapbox GL JS Docs](https://docs.mapbox.com/mapbox-gl-js/)
-- [Secrets Management Guide](./SECRETS.md)
-- [Project README](./README.md)
-- [Developer Instructions](./INSTRUCTIONS.md)
-
-## Support
-
-For issues:
-1. Check the troubleshooting section above
-2. Review Azure Static Web Apps logs in Azure Portal
-3. Check GitHub Actions logs (if using CI/CD)
-4. Review Terraform plan/apply output for infrastructure issues
-
-## License
-
-This deployment configuration is part of the BCPS Redistricting Tool project.
+## Monitoring
+
+### Azure Static Web Apps
+- **URL:** `https://bcps-redistricting.azurestaticapps.net`
+- **Dashboard:** Azure Portal → Static Web Apps → bcps-redistricting
+- **Logs:** Available in Azure Portal
+
+### GitHub Pages
+- **URL:** `https://<USERNAME>.github.io/bcps-sw-redistricting/` (replace `<USERNAME>` with your GitHub username)
+- **Status:** Repository → Settings → Pages
+- **Logs:** Repository → Actions → Deploy to GitHub Pages workflow
+
+## Security
+
+✅ **Secrets Management:** Tokens stored in GitHub Secrets (encrypted)  
+✅ **Log Masking:** API tokens masked in workflow logs  
+✅ **Build-time Injection:** Tokens embedded at build time, not runtime  
+✅ **HTTPS:** Both platforms serve over HTTPS by default  
+✅ **No Backend:** Static site, no server-side secrets exposure
+
+## References
+
+- [Azure Static Web Apps Documentation](https://docs.microsoft.com/en-us/azure/static-web-apps/)
+- [GitHub Pages Documentation](https://docs.github.com/en/pages)
+- [GitHub Actions Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
+- [Vite Environment Variables](https://vitejs.dev/guide/env-and-mode.html)
+- [Mapbox Access Tokens](https://docs.mapbox.com/help/getting-started/access-tokens/)
