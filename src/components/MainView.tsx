@@ -312,6 +312,12 @@ export const MainView = () => {
         if (hasBlocks && colorExpression.length > 3) {
           map.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression as any)
         }
+      } else if (Object.keys(geoData.options.current).length > 0) {
+        // Fallback: if no schools data yet, load current option
+        console.log('No schools in ref, loading current option as fallback')
+        setTimeout(() => {
+          loadOption(geoData.options.current)
+        }, 100)
       }
     })
     
