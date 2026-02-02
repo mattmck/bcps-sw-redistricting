@@ -45,3 +45,46 @@ output "mapbox_api_key" {
   value       = var.mapbox_api_key
   sensitive   = true
 }
+
+# Database outputs
+output "db_server_name" {
+  description = "PostgreSQL server name"
+  value       = azurerm_postgresql_flexible_server.main.name
+}
+
+output "db_fqdn" {
+  description = "PostgreSQL server fully qualified domain name"
+  value       = azurerm_postgresql_flexible_server.main.fqdn
+}
+
+output "db_name" {
+  description = "PostgreSQL database name"
+  value       = azurerm_postgresql_flexible_server_database.main.name
+}
+
+output "db_connection_string" {
+  description = "PostgreSQL connection string (without password)"
+  value       = "postgresql://${var.db_admin_username}@${azurerm_postgresql_flexible_server.main.fqdn}:5432/${azurerm_postgresql_flexible_server_database.main.name}?sslmode=require"
+  sensitive   = true
+}
+
+# API outputs
+output "api_fqdn" {
+  description = "API fully qualified domain name"
+  value       = azurerm_container_app.api.latest_revision_fqdn
+}
+
+output "api_url" {
+  description = "Full URL to access the API"
+  value       = "https://${azurerm_container_app.api.latest_revision_fqdn}"
+}
+
+output "container_app_name" {
+  description = "Name of the container app"
+  value       = azurerm_container_app.api.name
+}
+
+output "log_analytics_workspace_id" {
+  description = "Log Analytics workspace ID for monitoring"
+  value       = azurerm_log_analytics_workspace.main.id
+}

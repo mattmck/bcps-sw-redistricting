@@ -1,25 +1,59 @@
 # BCPS School Redistricting Tool
 
-A modern React 18 application for visualizing and analyzing Baltimore County Public Schools (BCPS) elementary school redistricting scenarios.
+A full-stack application for visualizing and analyzing Baltimore County Public Schools (BCPS) elementary school redistricting scenarios.
 
-**Status:** ✅ Fully migrated from AngularJS 1.4 to React 18 (January 2026)
+**Status:**
+- ✅ Frontend: Fully migrated from AngularJS 1.4 to React 18 (January 2026)
+- ✅ Backend: PostGIS database with REST API (February 2026)
 
 ## 🚀 Production Deployment
 
-This app supports deployment to **Azure Static Web Apps** or **GitHub Pages**. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed setup instructions.
+This app supports full-stack deployment to **Azure** with infrastructure as code. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed setup instructions.
 
-**Quick Deploy Options:**
-- **Azure Static Web Apps** (Primary) - Custom domain, enterprise features
-- **GitHub Pages** (Alternative) - Free, simple hosting
+**Full Stack:**
+- **Frontend:** Azure Static Web Apps
+- **Backend API:** Azure Container Apps
+- **Database:** Azure PostgreSQL with PostGIS
 
-## Quick Start (Modern React App)
+**Frontend-Only:** For static deployment without backend, see [DEPLOYMENT_FRONTEND_ONLY.md](./DEPLOYMENT_FRONTEND_ONLY.md)
+
+## Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ (LTS recommended)
-- npm or yarn
+- **Node.js 18+** (LTS recommended)
+- **Docker** and **Docker Compose** (for local backend development)
+- **npm** or **yarn**
 
-### Installation
+### Option 1: Full Stack (with Backend)
+
+1. **Start the backend services:**
+
+   ```bash
+   cd backend
+   docker-compose up -d
+   ```
+
+   This starts PostgreSQL with PostGIS and the Express API on port 4000.
+
+2. **Initialize the database (first time only):**
+
+   ```bash
+   npm install
+   npm run migrate  # Imports GeoJSON data into PostgreSQL
+   ```
+
+3. **Start the frontend:**
+
+   ```bash
+   cd ..
+   npm install
+   npm run dev
+   ```
+
+   The app will open at `http://localhost:3000`
+
+### Option 2: Frontend Only (Static Files)
 
 1. **Install dependencies:**
 
@@ -33,21 +67,23 @@ This app supports deployment to **Azure Static Web Apps** or **GitHub Pages**. S
    npm run dev
    ```
 
-   The app will open at `http://localhost:3000`
-
-3. **Build for production:**
-
-   ```bash
-   npm run build
-   npm run preview  # Preview production build
-   ```
+   Uses static GeoJSON files from `angular-app/public/assets/`
 
 ### Development Workflow
 
+#### Frontend
 - **Dev server with HMR:** `npm run dev`
 - **Build:** `npm run build`
 - **Preview build:** `npm run preview`
 - **Type check:** `npx tsc --noEmit`
+
+#### Backend
+- **Start services:** `cd backend && docker-compose up -d`
+- **View API logs:** `docker-compose logs -f api`
+- **View DB logs:** `docker-compose logs -f db`
+- **Stop services:** `docker-compose down`
+- **Migrate data:** `npm run migrate`
+- **Dev mode:** `npm run dev` (uses nodemon for hot reload)
 
 ### Git Workflow
 
@@ -154,15 +190,100 @@ Load 33 predefined redistricting scenarios from:
 - **Download as PNG** for presentations
 - **Custom scenarios** created by manual reassignment
 
+## Backend API
+
+The backend provides a REST API for spatial data queries.
+
+### Endpoints
+
+#### Health Check
+```http
+GET /health
+```
+Returns API health and database connection status.
+
+#### Schools
+```http
+GET /api/schools              # Get all schools (GeoJSON FeatureCollection)
+GET /api/schools/:id          # Get single school by ID
+```
+
+#### Planning Blocks
+```http
+GET /api/planning-blocks      # Get all planning blocks (GeoJSON FeatureCollection)
+GET /api/planning-blocks/:id  # Get single planning block by ID
+```
+
+#### Redistricting Options
+```http
+GET /api/options              # List all redistricting options
+GET /api/options/:id          # Get option with school assignments
+GET /api/options/:id/stats    # Get utilization statistics for option
+POST /api/options             # Create new option
+PUT /api/options/:id          # Update existing option
+DELETE /api/options/:id       # Delete option
+```
+
+### Database Schema
+
+**Tables:**
+- `schools` - Elementary school locations (Point geometry)
+- `planning_blocks` - Census planning blocks (Polygon geometry)
+- `redistricting_options` - Redistricting scenarios metadata
+- `option_assignments` - School-to-planning-block assignments
+- `walking_radii` - Walking distance radii (future)
+
+**Spatial Features:**
+- PostGIS GEOGRAPHY type with SRID 4326 (WGS84)
+- GIST spatial indexes for performance
+- ST_AsGeoJSON for GeoJSON output
+
+### Local Development
+
+```bash
+# Start backend services
+cd backend
+docker-compose up -d
+
+# Check API health
+curl http://localhost:4000/health | jq
+
+# Test endpoints
+curl http://localhost:4000/api/schools | jq '.features | length'
+curl http://localhost:4000/api/planning-blocks | jq '.features | length'
+curl http://localhost:4000/api/options | jq 'length'
+
+# View logs
+docker-compose logs -f api
+
+# Stop services
+docker-compose down
+```
+
+### Database Access
+
+```bash
+# Connect to PostgreSQL
+docker exec -it bcps-postgres psql -U bcps_user -d bcps_redistricting
+
+# Run queries
+SELECT name, src, ST_AsText(location) FROM schools;
+SELECT COUNT(*) FROM planning_blocks;
+SELECT * FROM redistricting_options;
+```
+
 ## Project Structure
 
 ```text
-src/
+src/                          # Frontend (React)
 ├── components/
 │   ├── MainView.tsx          # Main map and data table component
 │   └── MainView.css          # Component styles
 ├── hooks/
-│   └── useGeoData.ts         # Data loading custom hook
+│   ├── useGeoData.ts         # Static GeoJSON loading
+│   └── useGeoData.api.ts     # API-based data loading
+├── services/
+│   └── apiClient.ts          # Backend API client
 ├── types/
 │   └── index.ts              # TypeScript interfaces
 ├── utils/
@@ -170,7 +291,33 @@ src/
 ├── App.tsx                   # Root component
 └── main.tsx                  # Application entry point
 
-angular-app/public/assets/    # GeoJSON data files
+backend/                      # Backend (Node.js + Express)
+├── src/
+│   ├── routes/               # API endpoints
+│   │   ├── schools.ts        # School data endpoints
+│   │   ├── planningBlocks.ts # Planning block endpoints
+│   │   └── options.ts        # Redistricting options endpoints
+│   ├── services/
+│   │   ├── geoJsonService.ts # GeoJSON formatting
+│   │   └── statsService.ts   # Statistics calculations
+│   ├── db/
+│   │   └── connection.ts     # PostgreSQL connection pool
+│   └── index.ts              # Express app entry point
+├── migrations/               # Flyway database migrations
+│   ├── V1__enable_postgis.sql
+│   ├── V2__create_tables.sql
+│   └── V3__create_indexes.sql
+├── scripts/
+│   └── migrate-data.ts       # GeoJSON → PostgreSQL migration
+├── docker-compose.yml        # Local development stack
+└── Dockerfile                # API container image
+
+terraform/                    # Infrastructure as Code
+├── main.tf                   # Azure resources
+├── variables.tf              # Configuration variables
+└── outputs.tf                # Resource outputs
+
+angular-app/public/assets/    # Legacy GeoJSON data files
 ├── schoolLocations.geo.json  # Elementary school locations
 ├── planningBlocks.geo.json   # Census block boundaries
 └── [YYMMDD].geo.json        # Redistricting proposals by date
@@ -179,11 +326,30 @@ angular-app/public/assets/    # GeoJSON data files
 ## Technology Stack
 
 ### Modern Stack (Current)
-- **Frontend:** React 18 + TypeScript
-- **Build:** Vite 7
-- **Mapping:** Mapbox GL JS
-- **Styling:** CSS Modules
+
+#### Frontend
+- **Framework:** React 18 + TypeScript
+- **Build:** Vite 7 with HMR
+- **Mapping:** Mapbox GL JS (GPU-accelerated)
+- **Styling:** Plain CSS
 - **State:** React Hooks (useState, useEffect, useRef)
+- **API Client:** Fetch with TypeScript interfaces
+
+#### Backend
+- **Runtime:** Node.js 18+
+- **Framework:** Express 4
+- **Database:** PostgreSQL 15 with PostGIS 3.4
+- **ORM:** node-postgres (pg) connection pool
+- **Migrations:** Flyway
+- **Container:** Docker + Docker Compose
+
+#### Infrastructure
+- **IaC:** Terraform
+- **Cloud:** Azure
+- **Frontend Hosting:** Azure Static Web Apps
+- **API Hosting:** Azure Container Apps
+- **Database:** Azure PostgreSQL Flexible Server
+- **Monitoring:** Azure Log Analytics
 
 ### Legacy Stack (Preserved)
 - **Frontend:** AngularJS 1.4, UI-Router
