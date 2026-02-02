@@ -45,3 +45,12 @@ coverage/
 
 # Optional REPL history
 .node_repl_history
+
+# Terraform
+**/.terraform/
+**/.terraform.lock.hcl
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/terraform.tfvars
+**/.terraformrc
+**/terraform.rc
