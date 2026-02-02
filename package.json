@@ -12,9 +12,10 @@
     "legacy:test": "gulp test"
   },
   "devDependencies": {
-    "@types/leaflet": "^1.9.21",
     "@types/node": "^25.2.0",
-    "@vitejs/plugin-vue": "^6.0.3",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "browser-sync": "^3.0.4",
     "browser-sync-spa": "^1.0.3",
     "chalk": "^4.1.2",
@@ -61,7 +62,6 @@
     "typescript": "^5.9.3",
     "uglify-save-license": "^0.4.1",
     "vite": "^7.3.1",
-    "vue": "^3.5.27",
     "wiredep": "^4.0.0",
     "wrench": "^1.5.9"
   },
@@ -69,8 +69,12 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@vue-leaflet/vue-leaflet": "^0.10.1",
+    "@types/leaflet": "^1.9.14",
+    "@types/mapbox-gl": "^3.4.1",
     "leaflet": "^1.9.4",
-    "vue-leaflet": "^0.1.0"
+    "mapbox-gl": "^3.18.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-leaflet": "^4.2.1"
   }
 }

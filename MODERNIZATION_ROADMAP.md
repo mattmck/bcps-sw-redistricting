@@ -9,11 +9,11 @@
 - Node.js 0.10+ (ancient)
 
 ## Target State (2025 Modern Stack)
-- Vue 3 + TypeScript
+- React 18 + TypeScript
 - Vite (build tool)
 - npm/yarn (package management)
 - Tailwind CSS (styling)
-- Leaflet 1.9+ (mapping)
+- React Leaflet (mapping)
 - Node.js 20+ LTS
 
 ## Migration Strategy: Gradual Approach
@@ -28,7 +28,8 @@ rm -rf bower_components
 
 # Initialize modern package.json
 npm init -y
-npm install --save-dev vite @vitejs/plugin-vue vue@next typescript
+npm install --save-dev vite @vitejs/plugin-react react react-dom typescript
+npm install --save-dev @types/react @types/react-dom
 ```
 
 #### Step 2: Build System Migration
@@ -37,10 +38,16 @@ Replace Gulp with Vite:
 **New vite.config.ts:**
 ```typescript
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src')
+    }
+  },
   server: {
     port: 3000,
     open: true
@@ -68,37 +75,58 @@ export default defineConfig({
 
 #### Step 1: Mapping Modernization
 ```bash
-npm install leaflet@latest vue-leaflet @vue-leaflet/vue-leaflet
+npm install leaflet@latest react-leaflet
+npm install --save-dev @types/leaflet
 ```
 
 **Modern Leaflet Component:**
-```vue
-<template>
-  <LMap 
-    ref="map"
-    :zoom="zoom"
-    :center="center"
-    style="height: 400px"
-  >
-    <LTileLayer :url="tileUrl" />
-    <LGeoJson 
-      v-for="layer in geoJsonLayers" 
-      :key="layer.id"
-      :geojson="layer.data"
-      :options="layer.options"
-      @click="handleFeatureClick"
-    />
-  </LMap>
-</template>
+```typescript
+import { useState, useRef } from 'react'
+import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
+import type { Map as LeafletMap } from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { LMap, LTileLayer, LGeoJson } from '@vue-leaflet/vue-leaflet'
+interface GeoJsonLayer {
+  id: string
+  data: any
+  options?: any
+}
 
-const zoom = ref(12)
-const center = ref([39.271697, -76.730514])
-const tileUrl = 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=...'
-</script>
+interface MapComponentProps {
+  geoJsonLayers: GeoJsonLayer[]
+  onFeatureClick?: (e: any) => void
+}
+
+export const MapComponent: React.FC<MapComponentProps> = ({ 
+  geoJsonLayers, 
+  onFeatureClick 
+}) => {
+  const [zoom] = useState(12)
+  const [center] = useState<[number, number]>([39.271697, -76.730514])
+  const mapRef = useRef<LeafletMap>(null)
+  const tileUrl = 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=...'
+
+  return (
+    <MapContainer 
+      ref={mapRef}
+      center={center} 
+      zoom={zoom} 
+      style={{ height: '400px' }}
+    >
+      <TileLayer url={tileUrl} />
+      {geoJsonLayers.map((layer) => (
+        <GeoJSON
+          key={layer.id}
+          data={layer.data}
+          {...layer.options}
+          eventHandlers={{
+            click: onFeatureClick
+          }}
+        />
+      ))}
+    </MapContainer>
+  )
+}
 ```
 
 #### Step 2: Styling Modernization
@@ -122,7 +150,7 @@ Replace Bootstrap 3 classes with Tailwind:
 
 ### Phase 3: Framework Migration (2-4 weeks)
 
-#### Convert AngularJS Controller to Vue Composition API
+#### Convert AngularJS Controller to React Component
 
 **Old AngularJS Controller:**
 ```javascript
@@ -136,56 +164,64 @@ function MainController($scope, $resource) {
 }
 ```
 
-**New Vue Composition API:**
+**New React Component:**
 ```typescript
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useSchoolData } from '@/composables/useSchoolData'
-import { useMapInteractions } from '@/composables/useMapInteractions'
+import { useState, useMemo } from 'react'
+import { useSchoolData } from '@/hooks/useSchoolData'
+import { useMapInteractions } from '@/hooks/useMapInteractions'
+import type { School, RedistrictingOption } from '@/types'
 
-// Reactive state
-const schools = ref<School[]>([])
-const selectedSchool = ref<School | null>(null)
+export const MainView: React.FC = () => {
+  // State
+  const [schools, setSchools] = useState<School[]>([])
+  const [selectedSchool, setSelectedSchool] = useState<School | null>(null)
 
-// Composables for reusable logic
-const { loadSchoolData, loadRedistrictingOption } = useSchoolData()
-const { handleSchoolClick, handlePlanningBlockClick } = useMapInteractions()
+  // Custom hooks for reusable logic
+  const { loadSchoolData, loadRedistrictingOption } = useSchoolData()
+  const { handleSchoolClick, handlePlanningBlockClick } = useMapInteractions()
 
-// Computed properties
-const schoolsWithStudentCounts = computed(() => {
-  return schools.value.map(school => ({
-    ...school,
-    students: calculateStudentCount(school)
-  }))
-})
+  // Computed values
+  const schoolsWithStudentCounts = useMemo(() => {
+    return schools.map(school => ({
+      ...school,
+      students: calculateStudentCount(school)
+    }))
+  }, [schools])
 
-// Methods
-const loadOption = async (option: RedistrictingOption) => {
-  await loadRedistrictingOption(option)
-  // Update map layers
+  // Methods
+  const loadOption = async (option: RedistrictingOption) => {
+    await loadRedistrictingOption(option)
+    // Update map layers
+  }
+
+  return (
+    <div className="main-view">
+      {/* Component JSX here */}
+    </div>
+  )
 }
-</script>
 ```
 
 #### Data Management Modernization
 
 **Replace $resource with modern fetch/axios:**
 ```typescript
-// composables/useSchoolData.ts
-import { ref } from 'vue'
+// hooks/useSchoolData.ts
+import { useState } from 'react'
+import type { School } from '@/types'
 
 export function useSchoolData() {
-  const schools = ref<School[]>([])
-  const loading = ref(false)
+  const [schools, setSchools] = useState<School[]>([])
+  const [loading, setLoading] = useState(false)
   
   const loadSchoolData = async () => {
-    loading.value = true
+    setLoading(true)
     try {
       const response = await fetch('/assets/schoolLocations.geo.json')
       const data = await response.json()
-      schools.value = processSchoolData(data)
+      setSchools(processSchoolData(data))
     } finally {
-      loading.value = false
+      setLoading(false)
     }
   }
   
@@ -196,7 +232,7 @@ export function useSchoolData() {
 ## Migration Benefits
 
 ### Performance Improvements
-- **Bundle size**: 60-80% reduction (AngularJS ~150KB → Vue 3 ~40KB)
+- **Bundle size**: 60-80% reduction (AngularJS ~150KB → React 18 ~45KB)
 - **Build time**: 90% faster (Gulp ~30s → Vite ~3s)
 - **Dev server**: Hot Module Replacement (instant updates)
 - **Modern JavaScript**: Tree shaking, code splitting
@@ -228,10 +264,10 @@ export function useSchoolData() {
 - [ ] Replace utility libraries
 
 ### Week 5-8: Framework
-- [ ] Create Vue components for major UI sections
-- [ ] Convert AngularJS services to Vue composables
-- [ ] Migrate templates to Vue syntax
-- [ ] Implement state management with Pinia
+- [ ] Create React components for major UI sections
+- [ ] Convert AngularJS services to React hooks
+- [ ] Migrate templates to JSX/TSX
+- [ ] Implement state management with Context API or Zustand
 
 ### Week 9-10: Polish & Testing
 - [ ] Comprehensive testing
