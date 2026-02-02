@@ -1,0 +1,22 @@
+# Copy this file to terraform.tfvars and customize values
+
+project_name = "bcps-redistricting"
+environment  = "prod"
+location     = "eastus"  # Options: eastus, westus2, centralus, westeurope, eastasia
+
+# SKU tier: "Free" for development, "Standard" for production
+sku_tier = "Free"
+
+# Optional: Custom domain (requires DNS configuration)
+# custom_domain = "redistricting.example.com"
+
+# Optional: Override resource group name
+# resource_group_name = "my-custom-rg"
+
+# Optional: Custom tags
+tags = {
+  Project     = "BCPS Redistricting"
+  ManagedBy   = "Terraform"
+  Application = "Redistricting Tool"
+  Owner       = "Infrastructure Team"
+}
