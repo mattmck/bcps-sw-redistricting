@@ -35,7 +35,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private currentColorIndex = 0;
 
   private readonly mapCenter: L.LatLngExpression = [39.271697, -76.730514];
-  private readonly tileUrl = 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWF0dG1jayIsImEiOiJjaWZpaDlyejlibDB2c3htNzFnZG5pMGV2In0.v9hKZ_mdZB8WNJHE9FJGjg';
+  private readonly tileUrl = 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=YOUR_MAPBOX_TOKEN_HERE';
 
   constructor(
     private dataService: DataService,

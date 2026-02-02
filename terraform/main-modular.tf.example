@@ -1,0 +1,72 @@
+# Alternative modular configuration using the static-hosting module
+# Rename this file to main.tf to use the modular approach
+
+terraform {
+  required_version = ">= 1.0"
+  
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
+locals {
+  common_tags = merge(
+    var.tags,
+    {
+      Environment = var.environment
+    }
+  )
+}
+
+# Use the cloud-agnostic static hosting module
+module "static_hosting" {
+  source = "./modules/static-hosting"
+  
+  app_name            = var.project_name
+  environment         = var.environment
+  location            = var.location
+  sku_tier            = var.sku_tier
+  resource_group_name = var.resource_group_name
+  custom_domain       = var.custom_domain
+  tags                = local.common_tags
+}
+
+# Outputs from the module
+output "resource_group_name" {
+  description = "Name of the resource group"
+  value       = module.static_hosting.resource_group_name
+}
+
+output "static_web_app_name" {
+  description = "Name of the static web app"
+  value       = module.static_hosting.app_name
+}
+
+output "default_hostname" {
+  description = "Default hostname for the application"
+  value       = module.static_hosting.hostname
+}
+
+output "application_url" {
+  description = "Full URL to access the application"
+  value       = module.static_hosting.url
+}
+
+output "api_key" {
+  description = "API key for deploying to the static web app"
+  value       = module.static_hosting.deployment_token
+  sensitive   = true
+}
+
+output "deployment_token" {
+  description = "Deployment token for CI/CD pipelines"
+  value       = module.static_hosting.deployment_token
+  sensitive   = true
+}
