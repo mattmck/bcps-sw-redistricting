@@ -161,6 +161,10 @@ jobs:
               --registry-password "$ACR_PASSWORD"
             
             # Set environment variables from Key Vault
+            # Note: This assumes Key Vault secrets are already configured in the Container App Environment
+            # If secrets aren't configured, this step may fail. In that case, configure secrets first:
+            # az containerapp secret set --name $NAME --resource-group $RG --secrets \
+            #   db-host=keyvaultref:<vault-uri>/secrets/db-host,identityref:<identity-id>
             echo "Setting environment variables..."
             az containerapp update \
               --name ${{ env.CONTAINER_APP_NAME }} \
