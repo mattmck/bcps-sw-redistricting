@@ -6,8 +6,6 @@ on:
       - master
       - main
   push:
-    branches:
-      - '**'
     branches-ignore:
       - master
       - main
