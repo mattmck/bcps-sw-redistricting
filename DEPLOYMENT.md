@@ -159,9 +159,24 @@ VITE_API_URL=https://<container-app-fqdn>
 
 ## CI/CD with GitHub Actions
 
+### Automated Full-Stack Deployment
+
+The `.github/workflows/deploy-fullstack.yml` workflow automatically deploys both frontend and backend when you push to `master` or `main`.
+
+**Features:**
+- ✅ Builds and pushes Docker image to Azure Container Registry
+- ✅ Updates Container App with new API version
+- ✅ Verifies API health after deployment
+- ✅ Builds frontend with backend API URL
+- ✅ Deploys to Azure Static Web Apps
+- ✅ Manual trigger option with skip flags
+
 ### Setup Secrets
+
+Required GitHub Secrets:
+
 ```bash
-# Azure credentials
+# 1. Azure credentials for authentication
 az ad sp create-for-rbac \
   --name "bcps-redistricting-github" \
   --role contributor \
@@ -170,50 +185,50 @@ az ad sp create-for-rbac \
 
 gh secret set AZURE_CREDENTIALS < azure-credentials.json
 
-# Other secrets
-gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN --body "$(cd terraform && terraform output -raw deployment_token)"
-gh secret set ACR_USERNAME --body "$(az acr credential show --name bcpsredistrictingacr --query username -o tsv)"
-gh secret set ACR_PASSWORD --body "$(az acr credential show --name bcpsredistrictingacr --query passwords[0].value -o tsv)"
-gh secret set DB_ADMIN_PASSWORD --body "CHANGE_ME_SecurePassword123!"
+# 2. Static Web Apps deployment token
+gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN \
+  --body "$(cd terraform && terraform output -raw deployment_token)"
+
+# 3. Mapbox API key (fallback if Key Vault unavailable)
 gh secret set MAPBOX_API_KEY --body "pk.your_mapbox_token"
 ```
 
-### Workflow Example
-See `.github/workflows/deploy-fullstack.yml`:
-```yaml
-name: Deploy Full Stack
+**Note:** ACR credentials are not needed - the workflow uses Azure CLI authentication.
 
-on:
-  push:
-    branches: [ master ]
+### Workflow Triggers
 
-jobs:
-  deploy-api:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build and push API
-        run: |
-          docker build -t $ACR_REGISTRY/redistricting-api:$GITHUB_SHA ./backend
-          docker push $ACR_REGISTRY/redistricting-api:$GITHUB_SHA
-      - name: Update Container App
-        run: |
-          az containerapp update \
-            --name bcps-redistricting-prod-api \
-            --resource-group bcps-redistricting-prod-rg \
-            --image $ACR_REGISTRY/redistricting-api:$GITHUB_SHA
-  
-  deploy-frontend:
-    needs: deploy-api
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: npm ci && npm run build
-      - uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          app_location: "dist"
+**Automatic:**
+- Push to `master` or `main` branch
+
+**Manual:**
+```bash
+# Trigger via GitHub CLI
+gh workflow run deploy-fullstack.yml
+
+# Skip backend deployment (frontend only)
+gh workflow run deploy-fullstack.yml -f skip_backend=true
+
+# Skip frontend deployment (backend only)
+gh workflow run deploy-fullstack.yml -f skip_frontend=true
 ```
+
+### Workflow Steps
+
+**Backend Deployment:**
+1. Login to Azure
+2. Build Docker image from `backend/Dockerfile`
+3. Push to Azure Container Registry
+4. Update Container App with new image (tagged with git SHA)
+5. Wait 30s for deployment to stabilize
+6. Verify API health endpoint
+
+**Frontend Deployment:**
+1. Install dependencies
+2. Get Mapbox API key from Azure Key Vault
+3. Get backend API URL from Container App
+4. Build React app with `VITE_API_URL` set
+5. Deploy to Azure Static Web Apps
+6. Display deployment summary
 
 ## Cost Estimates (US East 2)
 
