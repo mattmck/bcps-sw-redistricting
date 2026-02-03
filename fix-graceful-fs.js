@@ -3,13 +3,11 @@
  * This patches the graceful-fs module to work with modern Node.js versions
  */
 
-const fs = require('fs');
 const gracefulFs = require('graceful-fs');
 
 // Patch graceful-fs to fix primordials issue
 if (!global.primordials) {
   try {
-    const util = require('util');
     global.primordials = {
       Array: Array,
       ArrayIsArray: Array.isArray,

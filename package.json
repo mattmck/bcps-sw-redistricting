@@ -9,7 +9,13 @@
     "test": "vitest",
     "legacy:serve": "gulp serve",
     "legacy:build": "gulp build",
-    "legacy:test": "gulp test"
+    "legacy:test": "gulp test",
+    "codeql:create-db": "codeql database create codeql-db --language=javascript --source-root=. --overwrite",
+    "codeql:analyze": "codeql database analyze codeql-db codeql/javascript-queries:codeql-suites/javascript-security-and-quality.qls --format=sarif-latest --output=codeql-results.sarif",
+    "codeql:view": "cat codeql-results.sarif | jq '.runs[0].results[] | {ruleId, message: .message.text, location: .locations[0].physicalLocation.artifactLocation.uri}'",
+    "codeql:view-html": "open https://microsoft.github.io/sarif-web-component/ && echo 'Drop codeql-results.sarif into the browser window'",
+    "codeql:scan": "npm run codeql:create-db && npm run codeql:analyze && echo '\n✅ Analysis complete! View results with: npm run codeql:view or npm run codeql:view-html'",
+    "codeql:clean": "rm -rf codeql-db codeql-results.sarif"
   },
   "devDependencies": {
     "@types/node": "^25.2.0",

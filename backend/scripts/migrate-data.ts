@@ -197,13 +197,6 @@ async function migratePlanningBlocks() {
 async function migrateRedistrictingOptions() {
   console.log('\n=== Migrating Redistricting Options ===');
   
-  // List of option files based on frontend code
-  const optionFiles = [
-    { file: '150930.geo.json', name: 'option1', displayName: 'Option 1 (9/30/15)', meetingDate: '2015-09-30', isCurrent: true },
-    { file: '151014.geo.json', name: 'option2', displayName: 'Option 2 (10/14/15)', meetingDate: '2015-10-14', isCurrent: false },
-    { file: '151014.geo.json', name: 'option3', displayName: 'Option 3 (10/14/15)', meetingDate: '2015-10-14', isCurrent: false },
-  ];
-  
   // Get all geo.json files from assets directory
   const files = await fs.readdir(ASSETS_PATH);
   const geoJsonFiles = files.filter(f => f.endsWith('.geo.json') && f.match(/^\d{6}\.geo\.json$/));
@@ -258,13 +251,6 @@ async function migrateOption(filename: string) {
   
   // Extract assignments from planning block properties
   // Each feature has Opt1, Opt2, Opt3, OptA, OptB, etc. properties
-  const assignments: { [schoolName: string]: string[] } = {};
-  
-  // Build map of PBID to school assignments for this option
-  // The option files have different property names for assignments
-  const optionKeys = Object.keys(data.features[0]?.properties || {}).filter(
-    key => key.startsWith('Opt') && key !== 'Opt11617' && key !== 'Opt2201617' && key !== 'Opt3201617'
-  );
   
   // For this migration, we'll use the "current" assignment (ES1516 property)
   // since the option files structure varies

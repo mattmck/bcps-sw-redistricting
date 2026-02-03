@@ -79,7 +79,6 @@ export class MapUtilsService {
       return RGB;
     };
 
-    const i = parseInt;
     const r = Math.round;
     const h = from.length > 9;
     const toColor = to && to !== 'c' ? to : (p < 0 ? '#000000' : '#FFFFFF');

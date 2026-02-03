@@ -25,7 +25,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Request logging middleware
 app.use((req, _res, next) => {
-  console.log(`${req.method} ${req.path}`);
+  // Sanitize path to prevent log injection
+  const sanitizedPath = req.path.replace(/[\r\n]/g, '');
+  console.log(`${req.method} ${sanitizedPath}`);
   next();
 });
 

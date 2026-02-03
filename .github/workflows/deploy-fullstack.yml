@@ -57,6 +57,43 @@ jobs:
           
           echo "✅ Docker image pushed: ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:${{ github.sha }}"
       
+      - name: Run Database Migrations
+        run: |
+          echo "Running Flyway migrations..."
+          
+          # Get database connection info from Container App environment
+          DB_HOST=$(az containerapp show \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "properties.template.containers[0].env[?name=='DB_HOST'].value" -o tsv)
+          
+          DB_NAME=$(az containerapp show \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "properties.template.containers[0].env[?name=='DB_NAME'].value" -o tsv)
+          
+          DB_USER=$(az containerapp show \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "properties.template.containers[0].env[?name=='DB_USER'].value" -o tsv)
+          
+          # Get DB password from Key Vault
+          DB_PASSWORD=$(az keyvault secret show \
+            --name db-admin-password \
+            --vault-name bcps-redistricting-prod-kv \
+            --query value -o tsv)
+          
+          # Run Flyway migration using Docker
+          docker run --rm \
+            -v $(pwd)/backend/migrations:/flyway/sql \
+            flyway/flyway:10 \
+            -url="jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}?sslmode=require" \
+            -user="${DB_USER}" \
+            -password="${DB_PASSWORD}" \
+            migrate
+          
+          echo "✅ Database migrations completed"
+      
       - name: Update Container App
         run: |
           echo "Updating Container App to use new image..."

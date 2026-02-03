@@ -1,6 +1,16 @@
 import { Router, Request, Response } from 'express';
+import rateLimit from 'express-rate-limit';
 import { query, getClient } from '../db/connection.js';
 import { calculateOptionStats } from '../services/statsService.js';
+
+// Rate limiter for database-heavy operations
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const router = Router();
 
@@ -106,7 +116,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  * Create a new redistricting option
  * Body: { name, displayName, assignments: { [schoolName]: [pbid] } }
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', apiLimiter, async (req: Request, res: Response) => {
   const client = await getClient();
   
   try {
@@ -190,7 +200,7 @@ router.post('/', async (req: Request, res: Response) => {
  * PUT /api/options/:id
  * Update an existing redistricting option
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', apiLimiter, async (req: Request, res: Response) => {
   const client = await getClient();
   
   try {

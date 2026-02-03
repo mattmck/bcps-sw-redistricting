@@ -1,10 +1,6 @@
 'use strict';
 
-var path = require('path');
 var gulp = require('gulp');
-var conf = require('./conf');
-
-var browserSync = require('browser-sync');
 
 // Note: gulp-protractor is deprecated, these tasks are stubs for compatibility
 function webdriverUpdate(done) {

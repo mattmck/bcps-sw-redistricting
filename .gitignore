@@ -54,3 +54,8 @@ coverage/
 **/terraform.tfvars
 **/.terraformrc
 **/terraform.rc
+
+# CodeQL
+codeql-db/
+codeql-results.sarif
+*.sarif
