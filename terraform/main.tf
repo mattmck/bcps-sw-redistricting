@@ -8,13 +8,11 @@ terraform {
     }
   }
   
-  # Uncomment for remote state storage
-  # backend "azurerm" {
-  #   resource_group_name  = "terraform-state-rg"
-  #   storage_account_name = "tfstatexxxxxx"
-  #   container_name       = "tfstate"
-  #   key                  = "redistricting.terraform.tfstate"
-  # }
+  # Remote state storage in Azure
+  backend "azurerm" {
+    # Configuration provided via backend-config.hcl in CI/CD
+    # or via command line: terraform init -backend-config="key=value"
+  }
 }
 
 provider "azurerm" {
