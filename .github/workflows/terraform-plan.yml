@@ -49,7 +49,6 @@ jobs:
           cat > backend-config.hcl << EOF
           resource_group_name  = "${{ secrets.TERRAFORM_STATE_RG }}"
           storage_account_name = "${{ secrets.TERRAFORM_STATE_SA }}"
-          skip_provider_registration = true
           container_name       = "tfstate"
           key                  = "bcps-redistricting.plan.tfstate"
           EOF
