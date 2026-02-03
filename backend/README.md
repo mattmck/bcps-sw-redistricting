@@ -138,13 +138,22 @@ GET /api
 
 Returns API version and available endpoints.
 
-### Future Endpoints (Phase 3)
-- `GET /api/schools` - List all schools (GeoJSON)
-- `GET /api/planning-blocks` - List all planning blocks (GeoJSON)
-- `GET /api/options` - List redistricting options
-- `GET /api/options/:id` - Get specific option with assignments
+### API Endpoints
+
+#### Schools
+- `GET /api/schools` - List all schools (GeoJSON FeatureCollection)
+- `GET /api/schools/:id` - Get single school by ID
+
+#### Planning Blocks
+- `GET /api/planning-blocks` - List all planning blocks (GeoJSON FeatureCollection)
+- `GET /api/planning-blocks/:id` - Get single planning block by ID
+
+#### Redistricting Options
+- `GET /api/options` - List all redistricting options metadata
+- `GET /api/options/:id` - Get specific option with school assignments
+- `GET /api/options/:id/stats` - Get utilization statistics for option
 - `POST /api/options` - Create new redistricting option
-- `PUT /api/options/:id` - Update option
+- `PUT /api/options/:id` - Update existing option
 - `DELETE /api/options/:id` - Delete option
 
 ## Database Schema
@@ -157,11 +166,10 @@ The database schema is managed by Flyway migrations in the `migrations/` directo
 
 ### Tables
 
-- **schools** - Elementary schools with point geometry
-- **planning_blocks** - Geographic areas with polygon geometry
-- **redistricting_options** - Different redistricting scenarios
-- **option_assignments** - Assignment of planning blocks to schools in each option
-- **walking_radii** - Walking distance polygons (optional)
+- **schools** - Elementary schools with Point geometry (SRID 4326)
+- **planning_blocks** - Geographic areas with Polygon geometry (SRID 4326)
+- **redistricting_options** - Different redistricting scenarios metadata
+- **option_assignments** - Assignment of planning blocks to schools per option
 
 ## Environment Variables
 
@@ -209,13 +217,20 @@ backend/
 │   │   └── connection.ts     # PostgreSQL connection pool
 │   ├── middleware/
 │   │   └── errorHandler.ts   # Error handling
-│   ├── routes/               # API route handlers (Phase 3)
-│   ├── services/             # Business logic (Phase 3)
+│   ├── routes/               # API route handlers
+│   │   ├── schools.ts        # School endpoints
+│   │   ├── planningBlocks.ts # Planning block endpoints
+│   │   └── options.ts        # Redistricting options endpoints
+│   ├── services/             # Business logic
+│   │   ├── geoJsonService.ts # GeoJSON formatting
+│   │   └── statsService.ts   # Statistics calculations
 │   └── scripts/              # Utility scripts
 ├── migrations/               # Flyway SQL migrations
 │   ├── V1__enable_postgis.sql
 │   ├── V2__create_tables.sql
 │   └── V3__create_indexes.sql
+├── scripts/
+│   └── migrate-data.ts       # GeoJSON to PostgreSQL import
 ├── Dockerfile
 ├── docker-compose.yml
 ├── package.json
@@ -243,11 +258,11 @@ backend/
 - Ensure you're using the `postgis/postgis` image, not plain `postgres`
 - Run `SELECT PostGIS_Version();` to verify installation
 
-## Next Steps
+## Implementation Status
 
-See the main implementation plan for:
-- **Phase 2**: Data migration from GeoJSON files
-- **Phase 3**: API endpoint implementation
-- **Phase 4**: Frontend integration
-- **Phase 5**: Testing & validation
-- **Phase 6**: Production deployment
+- ✅ **Phase 1**: Database schema and migrations
+- ✅ **Phase 2**: Data migration from GeoJSON files
+- ✅ **Phase 3**: API endpoint implementation
+- ✅ **Phase 4**: Frontend integration (useGeoData.api.ts)
+- ✅ **Phase 5**: Testing & validation
+- 🔲 **Phase 6**: Production deployment to Azure

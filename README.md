@@ -3,7 +3,7 @@
 A full-stack application for visualizing and analyzing Baltimore County Public Schools (BCPS) elementary school redistricting scenarios.
 
 **Status:**
-- ✅ Frontend: Fully migrated from AngularJS 1.4 to React 18 (January 2026)
+- ✅ Frontend: Fully migrated from AngularJS 1.4 to React 18 (February 2026)
 - ✅ Backend: PostGIS database with REST API (February 2026)
 
 ## 🚀 Production Deployment
@@ -24,6 +24,22 @@ This app supports full-stack deployment to **Azure** with infrastructure as code
 - **Node.js 18+** (LTS recommended)
 - **Docker** and **Docker Compose** (for local backend development)
 - **npm** or **yarn**
+- **CodeQL CLI** (optional, for security analysis) - See [CODEQL.md](./CODEQL.md)
+
+### Automated Setup (Recommended for New Developers)
+
+Run the automated setup script to install dependencies and configure CodeQL:
+
+```bash
+./scripts/setup-dev.sh
+```
+
+This script:
+- ✅ Checks Node.js version
+- ✅ Installs CodeQL CLI (macOS via Homebrew)
+- ✅ Downloads CodeQL query packs
+- ✅ Runs `npm install`
+- ✅ Displays next steps and documentation links
 
 ### Option 1: Full Stack (with Backend)
 
@@ -84,6 +100,12 @@ This app supports full-stack deployment to **Azure** with infrastructure as code
 - **Stop services:** `docker-compose down`
 - **Migrate data:** `npm run migrate`
 - **Dev mode:** `npm run dev` (uses nodemon for hot reload)
+
+#### Code Quality & Security
+- **Run CodeQL scan:** `npm run codeql:scan`
+- **View scan results:** `npm run codeql:view`
+- **Clean up:** `npm run codeql:clean`
+- See [CODEQL.md](./CODEQL.md) for detailed setup and usage
 
 ### Git Workflow
 
@@ -360,7 +382,14 @@ angular-app/public/assets/    # Legacy GeoJSON data files
 
 ## Migration History
 
-- **January 2026:** Complete migration to React 18 with TypeScript
+- **February 2026:** Backend development - PostGIS database with REST API
+  - PostgreSQL 15 + PostGIS 3.4 spatial database
+  - Express REST API with TypeScript
+  - Docker Compose for local development
+  - Flyway migrations for schema management
+  - GeoJSON import scripts
+
+- **February 2026:** Complete migration to React 18 with TypeScript
   - Modernized build system (Gulp → Vite)
   - Updated mapping library (Leaflet → Mapbox GL)
   - Improved performance (90% faster builds, 60%+ smaller bundles)

@@ -25,18 +25,31 @@ npm run preview
 
 ### Project Structure
 ```
-src/
+src/                    # Frontend (React)
 ├── components/          # React components
 │   ├── MainView.tsx    # Main map and table component
 │   └── MainView.css    # Component styles
 ├── hooks/              # Custom React hooks
-│   └── useGeoData.ts   # GeoJSON data loading
+│   ├── useGeoData.ts   # Static GeoJSON loading
+│   └── useGeoData.api.ts # API-based data loading
+├── services/           # API integration
+│   └── apiClient.ts    # Backend API client
 ├── types/              # TypeScript type definitions
 │   └── index.ts        # Shared interfaces
 ├── utils/              # Utility functions
 │   └── calculations.ts # Distance, color helpers
 ├── App.tsx             # Root component
 └── main.tsx            # Entry point
+
+backend/                # Backend API (optional)
+├── src/
+│   ├── routes/         # API endpoint handlers
+│   ├── services/       # Business logic
+│   ├── db/             # PostgreSQL connection
+│   └── index.ts        # Express server
+├── migrations/         # Flyway SQL migrations
+└── scripts/
+    └── migrate-data.ts # Data import script
 ```
 
 ### Key Technologies
@@ -100,6 +113,23 @@ const map = new mapboxgl.Map({
   zoom: 12,
   preserveDrawingBuffer: true  // Required for snapshots
 })
+```
+
+#### Working with Backend API
+Switch between static and API data modes:
+```typescript
+// Use static GeoJSON files (default)
+import { useGeoData } from '@/hooks/useGeoData'
+
+// Use backend API (requires backend running)
+import { useGeoData } from '@/hooks/useGeoData.api'
+```
+
+Start the backend:
+```bash
+cd backend
+docker-compose up -d  # PostgreSQL + API on port 4000
+npm run migrate       # Import data (first time only)
 ```
 
 #### Adding Student Calculation Adjustments

@@ -1,59 +1,80 @@
-# AngularApp
+# Legacy AngularJS Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.4.
+⚠️ **This is the original AngularJS 1.4 application from 2015, preserved for historical reference only.**
 
-## Development server
+**DO NOT USE IN PRODUCTION** - See `SECURITY.md` for vulnerability information.
 
-To start a local development server, run:
+## Technology Stack
 
-```bash
-ng serve
-```
+- **Framework**: AngularJS 1.4.14
+- **Build System**: Gulp 3.x
+- **Package Managers**: npm + Bower
+- **Mapping**: Leaflet 0.7.5 with angular-leaflet-directive
+- **Styling**: Bootstrap 3, SASS, Font Awesome
+- **Testing**: Karma + Jasmine
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Prerequisites
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Node.js 14.x** (required for Gulp 3.x compatibility)
+- **npm** and **Bower** installed globally
 
 ```bash
-ng generate --help
+nvm install 14.21.3
+nvm use 14.21.3
+npm install -g bower gulp
 ```
+
+## Development Server
+
+To start the legacy development server:
+
+```bash
+npm install
+bower install
+gulp serve
+```
+
+The application will open at `http://localhost:3000` (BrowserSync).
 
 ## Building
 
-To build the project run:
+To build for production:
 
 ```bash
-ng build
+gulp build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Output goes to `dist/` directory.
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Running Unit Tests
 
 ```bash
-ng test
+gulp test
 ```
 
-## Running end-to-end tests
+Tests run with Karma + Jasmine.
 
-For end-to-end (e2e) testing, run:
+## Modern Alternative
+
+**For all new development, use the modern React 18 application:**
 
 ```bash
-ng e2e
+cd ..              # Go to project root
+npm install
+npm run dev        # Start React app at http://localhost:3000
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+See the main [README.md](../README.md) for details.
+
+## Security Notice
+
+This legacy application contains **30+ known security vulnerabilities** in outdated dependencies. See `SECURITY.md` for details.
+
+**Use the modern React app for all production deployments.**
 
 ## Additional Resources
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [AngularJS 1.4 Documentation](https://code.angularjs.org/1.4.14/docs/api) (archived)
+- [SECURITY.md](./SECURITY.md) - Vulnerability details
+- [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md) - Migration to modern Angular (outdated)
+- [../README.md](../README.md) - Modern React application documentation

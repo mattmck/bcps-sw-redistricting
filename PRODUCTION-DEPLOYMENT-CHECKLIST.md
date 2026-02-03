@@ -4,9 +4,11 @@ This checklist guides you through deploying the BCPS Redistricting Tool to Azure
 
 ## Branch Information
 
-**Feature Branch**: `feature/azure-terraform-deployment`  
-**Target Branch**: `master`  
+**Current Branch**: `48-feature-database-backend-with-postgis-for-spatial-data`  
+**Base Branch**: `master`  
 **Created**: 2026-02-02
+
+**Note**: This checklist covers both frontend-only and full-stack deployment options.
 
 ## Pre-Deployment Checklist
 
@@ -445,6 +447,6 @@ cd terraform && terraform destroy
 
 ---
 
-**Last Updated**: 2026-02-02  
-**Branch**: feature/azure-terraform-deployment  
-**Documentation**: See [DEPLOYMENT.md](./DEPLOYMENT.md)
+**Last Updated**: 2026-02-03  
+**Current Development**: Full-stack with PostgreSQL + PostGIS backend  
+**Documentation**: See [DEPLOYMENT.md](./DEPLOYMENT.md) for full-stack deployment

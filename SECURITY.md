@@ -2,16 +2,19 @@
 
 ## Security Status
 
-**Last Updated**: February 2, 2026
+**Last Updated**: February 3, 2026
 
 ### Current Security Posture
 
-✅ **Production Application (React 18)**: Secure and actively maintained
+✅ **Production Frontend (React 18)**: Secure and actively maintained
+✅ **Production Backend (Node.js + PostgreSQL)**: Secure with parameterized queries
 ⚠️ **Legacy Application (AngularJS 1.4)**: Archived with known vulnerabilities
 
 ## Production Application Security
 
-The modern React 18 application follows security best practices:
+The modern full-stack application follows security best practices:
+
+### Frontend (React 18)
 
 ### ✅ Secrets Management
 - **Environment Variables**: API keys stored in `.env` files (gitignored)
@@ -28,6 +31,26 @@ The modern React 18 application follows security best practices:
 - **AWS Keys**: Previous leaked AWS keys were revoked (Alerts #1 & #2 - Resolved 2026-02-02)
 - **Mapbox Keys**: Using environment variables, no keys in source code
 - **Push Protection**: Enabled to prevent future secret commits
+
+### Backend (Node.js + Express + PostgreSQL)
+
+✅ **Database Security**
+- **Connection Pooling**: pg connection pool with secure configuration
+- **Parameterized Queries**: SQL injection prevention
+- **Environment Variables**: Database credentials in `.env` (gitignored)
+- **PostGIS Extension**: Spatial queries with built-in security
+
+✅ **API Security**
+- **CORS**: Configured to allow specific origins only
+- **Rate Limiting**: Express rate limit middleware
+- **Error Handling**: Safe error messages (no stack traces in production)
+- **Input Validation**: Type checking with TypeScript
+
+✅ **Container Security**
+- **Docker Compose**: Isolated network for database
+- **Non-root User**: API runs as non-privileged user
+- **Health Checks**: Automated health monitoring
+- **Volume Permissions**: Restricted database volume access
 
 ## Legacy Application Security
 

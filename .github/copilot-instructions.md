@@ -13,7 +13,8 @@ This is a **React 18 + TypeScript** application for visualizing and analyzing Ba
 - **Frontend**: React 18 with TypeScript (strict mode)
 - **Build System**: Vite 7 with hot module replacement
 - **Mapping**: Mapbox GL JS for GPU-accelerated vector maps
-- **Data**: GeoJSON files in `angular-app/public/assets/` (shared with legacy app)
+- **Data**: Dual mode - Static GeoJSON files OR PostgreSQL + PostGIS backend
+- **Backend**: Node.js 18+ Express API with PostgreSQL 15 + PostGIS 3.4 (optional)
 - **Styling**: Plain CSS (no framework)
 - **State**: React Hooks (useState, useEffect, useRef)
 - **Package Manager**: npm (Node 18+)
@@ -31,7 +32,10 @@ src/
 │   ├── MainView.tsx          # Main map and data table component
 │   └── MainView.css          # Component styles
 ├── hooks/
-│   └── useGeoData.ts         # Custom hook for GeoJSON loading
+│   ├── useGeoData.ts         # Static GeoJSON loading
+│   └── useGeoData.api.ts     # API-based data loading
+├── services/
+│   └── apiClient.ts          # Backend API client
 ├── types/
 │   └── index.ts              # TypeScript interfaces
 ├── utils/
@@ -40,7 +44,17 @@ src/
 ├── main.tsx                  # Entry point
 └── vite-env.d.ts            # Vite type definitions
 
-angular-app/public/assets/   # GeoJSON data (shared)
+backend/                      # Backend API (optional)
+├── src/
+│   ├── routes/               # API endpoints
+│   ├── services/             # Business logic
+│   ├── db/                   # Database connection
+│   └── index.ts              # Express server
+├── migrations/               # Flyway SQL migrations
+└── scripts/
+    └── migrate-data.ts       # GeoJSON → PostgreSQL
+
+angular-app/public/assets/   # GeoJSON data (static mode)
 ├── schoolLocations.geo.json
 ├── planningBlocks.geo.json
 └── [YYMMDD].geo.json        # Redistricting options
@@ -59,12 +73,26 @@ The core data model revolves around:
 
 ## Development Workflow
 
-### Quick Start
+### Quick Start (Frontend Only)
 ```bash
 npm install            # Install dependencies
 npm run dev            # Start dev server at http://localhost:3000
 npm run build          # Production build to dist/
 npm run preview        # Preview production build
+```
+
+### Quick Start (Full Stack with Backend)
+```bash
+# Start backend services
+cd backend
+docker-compose up -d   # PostgreSQL + API on port 4000
+npm install
+npm run migrate        # Import GeoJSON to database (first time)
+
+# Start frontend
+cd ..
+npm install
+npm run dev            # Frontend on http://localhost:3000
 ```
 
 ### Development Commands
