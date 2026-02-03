@@ -1,4 +1,6 @@
-# Security Updates Summary - October 2025
+# Security Updates Summary - Legacy Application
+
+⚠️ **Note**: This document refers to the archived AngularJS 1.4 application in `angular-app/`. The modern React 18 application uses current, secure dependencies.
 
 ## ✅ Completed Security Improvements
 
@@ -116,5 +118,7 @@ The `/dist` folder contains optimized, production-ready files that can be served
 
 ---
 
-*Last updated: October 6, 2025*
-*Security review by: GitHub Copilot*
+**Modern React App**: For current development, use the React 18 application in the project root with up-to-date, secure dependencies.
+
+*Last updated: February 3, 2026*
+*Note: This document is historical - the legacy AngularJS app is no longer in active use*

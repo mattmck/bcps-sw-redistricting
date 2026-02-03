@@ -9,8 +9,6 @@ var browserSyncSpa = require('browser-sync-spa');
 
 var util = require('util');
 
-var proxyMiddleware = require('http-proxy-middleware');
-
 browserSync.use(browserSyncSpa({
   selector: '[ng-app]'// Only needed for angular apps
 }));

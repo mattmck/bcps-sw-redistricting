@@ -1,0 +1,218 @@
+name: Deploy Azure Infrastructure (Terraform)
+
+permissions:
+  contents: read
+
+on:
+  # Manual trigger for infrastructure changes
+  workflow_dispatch:
+    inputs:
+      terraform_action:
+        description: 'Terraform action to perform'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+      
+  # Optionally run on infrastructure changes
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/deploy-infrastructure.yml'
+
+jobs:
+  terraform:
+    name: Terraform ${{ github.event.inputs.terraform_action || 'plan' }}
+    runs-on: ubuntu-latest
+    environment: production
+    
+    defaults:
+      run:
+        working-directory: terraform
+    
+    outputs:
+      container_app_url: ${{ steps.terraform-output.outputs.container_app_url }}
+      database_host: ${{ steps.terraform-output.outputs.database_host }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+          terraform_wrapper: false
+      
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: |
+            {
+              "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
+              "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
+              "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
+            }
+      
+      - name: Configure Terraform Backend
+        run: |
+          # Create backend config for Terraform state in Azure Storage
+          cat > backend-config.hcl << EOF
+          resource_group_name  = "${{ secrets.TERRAFORM_STATE_RG }}"
+          storage_account_name = "${{ secrets.TERRAFORM_STATE_SA }}"
+          container_name       = "tfstate"
+          key                  = "bcps-redistricting.tfstate"
+          EOF
+      
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config=backend-config.hcl \
+            -upgrade
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      
+      - name: Terraform Format Check
+        run: terraform fmt -check
+        continue-on-error: true
+      
+      - name: Terraform Validate
+        run: terraform validate
+      
+      - name: Terraform Plan
+        run: |
+          terraform plan \
+            -var="db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}" \
+            -var="mapbox_api_key=${{ secrets.MAPBOX_API_KEY }}" \
+            -var="acr_image_tag=${{ github.sha }}" \
+            -out=tfplan
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      
+      - name: Terraform Apply
+        if: github.event.inputs.terraform_action == 'apply' || (github.event.inputs.terraform_action == '' && github.ref == 'refs/heads/master')
+        run: terraform apply -auto-approve tfplan
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      
+      - name: Terraform Destroy
+        if: github.event.inputs.terraform_action == 'destroy'
+        run: |
+          terraform destroy \
+            -var="db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}" \
+            -var="mapbox_api_key=${{ secrets.MAPBOX_API_KEY }}" \
+            -var="acr_image_tag=${{ github.sha }}" \
+            -auto-approve
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      
+      - name: Get Terraform Outputs
+        id: terraform-output
+        if: github.event.inputs.terraform_action != 'destroy'
+        run: |
+          echo "container_app_url=$(terraform output -raw container_app_url 2>/dev/null || echo '')" >> $GITHUB_OUTPUT
+          echo "database_host=$(terraform output -raw database_host 2>/dev/null || echo '')" >> $GITHUB_OUTPUT
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      
+      - name: Summary
+        if: github.event.inputs.terraform_action != 'destroy'
+        run: |
+          echo "## Terraform Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Action:** ${{ github.event.inputs.terraform_action || 'apply' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Container App URL:** ${{ steps.terraform-output.outputs.container_app_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Database Host:** ${{ steps.terraform-output.outputs.database_host }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. Run database migrations" >> $GITHUB_STEP_SUMMARY
+          echo "2. Import initial data" >> $GITHUB_STEP_SUMMARY
+          echo "3. Deploy application code via deploy-fullstack workflow" >> $GITHUB_STEP_SUMMARY
+
+  database-migration:
+    name: Run Database Migrations
+    needs: terraform
+    runs-on: ubuntu-latest
+    if: needs.terraform.outputs.database_host != '' && github.event.inputs.terraform_action != 'destroy'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run Flyway Migrations
+        run: npm run migrate
+        env:
+          FLYWAY_URL: jdbc:postgresql://${{ needs.terraform.outputs.database_host }}:5432/bcps_redistricting
+          FLYWAY_USER: bcpsadmin
+          FLYWAY_PASSWORD: ${{ secrets.DB_ADMIN_PASSWORD }}
+      
+      - name: Import Initial Data
+        run: npm run migrate:data
+        env:
+          DB_HOST: ${{ needs.terraform.outputs.database_host }}
+          DB_PORT: 5432
+          DB_NAME: bcps_redistricting
+          DB_USER: bcpsadmin
+          DB_PASSWORD: ${{ secrets.DB_ADMIN_PASSWORD }}
+          DB_SSL: true
+      
+      - name: Verify Data Import
+        run: |
+          node -e "
+            const { Pool } = require('pg');
+            const pool = new Pool({
+              host: '${{ needs.terraform.outputs.database_host }}',
+              port: 5432,
+              database: 'bcps_redistricting',
+              user: 'bcpsadmin',
+              password: process.env.DB_PASSWORD,
+              ssl: { rejectUnauthorized: false }
+            });
+            
+            async function verify() {
+              const schools = await pool.query('SELECT COUNT(*) FROM schools');
+              const blocks = await pool.query('SELECT COUNT(*) FROM planning_blocks');
+              const options = await pool.query('SELECT COUNT(*) FROM redistricting_options');
+              
+              console.log('✅ Schools:', schools.rows[0].count);
+              console.log('✅ Planning Blocks:', blocks.rows[0].count);
+              console.log('✅ Options:', options.rows[0].count);
+              
+              await pool.end();
+            }
+            
+            verify().catch(console.error);
+          "
+        env:
+          DB_PASSWORD: ${{ secrets.DB_ADMIN_PASSWORD }}

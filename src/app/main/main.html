@@ -46,14 +46,14 @@
           sortable="'school.SRC2016 !== undefined ? school.SRC2016 : school.SRC'">
           <em
             ng-class="{'text-danger':school.students / (school.SRC2016 !== undefined ? school.SRC2016 : school.SRC) > 1}">
-              {{Math.round(school.students / (school.SRC2016 !== undefined ? school.SRC2016 : school.SRC)*100)}}%
+              {{Math.round(school.students / (school.SRC2016 !== undefined ? school.SRC2016 : school.SRC) * 100)}}%
           </em>
       </td>
       <td title="'2017 %'"
           sortable="'school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC'">
           <em
             ng-class="{'text-danger':school.students / (school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC) > 1}">
-              {{Math.round(school.students / (school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC)*100)}}%
+              {{Math.round(school.students / (school.SRC2017 !== undefined ? school.SRC2017 : school.SRC2016 !== undefined ? school.SRC2016 : school.SRC) * 100)}}%
           </em>
       </td>
       <td title="'Students'" sortable="'school.students'">{{school.students}}</td>

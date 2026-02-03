@@ -6,10 +6,6 @@ var conf = require('./conf');
 
 var browserSync = require('browser-sync');
 
-function isOnlyChange(event) {
-  return event.type === 'changed';
-}
-
 const markups = require('./markups').markups;
 const inject = require('./inject').inject;
 const scripts = require('./scripts').scripts;

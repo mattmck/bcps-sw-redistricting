@@ -43,8 +43,6 @@
     $scope.distance = function(lat1, lon1, lat2, lon2, unit) {
     	var radlat1 = Math.PI * lat1/180;
     	var radlat2 = Math.PI * lat2/180;
-    	var radlon1 = Math.PI * lon1/180;
-    	var radlon2 = Math.PI * lon2/180;
     	var theta = lon1-lon2;
     	var radtheta = Math.PI * theta/180;
     	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
@@ -172,22 +170,22 @@
           if(feature.properties.NAME === 'Old Catonsville ES')
             feature.properties.NAME = 'Catonsville ES';
 
-            switch(feature.properties.NAME){
-              case "Catonsville ES":
-                feature.properties.SRC2016 = 715;
-                break;
-              case "Relay ES":
-                feature.properties.SRC2017 = 689;
-                break;
-              case "Westchester ES":
-                feature.properties.SRC2016 = 699;
-                break;
-              case "Westowne ES":
-                feature.properties.SRC2016 = 650;
-                break;
-              default:
-                break;
-            }
+          switch(feature.properties.NAME){
+            case "Catonsville ES":
+              feature.properties.SRC2016 = 715;
+              break;
+            case "Relay ES":
+              feature.properties.SRC2017 = 689;
+              break;
+            case "Westchester ES":
+              feature.properties.SRC2016 = 699;
+              break;
+            case "Westowne ES":
+              feature.properties.SRC2016 = 650;
+              break;
+            default:
+              break;
+          }
 
           return feature.properties;
         }).toArray();

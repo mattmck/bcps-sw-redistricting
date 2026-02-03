@@ -1,0 +1,70 @@
+services:
+  # PostgreSQL with PostGIS extension
+  db:
+    image: postgis/postgis:15-3.4
+    container_name: bcps-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: bcps_redistricting
+      POSTGRES_USER: bcps_user
+      POSTGRES_PASSWORD: bcps_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bcps_user -d bcps_redistricting"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bcps-network
+
+  # Flyway for database migrations
+  flyway:
+    image: flyway/flyway:10
+    container_name: bcps-flyway
+    command: migrate
+    environment:
+      FLYWAY_URL: jdbc:postgresql://db:5432/bcps_redistricting
+      FLYWAY_USER: bcps_user
+      FLYWAY_PASSWORD: bcps_password
+      FLYWAY_LOCATIONS: filesystem:/flyway/sql
+      FLYWAY_SCHEMAS: public
+      FLYWAY_CREATE_SCHEMAS: true
+      FLYWAY_VALIDATE_ON_MIGRATE: true
+    volumes:
+      - ./migrations:/flyway/sql
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - bcps-network
+
+  # Backend API
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bcps-api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://bcps_user:bcps_password@db:5432/bcps_redistricting
+      PORT: 4000
+      NODE_ENV: production
+      CORS_ORIGIN: http://localhost:3000
+    ports:
+      - "4000:4000"
+    depends_on:
+      flyway:
+        condition: service_completed_successfully
+    networks:
+      - bcps-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  bcps-network:
+    driver: bridge

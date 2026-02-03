@@ -4,10 +4,11 @@
 
 ✅ **GitHub Actions CI Workflow** (`.github/workflows/ci.yml`)
 - Runs on every PR to master/main
-- Uses Node.js 22.20.0
+- Uses Node.js 22.20.0 (project requires 18+)
 - Performs TypeScript type checking
 - Builds the project with Vite
 - Verifies successful dist output
+- Injects Mapbox API key from GitHub Secrets
 
 ## Enable Required Checks (Next Steps)
 
@@ -43,10 +44,11 @@ gh api repos/mattmck/bcps-sw-redistricting/branches/master/protection \
 ## How It Works
 
 1. **On PR Creation/Update**: The workflow triggers automatically
-2. **Build Check**: Runs build on Node 22.20.0
+2. **Environment Setup**: Node.js 22.20.0 with npm cache
 3. **Type Safety**: Runs `tsc --noEmit` to catch type errors
-4. **Build Verification**: Runs `npm run build` and checks for dist/ output
-5. **Merge Blocking**: If any check fails, the "Merge" button is disabled
+4. **Build Verification**: Runs `npm run build` with Mapbox API key
+5. **Output Check**: Verifies dist/ directory was created
+6. **Merge Blocking**: If any check fails, the "Merge" button is disabled
 
 ## Testing the Workflow
 
@@ -59,6 +61,7 @@ You should see the CI workflow running now that it's been pushed.
 
 ✅ Prevents broken code from being merged  
 ✅ Ensures TypeScript type safety  
-✅ Verifies builds work on Node 22.20.0  
+✅ Verifies builds work on Node 22 (compatible with 18+ requirement)  
+✅ Tests Mapbox integration with production token  
 ✅ Automatic - no manual checks needed  
 ✅ Clear feedback in PR status checks

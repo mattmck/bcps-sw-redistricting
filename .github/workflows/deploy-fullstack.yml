@@ -1,0 +1,225 @@
+name: Deploy Full Stack to Azure
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+    inputs:
+      skip_backend:
+        description: 'Skip backend deployment'
+        required: false
+        default: 'false'
+      skip_frontend:
+        description: 'Skip frontend deployment'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  ACR_NAME: bcpsredistrictingacr
+  RESOURCE_GROUP: bcps-redistricting-prod-rg
+  CONTAINER_APP_NAME: bcps-redistricting-prod-api
+  STATIC_WEB_APP_NAME: bcps-redistricting-prod-swa
+
+jobs:
+  deploy-backend:
+    if: github.event.inputs.skip_backend != 'true'
+    runs-on: ubuntu-latest
+    name: Deploy Backend API
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Build and push Docker image
+        run: |
+          # Login to ACR
+          az acr login --name ${{ env.ACR_NAME }}
+          
+          # Build and tag image with git SHA
+          cd backend
+          docker build -t ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:${{ github.sha }} .
+          docker build -t ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:latest .
+          
+          # Push both tags
+          docker push ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:${{ github.sha }}
+          docker push ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:latest
+          
+          echo "✅ Docker image pushed: ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:${{ github.sha }}"
+      
+      - name: Run Database Migrations
+        run: |
+          echo "Running Flyway migrations..."
+          
+          # Get database connection info from Container App environment
+          DB_HOST=$(az containerapp show \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "properties.template.containers[0].env[?name=='DB_HOST'].value" -o tsv)
+          
+          DB_NAME=$(az containerapp show \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "properties.template.containers[0].env[?name=='DB_NAME'].value" -o tsv)
+          
+          DB_USER=$(az containerapp show \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "properties.template.containers[0].env[?name=='DB_USER'].value" -o tsv)
+          
+          # Get DB password from Key Vault
+          DB_PASSWORD=$(az keyvault secret show \
+            --name db-admin-password \
+            --vault-name bcps-redistricting-prod-kv \
+            --query value -o tsv)
+          
+          # Run Flyway migration using Docker
+          docker run --rm \
+            -v $(pwd)/backend/migrations:/flyway/sql \
+            flyway/flyway:10 \
+            -url="jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}?sslmode=require" \
+            -user="${DB_USER}" \
+            -password="${DB_PASSWORD}" \
+            migrate
+          
+          echo "✅ Database migrations completed"
+      
+      - name: Update Container App
+        run: |
+          echo "Updating Container App to use new image..."
+          az containerapp update \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --image ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:${{ github.sha }}
+          
+          echo "✅ Container App updated successfully"
+      
+      - name: Verify API Health
+        run: |
+          # Get the API URL
+          API_URL=$(az containerapp show \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query properties.configuration.ingress.fqdn -o tsv)
+          
+          echo "API URL: https://$API_URL"
+          
+          # Wait for deployment to stabilize
+          sleep 30
+          
+          # Check health endpoint
+          HEALTH_STATUS=$(curl -s "https://$API_URL/health" | jq -r '.status')
+          
+          if [ "$HEALTH_STATUS" = "healthy" ]; then
+            echo "✅ API is healthy"
+          else
+            echo "❌ API health check failed"
+            exit 1
+          fi
+
+  deploy-frontend:
+    if: github.event.inputs.skip_frontend != 'true'
+    needs: deploy-backend
+    runs-on: ubuntu-latest
+    name: Deploy Frontend
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.20.0'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Get Mapbox API Key from Key Vault
+        id: get-mapbox-key
+        run: |
+          VAULT_NAME="bcps-redistricting-prod-kv"
+          
+          MAPBOX_KEY=$(az keyvault secret show \
+            --name mapbox-api-key \
+            --vault-name "$VAULT_NAME" \
+            --query value -o tsv)
+          
+          if [ -z "$MAPBOX_KEY" ] || [ ${#MAPBOX_KEY} -lt 50 ]; then
+            echo "Warning: Using GitHub Secret fallback"
+            MAPBOX_KEY="${{ secrets.MAPBOX_API_KEY }}"
+          fi
+          
+          echo "::add-mask::$MAPBOX_KEY"
+          echo "MAPBOX_KEY=$MAPBOX_KEY" >> $GITHUB_OUTPUT
+      
+      - name: Get API URL
+        id: get-api-url
+        run: |
+          # Get Container App URL for frontend to connect to
+          API_FQDN=$(az containerapp show \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query properties.configuration.ingress.fqdn -o tsv 2>/dev/null || echo "")
+          
+          if [ -n "$API_FQDN" ]; then
+            API_URL="https://$API_FQDN"
+            echo "API_URL=$API_URL" >> $GITHUB_OUTPUT
+            echo "✅ Backend API URL: $API_URL"
+          else
+            echo "⚠️  No backend API found, deploying frontend in static mode"
+            echo "API_URL=" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Build application
+        run: npm run build
+        env:
+          VITE_MAPBOX_ACCESS_TOKEN: ${{ steps.get-mapbox-key.outputs.MAPBOX_KEY }}
+          VITE_API_URL: ${{ steps.get-api-url.outputs.API_URL }}
+      
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/"
+          output_location: "dist"
+          skip_app_build: true
+      
+      - name: Deployment Summary
+        run: |
+          FRONTEND_URL=$(az staticwebapp show \
+            --name ${{ env.STATIC_WEB_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query defaultHostname -o tsv)
+          
+          echo "## 🚀 Deployment Complete"
+          echo ""
+          echo "**Frontend:** https://$FRONTEND_URL"
+          
+          if [ -n "${{ steps.get-api-url.outputs.API_URL }}" ]; then
+            echo "**Backend API:** ${{ steps.get-api-url.outputs.API_URL }}"
+          else
+            echo "**Backend API:** Not deployed (static mode)"
+          fi
+          
+          echo ""
+          echo "**Commit:** ${{ github.sha }}"
+          echo "**Triggered by:** ${{ github.actor }}"
