@@ -5,6 +5,7 @@ This guide covers deploying the complete application stack to Azure using Terraf
 ## Architecture Overview
 
 **Stack Components:**
+
 1. **Frontend**: React 18 app → Azure Static Web Apps
 2. **Backend API**: Node.js Express → Azure Container Apps
 3. **Database**: PostgreSQL 15 + PostGIS → Azure Database for PostgreSQL Flexible Server
@@ -12,6 +13,7 @@ This guide covers deploying the complete application stack to Azure using Terraf
 ## Prerequisites
 
 ### Required Tools
+
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) >= 2.40
 - [Terraform](https://www.terraform.io/downloads) >= 1.0
 - [Docker](https://docs.docker.com/get-docker/)
@@ -19,6 +21,7 @@ This guide covers deploying the complete application stack to Azure using Terraf
 - [Flyway](https://flywaydb.org/) (for database migrations)
 
 ### Azure Authentication
+
 ```bash
 # Login to Azure
 az login
@@ -30,6 +33,7 @@ az account set --subscription "YOUR_SUBSCRIPTION_ID"
 ## Quick Start
 
 ### 1. Create Azure Container Registry
+
 ```bash
 az group create --name bcps-shared-rg --location eastus2
 az acr create --resource-group bcps-shared-rg --name bcpsredistrictingacr --sku Basic
@@ -37,6 +41,7 @@ az acr login --name bcpsredistrictingacr
 ```
 
 ### 2. Build and Push API Image
+
 ```bash
 cd backend
 docker build -t bcpsredistrictingacr.azurecr.io/redistricting-api:latest .
@@ -45,7 +50,9 @@ cd ..
 ```
 
 ### 3. Configure Terraform
+
 Create `terraform/terraform.tfvars`:
+
 ```hcl
 project_name = "bcps-redistricting"
 environment  = "prod"
@@ -58,11 +65,13 @@ api_docker_image  = "bcpsredistrictingacr.azurecr.io/redistricting-api:latest"
 ```
 
 **⚠️ IMPORTANT**: Add to `.gitignore`:
+
 ```bash
 echo "terraform.tfvars" >> terraform/.gitignore
 ```
 
 ### 4. Deploy Infrastructure
+
 ```bash
 cd terraform
 terraform init
@@ -71,6 +80,7 @@ terraform apply  # Type 'yes' to confirm
 ```
 
 ### 5. Initialize Database
+
 ```bash
 # Get database connection info
 DB_HOST=$(terraform output -raw db_fqdn)
@@ -89,6 +99,7 @@ npm run migrate
 ```
 
 ### 6. Deploy Frontend
+
 ```bash
 cd ..
 DEPLOYMENT_TOKEN=$(cd terraform && terraform output -raw deployment_token)
@@ -104,6 +115,7 @@ npx @azure/static-web-apps-cli deploy --deployment-token $DEPLOYMENT_TOKEN --app
 ```
 
 ### 7. Verify
+
 ```bash
 cd terraform
 FRONTEND_URL=$(terraform output -raw application_url)
@@ -120,7 +132,9 @@ echo "Frontend: $FRONTEND_URL"
 ## Terraform Configuration
 
 ### variables.tf
+
 Key variables:
+
 - `db_admin_password`: PostgreSQL admin password (required)
 - `mapbox_api_key`: Mapbox API key (required)
 - `api_docker_image`: Docker image for API (required)
@@ -128,6 +142,7 @@ Key variables:
 - `container_app_cpu/memory`: Container resources
 
 ### Resources Created
+
 - `azurerm_resource_group` - Resource container
 - `azurerm_log_analytics_workspace` - Logging for Container Apps
 - `azurerm_postgresql_flexible_server` - PostgreSQL 15 server
@@ -141,18 +156,22 @@ Key variables:
 ## Environment Variables
 
 ### Backend (Container App)
+
 Automatically set by Terraform:
+
 ```
 NODE_ENV=production
 DB_HOST=<postgres-fqdn>
 DB_PORT=5432
-DB_NAME=bcps_redistricting
+DB_NAME=<project>-<env>-db
 DB_USER=bcps_admin
 DB_PASSWORD=<from-secret>
 ```
 
 ### Frontend (Static Web App)
+
 Set in `.env.production`:
+
 ```
 VITE_API_URL=https://<container-app-fqdn>
 ```
@@ -161,9 +180,13 @@ VITE_API_URL=https://<container-app-fqdn>
 
 ### Automated Full-Stack Deployment
 
-The `.github/workflows/deploy-fullstack.yml` workflow automatically deploys both frontend and backend when you push to `master` or `main`.
+The `.github/workflows/deploy-fullstack.yml` workflow deploys frontend and backend by environment:
+
+- **Dev/Staging**: Auto-deploy on push to `develop` / `staging` (only when relevant code changes).
+- **Prod**: Manual deployment via workflow dispatch (requires selecting `prod`).
 
 **Features:**
+
 - ✅ Builds and pushes Docker image to Azure Container Registry
 - ✅ Updates Container App with new API version
 - ✅ Verifies API health after deployment
@@ -197,24 +220,33 @@ gh secret set MAPBOX_API_KEY --body "pk.your_mapbox_token"
 
 ### Workflow Triggers
 
-**Automatic:**
-- Push to `master` or `main` branch
+**Automatic (non-prod):**
 
-**Manual:**
+- Push to `develop` → deploy **dev**
+- Push to `staging` → deploy **staging**
+- Deploys **only** if relevant code changed (frontend/backend path filters)
+
+**Manual (all environments, including prod):**
+
 ```bash
 # Trigger via GitHub CLI
-gh workflow run deploy-fullstack.yml
+gh workflow run deploy-fullstack.yml -f environment=prod
+
+# Dev or staging manual run
+gh workflow run deploy-fullstack.yml -f environment=dev
+gh workflow run deploy-fullstack.yml -f environment=staging
 
 # Skip backend deployment (frontend only)
-gh workflow run deploy-fullstack.yml -f skip_backend=true
+gh workflow run deploy-fullstack.yml -f environment=prod -f skip_backend=true
 
 # Skip frontend deployment (backend only)
-gh workflow run deploy-fullstack.yml -f skip_frontend=true
+gh workflow run deploy-fullstack.yml -f environment=prod -f skip_frontend=true
 ```
 
 ### Workflow Steps
 
 **Backend Deployment:**
+
 1. Login to Azure
 2. Build Docker image from `backend/Dockerfile`
 3. Push to Azure Container Registry
@@ -223,6 +255,7 @@ gh workflow run deploy-fullstack.yml -f skip_frontend=true
 6. Verify API health endpoint
 
 **Frontend Deployment:**
+
 1. Install dependencies
 2. Get Mapbox API key from Azure Key Vault
 3. Get backend API URL from Container App
@@ -233,24 +266,29 @@ gh workflow run deploy-fullstack.yml -f skip_frontend=true
 ## Cost Estimates (US East 2)
 
 ### Development Environment
+
 ```hcl
 db_sku_name  = "B_Standard_B1ms"  # ~$12/month
 sku_tier     = "Free"              # $0
 container_app_cpu = 0.25           # ~$10/month
 ```
+
 **Total: ~$22/month**
 
 ### Production Environment
+
 ```hcl
 db_sku_name  = "GP_Standard_D2s_v3"  # ~$100/month
 sku_tier     = "Standard"             # ~$9/month
 container_app_cpu = 0.5               # ~$20/month
 ```
+
 **Total: ~$129/month**
 
 ## Monitoring and Logs
 
 ### Container App Logs
+
 ```bash
 az containerapp logs show \
   --name bcps-redistricting-prod-api \
@@ -259,6 +297,7 @@ az containerapp logs show \
 ```
 
 ### Log Analytics Query
+
 ```bash
 WORKSPACE_ID=$(cd terraform && terraform output -raw log_analytics_workspace_id)
 az monitor log-analytics query \
@@ -269,12 +308,14 @@ az monitor log-analytics query \
 ## Database Management
 
 ### Connect with psql
+
 ```bash
 DB_HOST=$(cd terraform && terraform output -raw db_fqdn)
 psql "postgresql://bcps_admin@${DB_HOST}:5432/bcps_redistricting?sslmode=require"
 ```
 
 ### Backup and Restore
+
 ```bash
 # Backup
 pg_dump "postgresql://bcps_admin@${DB_HOST}:5432/bcps_redistricting?sslmode=require" \
@@ -289,6 +330,7 @@ pg_restore "postgresql://bcps_admin@${DB_HOST}:5432/bcps_redistricting?sslmode=r
 ## Troubleshooting
 
 ### API Health Check Fails
+
 ```bash
 # Check container status
 az containerapp show --name bcps-redistricting-prod-api --resource-group bcps-redistricting-prod-rg --query "properties.runningStatus"
@@ -298,6 +340,7 @@ az containerapp logs show --name bcps-redistricting-prod-api --resource-group bc
 ```
 
 ### Database Connection Issues
+
 ```bash
 # Test connectivity
 psql "postgresql://bcps_admin@${DB_HOST}:5432/bcps_redistricting?sslmode=require" -c "\l"
@@ -309,6 +352,7 @@ az postgres flexible-server firewall-rule list \
 ```
 
 ### Frontend Not Loading Data
+
 1. Check API URL: `console.log(import.meta.env.VITE_API_URL)`
 2. Verify CORS in Container App allows Static Web App domain
 3. Check Network tab in DevTools for failed requests
@@ -331,69 +375,87 @@ terraform destroy  # Type 'yes' to confirm
 ---
 
 **Note**: For frontend-only deployment (without backend), see [DEPLOYMENT_FRONTEND_ONLY.md](./DEPLOYMENT_FRONTEND_ONLY.md).
+
 ### Map Not Loading
+
 **Symptom:** Blank map or console errors about Mapbox token
 
 **Solution:**
+
 1. Verify `MAPBOX_API_KEY` secret is set in GitHub
 2. Check GitHub Actions logs for token masking (`***`)
 3. Verify token in dist/assets/*.js files (look for `pk.ey`)
 4. Check Mapbox dashboard for API usage/restrictions
 
 ### Deployment Failed
+
 **Symptom:** GitHub Actions workflow fails
 
 **Solution:**
+
 1. Check workflow logs for specific error
 2. Verify all required secrets are configured
 3. For Azure: Verify Azure credentials and Static Web Apps token
 4. For GitHub Pages: Verify Pages is enabled in repository settings
 
 ### Wrong Base Path (404 on Assets)
+
 **Symptom:** App loads but assets return 404
 
 **Solution:**
+
 - **GitHub Pages:** Ensure `GITHUB_PAGES=true` in workflow
 - **Azure/Custom Domain:** Ensure `GITHUB_PAGES` is NOT set
 - Check `vite.config.ts` base path configuration
 - Rebuild and redeploy
 
 ### Azure SWA Deployment: "An unknown exception has occurred"
+
 **Symptom:** Azure Static Web Apps deployment fails with "An unknown exception has occurred" after detecting Data API Files Directory
 
 **Cause:** The presence of a `swa-db-connections/` directory with an empty or incomplete `staticwebapp.database.config.json` file causes Azure to attempt Data API Builder processing, which fails when the configuration is not properly set up.
 
 **Solution:**
+
 1. **For static-only sites (no database):** Remove the `swa-db-connections/` directory entirely
+
    ```bash
    rm -rf swa-db-connections
    git add swa-db-connections
    git commit -m "Remove unused database config directory"
    ```
+
 2. **If you need Data API Builder:** Properly configure the `staticwebapp.database.config.json` file with valid connection strings and entity definitions according to [Azure Data API Builder documentation](https://learn.microsoft.com/en-us/azure/data-api-builder/)
 
 **Note:** This app is a static-only React application with no backend database, so the database configuration directory is not needed.
 
 ### Azure Key Vault Access Denied
+
 **Symptom:** Workflow fails at "Get Mapbox API Key from Key Vault" or shows warning "Could not retrieve Mapbox key from Key Vault"
 
 **Solution:**
+
 1. **If using Azure Key Vault:** Verify service principal has Key Vault read permissions:
+
    ```bash
    az keyvault set-policy \
      --name bcps-redistricting-prod-kv \
      --spn YOUR_SP_APP_ID \
      --secret-permissions get list
    ```
+
 2. **Alternative:** Use GitHub Secret only (skip Key Vault):
    - The workflow automatically falls back to `MAPBOX_API_KEY` GitHub Secret
    - Ensure the GitHub Secret is set correctly (see below)
 
 ### Invalid or Short Mapbox Token
+
 **Symptom:** Warning shows "Mapbox key retrieved (length: 18)" or similar short length
 
 **Solution:**
+
 1. **Check GitHub Secret is set correctly:**
+
    ```bash
    # Verify the secret exists
    gh secret list | grep MAPBOX_API_KEY
@@ -413,6 +475,7 @@ terraform destroy  # Type 'yes' to confirm
    - Using an old or revoked token
 
 4. **Test your token:**
+
    ```bash
    # Build locally with the token to verify it works
    export VITE_MAPBOX_ACCESS_TOKEN="pk.your_token_here"
@@ -424,11 +487,13 @@ terraform destroy  # Type 'yes' to confirm
 ## Monitoring
 
 ### Azure Static Web Apps
+
 - **URL:** `https://bcps-redistricting.azurestaticapps.net`
 - **Dashboard:** Azure Portal → Static Web Apps → bcps-redistricting
 - **Logs:** Available in Azure Portal
 
 ### GitHub Pages
+
 - **URL:** `https://<USERNAME>.github.io/bcps-sw-redistricting/` (replace `<USERNAME>` with your GitHub username)
 - **Status:** Repository → Settings → Pages
 - **Logs:** Repository → Actions → Deploy to GitHub Pages workflow

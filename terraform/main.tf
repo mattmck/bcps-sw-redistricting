@@ -26,7 +26,7 @@ locals {
   resource_group_name = var.resource_group_name != "" ? var.resource_group_name : "${var.project_name}-${var.environment}-rg"
   static_web_app_name = "${var.project_name}-${var.environment}-swa"
   db_server_name      = "${var.project_name}-${var.environment}-pg"
-  db_name             = "bcps_redistricting"
+  db_name             = "${var.project_name}-${var.environment}-db"
   container_env_name  = "${var.project_name}-${var.environment}-env"
   container_app_name  = "${var.project_name}-${var.environment}-api"
   log_analytics_name  = "${var.project_name}-${var.environment}-logs"
@@ -142,7 +142,7 @@ resource "azurerm_container_app" "api" {
       
       env {
         name  = "NODE_ENV"
-        value = "production"
+        value = var.environment
       }
       
       env {

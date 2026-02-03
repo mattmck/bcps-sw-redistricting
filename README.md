@@ -3,6 +3,7 @@
 A full-stack application for visualizing and analyzing Baltimore County Public Schools (BCPS) elementary school redistricting scenarios.
 
 **Status:**
+
 - ✅ Frontend: Fully migrated from AngularJS 1.4 to React 18 (February 2026)
 - ✅ Backend: PostGIS database with REST API (February 2026)
 
@@ -11,6 +12,7 @@ A full-stack application for visualizing and analyzing Baltimore County Public S
 This app supports full-stack deployment to **Azure** with infrastructure as code. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed setup instructions.
 
 **Full Stack:**
+
 - **Frontend:** Azure Static Web Apps
 - **Backend API:** Azure Container Apps
 - **Database:** Azure PostgreSQL with PostGIS
@@ -24,7 +26,7 @@ This app supports full-stack deployment to **Azure** with infrastructure as code
 - **Node.js 18+** (LTS recommended)
 - **Docker** and **Docker Compose** (for local backend development)
 - **npm** or **yarn**
-- **CodeQL CLI** (optional, for security analysis) - See [CODEQL.md](./CODEQL.md)
+- **CodeQL CLI** (optional, for security analysis) - See [CODEQL.md](./docs/CODEQL.md)
 
 ### Automated Setup (Recommended for New Developers)
 
@@ -35,6 +37,7 @@ Run the automated setup script to install dependencies and configure CodeQL:
 ```
 
 This script:
+
 - ✅ Checks Node.js version
 - ✅ Installs CodeQL CLI (macOS via Homebrew)
 - ✅ Downloads CodeQL query packs
@@ -88,12 +91,14 @@ This script:
 ### Development Workflow
 
 #### Frontend
+
 - **Dev server with HMR:** `npm run dev`
 - **Build:** `npm run build`
 - **Preview build:** `npm run preview`
 - **Type check:** `npx tsc --noEmit`
 
 #### Backend
+
 - **Start services:** `cd backend && docker-compose up -d`
 - **View API logs:** `docker-compose logs -f api`
 - **View DB logs:** `docker-compose logs -f db`
@@ -102,16 +107,18 @@ This script:
 - **Dev mode:** `npm run dev` (uses nodemon for hot reload)
 
 #### Code Quality & Security
+
 - **Run CodeQL scan:** `npm run codeql:scan`
 - **View scan results:** `npm run codeql:view`
 - **Clean up:** `npm run codeql:clean`
-- See [CODEQL.md](./CODEQL.md) for detailed setup and usage
+- See [CODEQL.md](./docs/CODEQL.md) for detailed setup and usage
 
 ### Git Workflow
 
 This project uses **GitHub Flow** for version control:
 
 #### 1. Create Feature Request (GitHub Issue)
+
 ```bash
 # Using GitHub CLI
 gh issue create --title "Feature: Your feature name" --body "Description..."
@@ -120,6 +127,7 @@ gh issue create --title "Feature: Your feature name" --body "Description..."
 ```
 
 #### 2. Create Branch from Issue
+
 ```bash
 # Option 1: Manual branch creation
 git checkout -b feature/your-feature-name
@@ -129,6 +137,7 @@ gh issue develop <issue-number> --checkout
 ```
 
 #### 3. Commit Changes
+
 ```bash
 git add .
 git commit -m "Add feature description
@@ -139,6 +148,7 @@ Co-Authored-By: Warp <agent@warp.dev>"
 ```
 
 #### 4. Push and Create Pull Request
+
 ```bash
 # Push branch
 git push -u origin feature/your-feature-name
@@ -150,12 +160,14 @@ Description of changes..."
 ```
 
 #### Branch Naming Convention
+
 - `feature/description` - New features
 - `fix/description` - Bug fixes
 - `docs/description` - Documentation updates
 - `refactor/description` - Code refactoring
 
 #### Setup GitHub CLI
+
 ```bash
 brew install gh
 gh auth login
@@ -171,21 +183,25 @@ gh auth login
 <summary>Click to see legacy setup instructions</summary>
 
 ### Prerequisites (Legacy)
+
 - Node.js and npm
 - Bower
 
 ### Installation (Legacy)
+
 ```bash
 cd angular-app
 npm install
 bower install
 gulp serve
 ```
+
 </details>
 
 ## Features
 
 ### Interactive Map
+
 - **Select schools** by clicking on colored circle markers
 - **Reassign planning blocks** by clicking polygons on the map
 - **Real-time updates** to student counts and capacity utilization
@@ -193,7 +209,9 @@ gulp serve
 - **Hover interactions** with cursor changes
 
 ### Redistricting Options
+
 Load 33 predefined redistricting scenarios from:
+
 - 9/30/2015 Meeting (Options 1-3)
 - 10/14/2015 Meeting (Options A-E)
 - 10/28/2015 Meeting (Options A-G)
@@ -201,6 +219,7 @@ Load 33 predefined redistricting scenarios from:
 - 11/18/2015 Meeting (Options 1-4)
 
 ### Data Analysis
+
 - **School capacity** tracking for 2015, 2016, 2017
 - **Student enrollment** calculated from planning blocks
 - **Utilization percentages** with over-capacity highlighting
@@ -208,6 +227,7 @@ Load 33 predefined redistricting scenarios from:
 - **Sortable data table** with all school statistics
 
 ### Export & Sharing
+
 - **Take snapshots** of current map state
 - **Download as PNG** for presentations
 - **Custom scenarios** created by manual reassignment
@@ -219,24 +239,29 @@ The backend provides a REST API for spatial data queries.
 ### Endpoints
 
 #### Health Check
+
 ```http
 GET /health
 ```
+
 Returns API health and database connection status.
 
 #### Schools
+
 ```http
 GET /api/schools              # Get all schools (GeoJSON FeatureCollection)
 GET /api/schools/:id          # Get single school by ID
 ```
 
 #### Planning Blocks
+
 ```http
 GET /api/planning-blocks      # Get all planning blocks (GeoJSON FeatureCollection)
 GET /api/planning-blocks/:id  # Get single planning block by ID
 ```
 
 #### Redistricting Options
+
 ```http
 GET /api/options              # List all redistricting options
 GET /api/options/:id          # Get option with school assignments
@@ -249,6 +274,7 @@ DELETE /api/options/:id       # Delete option
 ### Database Schema
 
 **Tables:**
+
 - `schools` - Elementary school locations (Point geometry)
 - `planning_blocks` - Census planning blocks (Polygon geometry)
 - `redistricting_options` - Redistricting scenarios metadata
@@ -256,6 +282,7 @@ DELETE /api/options/:id       # Delete option
 - `walking_radii` - Walking distance radii (future)
 
 **Spatial Features:**
+
 - PostGIS GEOGRAPHY type with SRID 4326 (WGS84)
 - GIST spatial indexes for performance
 - ST_AsGeoJSON for GeoJSON output
@@ -350,6 +377,7 @@ angular-app/public/assets/    # Legacy GeoJSON data files
 ### Modern Stack (Current)
 
 #### Frontend
+
 - **Framework:** React 18 + TypeScript
 - **Build:** Vite 7 with HMR
 - **Mapping:** Mapbox GL JS (GPU-accelerated)
@@ -358,6 +386,7 @@ angular-app/public/assets/    # Legacy GeoJSON data files
 - **API Client:** Fetch with TypeScript interfaces
 
 #### Backend
+
 - **Runtime:** Node.js 18+
 - **Framework:** Express 4
 - **Database:** PostgreSQL 15 with PostGIS 3.4
@@ -366,6 +395,7 @@ angular-app/public/assets/    # Legacy GeoJSON data files
 - **Container:** Docker + Docker Compose
 
 #### Infrastructure
+
 - **IaC:** Terraform
 - **Cloud:** Azure
 - **Frontend Hosting:** Azure Static Web Apps
@@ -374,6 +404,7 @@ angular-app/public/assets/    # Legacy GeoJSON data files
 - **Monitoring:** Azure Log Analytics
 
 ### Legacy Stack (Preserved)
+
 - **Frontend:** AngularJS 1.4, UI-Router
 - **Build:** Gulp 3.x
 - **Mapping:** Leaflet with angular-leaflet-directive

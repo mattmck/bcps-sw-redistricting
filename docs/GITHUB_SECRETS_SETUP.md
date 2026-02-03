@@ -124,6 +124,7 @@ All 8 secrets should be listed with "Updated X minutes/hours ago" timestamps.
 ### Service Principal Permissions
 
 The service principal has **Contributor** role, which allows:
+
 - ✅ Create/update/delete Azure resources
 - ❌ Manage users, roles, or subscriptions
 
@@ -134,6 +135,7 @@ This follows the **principle of least privilege**.
 Rotate secrets periodically:
 
 1. **Azure Service Principal**: Every 90 days
+
    ```bash
    az ad sp credential reset --id <clientId>
    ```
@@ -166,6 +168,7 @@ gh workflow run deploy-infrastructure.yml -f terraform_action=plan
 ```
 
 Or via GitHub UI:
+
 1. Go to **Actions** tab
 2. Select "Deploy Azure Infrastructure (Terraform)"
 3. Click "Run workflow"
@@ -183,6 +186,7 @@ gh workflow run deploy-infrastructure.yml -f terraform_action=apply
 ```
 
 Expected workflow:
+
 1. ✅ Terraform creates Azure resources (5-10 minutes)
 2. ✅ Database migrations run automatically
 3. ✅ Initial data imported
@@ -258,7 +262,8 @@ az consumption budget create \
 
 ## Related Documentation
 
-- [BACKEND_DEPLOYMENT.md](../BACKEND_DEPLOYMENT.md) - Deployment options comparison
+- [DEPLOYMENT.md](../DEPLOYMENT.md) - Full-stack deployment guide
+- [DEPLOYMENT_FRONTEND_ONLY.md](../DEPLOYMENT_FRONTEND_ONLY.md) - Frontend-only deployment
 - [terraform/README.md](../terraform/README.md) - Terraform infrastructure guide
 - [.github/workflows/deploy-infrastructure.yml](../.github/workflows/deploy-infrastructure.yml) - Automated workflow
 - [.github/workflows/deploy-fullstack.yml](../.github/workflows/deploy-fullstack.yml) - Application deployment

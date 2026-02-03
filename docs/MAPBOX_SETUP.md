@@ -1,17 +1,20 @@
 # Mapbox API Key Setup for Production
 
 ## Overview
+
 The Mapbox API key is stored securely in Azure Key Vault for production deployments and as a GitHub Secret for CI/PR builds.
 
 ## Architecture
 
-### Production (master branch)
+### Production (prod environment)
+
 - **Storage**: Azure Key Vault (`bcps-redistricting-prod-kv`)
 - **Secret Name**: `mapbox-api-key`
 - **Access**: GitHub Actions retrieves via Azure CLI during deployment
 - **Build**: Injected as `VITE_MAPBOX_ACCESS_TOKEN` environment variable
 
 ### CI/PR Builds
+
 - **Storage**: GitHub Secrets
 - **Secret Name**: `MAPBOX_API_KEY`
 - **Access**: Directly from GitHub Actions
@@ -58,14 +61,16 @@ module "secrets" {
 
 For CI builds and PR previews:
 
-#### Via GitHub Web UI:
+#### Via GitHub Web UI
+
 1. Go to: https://github.com/mattmck/bcps-sw-redistricting/settings/secrets/actions
 2. Click **New repository secret**
 3. Name: `MAPBOX_API_KEY`
 4. Value: `pk.your_actual_mapbox_token_here`
 5. Click **Add secret**
 
-#### Via GitHub CLI:
+#### Via GitHub CLI
+
 ```bash
 gh secret set MAPBOX_API_KEY --body "pk.your_actual_mapbox_token_here"
 ```
@@ -114,6 +119,7 @@ az staticwebapp secrets list \
 ## How It Works
 
 ### CI Workflow (`ci.yml`)
+
 ```yaml
 - name: Build project
   run: npm run build
@@ -121,7 +127,8 @@ az staticwebapp secrets list \
     VITE_MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_API_KEY }}
 ```
 
-### Deploy Workflow (`deploy.yml`)
+### Deploy Workflow (`deploy-fullstack.yml`)
+
 ```yaml
 - name: Azure Login
   uses: azure/login@v1
@@ -157,6 +164,7 @@ az staticwebapp secrets list \
 ## Verification
 
 ### Test CI Build
+
 ```bash
 # Push to branch and check Actions
 git push origin your-branch
@@ -166,13 +174,14 @@ git push origin your-branch
 ```
 
 ### Test Production Deploy
+
 ```bash
-# Merge to master triggers automatic deployment
-# Or manually trigger:
-gh workflow run deploy.yml
+# Manual production deployment:
+gh workflow run deploy-fullstack.yml -f environment=prod
 ```
 
 ### Verify Key in Built Application
+
 ```bash
 # Build locally with key
 export VITE_MAPBOX_ACCESS_TOKEN="pk.test..."
@@ -185,11 +194,13 @@ grep -r "pk.ey" dist/
 ## Troubleshooting
 
 ### Build fails with "VITE_MAPBOX_ACCESS_TOKEN not set"
+
 - **CI**: Check GitHub Secret `MAPBOX_API_KEY` is set
 - **Deploy**: Check Azure Key Vault has `mapbox-api-key` secret
 - **Deploy**: Verify service principal has Key Vault read permissions
 
 ### Key Vault access denied
+
 ```bash
 # Check service principal permissions
 az keyvault show-policy \
@@ -198,6 +209,7 @@ az keyvault show-policy \
 ```
 
 ### Map not loading in production
+
 - Check browser console for Mapbox errors
 - Verify the token in dist/ files matches your Mapbox account
 - Check Mapbox dashboard for API usage/restrictions
@@ -217,7 +229,7 @@ az keyvault secret set \
 gh secret set MAPBOX_API_KEY --body "pk.new_key_here"
 
 # 3. Trigger new deployment
-gh workflow run deploy.yml
+gh workflow run deploy-fullstack.yml -f environment=prod
 ```
 
 ## References

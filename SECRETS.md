@@ -5,6 +5,7 @@ This guide covers managing secrets (API keys, tokens) for the BCPS Redistricting
 ## Overview
 
 Secrets like the Mapbox API key are:
+
 - **Never committed to git** - Excluded via `.gitignore`
 - **Stored in `.env.local`** for local development
 - **Stored in cloud secrets manager** for production deployments
@@ -15,6 +16,7 @@ Secrets like the Mapbox API key are:
 **Mapbox API Key**: Get your production key from https://account.mapbox.com/access-tokens/
 
 The production key should be:
+
 - Stored in `.env.local` for local development (gitignored)
 - Provided in `terraform/terraform.tfvars` for deployment (gitignored)
 - Stored in Azure Key Vault for production builds via Terraform
@@ -67,6 +69,7 @@ terraform apply
 ```
 
 This creates:
+
 - Azure Key Vault: `bcps-redistricting-prod-kv`
 - Secret: `mapbox-api-key` with the production key
 
@@ -92,6 +95,7 @@ The `deploy.sh` script automatically retrieves secrets:
 ```
 
 Manually:
+
 ```bash
 # Retrieve key
 MAPBOX_KEY=$(az keyvault secret show \
@@ -115,6 +119,7 @@ The workflow automatically retrieves secrets from Key Vault:
 #### Setup
 
 1. **Create Azure Service Principal**:
+
    ```bash
    az ad sp create-for-rbac \
      --name "bcps-redistricting-github" \
@@ -129,6 +134,7 @@ The workflow automatically retrieves secrets from Key Vault:
    - Add `AZURE_STATIC_WEB_APPS_API_TOKEN` from `terraform output -raw deployment_token`
 
 3. **Deploy infrastructure first**:
+
    ```bash
    cd terraform
    terraform apply
@@ -272,12 +278,14 @@ VITE_MAPBOX_ACCESS_TOKEN=$MAPBOX_KEY npm run build
    ```
 
 3. **Update `.env.local`** for local development:
+
    ```bash
    # Edit .env.local
    VITE_MAPBOX_ACCESS_TOKEN=NEW_KEY_HERE
    ```
 
 4. **Rebuild and deploy**:
+
    ```bash
    ./deploy.sh --deploy-only
    ```
@@ -287,6 +295,7 @@ VITE_MAPBOX_ACCESS_TOKEN=$MAPBOX_KEY npm run build
 ### 1. Domain Restrictions
 
 Restrict the Mapbox API key in Mapbox dashboard:
+
 - Login to https://account.mapbox.com/
 - Go to Access Tokens
 - Click on the token
@@ -317,6 +326,7 @@ terraform apply -var="mapbox_api_key=pk.dev_key_here"
 Restrict who can read secrets:
 
 **Azure**:
+
 ```bash
 # Grant read access to specific user
 az keyvault set-policy \
@@ -326,6 +336,7 @@ az keyvault set-policy \
 ```
 
 **AWS**:
+
 ```json
 {
   "Version": "2012-10-17",
@@ -338,6 +349,7 @@ az keyvault set-policy \
 ```
 
 **GCP**:
+
 ```bash
 gcloud secrets add-iam-policy-binding \
   bcps-redistricting-prod-mapbox-api-key \
@@ -360,7 +372,9 @@ Enable audit logs to track secret access:
 **Symptom**: Blank map or "Invalid token" error in console
 
 **Solutions**:
+
 1. Verify secret is in Key Vault:
+
    ```bash
    az keyvault secret show \
      --name mapbox-api-key \
@@ -368,6 +382,7 @@ Enable audit logs to track secret access:
    ```
 
 2. Check build logs for secret retrieval:
+
    ```bash
    # In GitHub Actions logs, look for:
    # "✅ Mapbox API key retrieved from Key Vault"
@@ -382,7 +397,9 @@ Enable audit logs to track secret access:
 **Symptom**: `az keyvault secret show` fails with permission error
 
 **Solutions**:
+
 1. Grant yourself access:
+
    ```bash
    az keyvault set-policy \
      --name bcps-redistricting-prod-kv \
@@ -391,6 +408,7 @@ Enable audit logs to track secret access:
    ```
 
 2. For GitHub Actions, verify service principal has access:
+
    ```bash
    az keyvault set-policy \
      --name bcps-redistricting-prod-kv \
@@ -403,7 +421,9 @@ Enable audit logs to track secret access:
 **Symptom**: Local key works but production doesn't (or vice versa)
 
 **Solutions**:
+
 1. Check which key is being used:
+
    ```bash
    # In build logs, check:
    echo "Using key: ${VITE_MAPBOX_ACCESS_TOKEN:0:20}..."

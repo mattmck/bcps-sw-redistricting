@@ -3,6 +3,7 @@
 ## What Was Added
 
 ✅ **GitHub Actions CI Workflow** (`.github/workflows/ci.yml`)
+
 - Runs on every PR to master/main
 - Uses Node.js 22.20.0 (project requires 18+)
 - Performs TypeScript type checking
@@ -14,7 +15,7 @@
 
 To require this check before merging PRs:
 
-### Via GitHub Web UI:
+### Via GitHub Web UI
 
 1. Go to: https://github.com/mattmck/bcps-sw-redistricting/settings/branches
 2. Click **Add rule** (or edit existing rule for `master`)
@@ -28,7 +29,7 @@ To require this check before merging PRs:
    - ✅ **Require approvals** (if you have collaborators)
 6. Click **Create** or **Save changes**
 
-### Via GitHub CLI (if you prefer):
+### Via GitHub CLI (if you prefer)
 
 ```bash
 # Enable branch protection with required checks
@@ -53,6 +54,7 @@ gh api repos/mattmck/bcps-sw-redistricting/branches/master/protection \
 ## Testing the Workflow
 
 The workflow will run on your current PR! Check:
+
 - https://github.com/mattmck/bcps-sw-redistricting/actions
 
 You should see the CI workflow running now that it's been pushed.
