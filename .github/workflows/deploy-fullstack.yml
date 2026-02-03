@@ -126,7 +126,8 @@ jobs:
           else
             echo "Creating new Container App..."
             
-            # Get Container App Environment (assume it exists or create separately)
+            # Get Container App Environment
+            # Note: If multiple environments exist, consider specifying the exact environment name
             CONTAINER_ENV=$(az containerapp env list \
               --resource-group ${{ env.RESOURCE_GROUP }} \
               --query "[0].name" -o tsv)
@@ -138,6 +139,14 @@ jobs:
             
             echo "Using Container App Environment: $CONTAINER_ENV"
             
+            # Get ACR credentials for authentication
+            ACR_USERNAME=$(az acr credential show \
+              --name ${{ env.ACR_NAME }} \
+              --query username -o tsv)
+            ACR_PASSWORD=$(az acr credential show \
+              --name ${{ env.ACR_NAME }} \
+              --query "passwords[0].value" -o tsv)
+            
             az containerapp create \
               --name ${{ env.CONTAINER_APP_NAME }} \
               --resource-group ${{ env.RESOURCE_GROUP }} \
@@ -147,7 +156,9 @@ jobs:
               --ingress external \
               --min-replicas 1 \
               --max-replicas 3 \
-              --registry-server ${{ env.ACR_NAME }}.azurecr.io
+              --registry-server ${{ env.ACR_NAME }}.azurecr.io \
+              --registry-username "$ACR_USERNAME" \
+              --registry-password "$ACR_PASSWORD"
             
             # Set environment variables from Key Vault
             echo "Setting environment variables..."
