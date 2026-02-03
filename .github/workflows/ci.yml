@@ -2,6 +2,12 @@ name: CI
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        description: 'Target environment (affects CodeQL blocking)'
+        required: false
+        type: string
+        default: 'dev'
   pull_request:
     branches:
       - master
@@ -12,7 +18,46 @@ on:
       - main
 
 jobs:
+  docs-lint:
+    name: Documentation Lint
+    uses: ./.github/workflows/docs-lint.yml
+  
+  codeql:
+    name: CodeQL Security Scan
+    uses: ./.github/workflows/codeql.yml
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+  
+  check-codeql:
+    name: Check CodeQL Results
+    needs: codeql
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Evaluate CodeQL for Production
+        if: inputs.environment == 'prod'
+        run: |
+          if [ "${{ needs.codeql.result }}" != "success" ]; then
+            echo "❌ CodeQL security scan failed. Production deployment blocked."
+            exit 1
+          fi
+          echo "✅ CodeQL passed - production deployment allowed"
+      
+      - name: Evaluate CodeQL for Dev/Staging
+        if: inputs.environment != 'prod'
+        run: |
+          if [ "${{ needs.codeql.result }}" != "success" ]; then
+            echo "⚠️  CodeQL security scan failed, but allowing ${{ inputs.environment }} deployment."
+            echo "Please review security findings before promoting to production."
+          else
+            echo "✅ CodeQL passed for ${{ inputs.environment }}"
+          fi
+  
   build:
+    name: Build and Test
+    needs: check-codeql
     runs-on: ubuntu-latest
     
     steps:

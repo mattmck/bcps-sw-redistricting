@@ -1,6 +1,7 @@
 # BCPS Redistricting App - Modernization Roadmap
 
 ## Current State (2015 Tech Stack)
+
 - AngularJS 1.4 (EOL, security risks)
 - Gulp 3.x (deprecated)
 - Bower (deprecated 2017)
@@ -9,6 +10,7 @@
 - Node.js 0.10+ (ancient)
 
 ## Target State (2025 Modern Stack)
+
 - React 18 + TypeScript
 - Vite (build tool)
 - npm/yarn (package management)
@@ -21,6 +23,7 @@
 ### Phase 1: Infrastructure Modernization (1-2 weeks)
 
 #### Step 1: Package Management Migration
+
 ```bash
 # Remove Bower
 rm bower.json
@@ -33,9 +36,11 @@ npm install --save-dev @types/react @types/react-dom
 ```
 
 #### Step 2: Build System Migration
+
 Replace Gulp with Vite:
 
 **New vite.config.ts:**
+
 ```typescript
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -60,6 +65,7 @@ export default defineConfig({
 ```
 
 **New package.json scripts:**
+
 ```json
 {
   "scripts": {
@@ -74,12 +80,14 @@ export default defineConfig({
 ### Phase 2: Library Updates (1-2 weeks)
 
 #### Step 1: Mapping Modernization
+
 ```bash
 npm install leaflet@latest react-leaflet
 npm install --save-dev @types/leaflet
 ```
 
 **Modern Leaflet Component:**
+
 ```typescript
 import { useState, useRef } from 'react'
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
@@ -130,12 +138,14 @@ export const MapComponent: React.FC<MapComponentProps> = ({
 ```
 
 #### Step 2: Styling Modernization
+
 ```bash
 npm install tailwindcss autoprefixer postcss
 npx tailwindcss init -p
 ```
 
 Replace Bootstrap 3 classes with Tailwind:
+
 ```html
 <!-- Old Bootstrap 3 -->
 <div class="container-fluid">
@@ -153,6 +163,7 @@ Replace Bootstrap 3 classes with Tailwind:
 #### Convert AngularJS Controller to React Component
 
 **Old AngularJS Controller:**
+
 ```javascript
 function MainController($scope, $resource) {
   $scope.schools = [];
@@ -165,6 +176,7 @@ function MainController($scope, $resource) {
 ```
 
 **New React Component:**
+
 ```typescript
 import { useState, useMemo } from 'react'
 import { useSchoolData } from '@/hooks/useSchoolData'
@@ -205,6 +217,7 @@ export const MainView: React.FC = () => {
 #### Data Management Modernization
 
 **Replace $resource with modern fetch/axios:**
+
 ```typescript
 // hooks/useSchoolData.ts
 import { useState } from 'react'
@@ -232,18 +245,21 @@ export function useSchoolData() {
 ## Migration Benefits
 
 ### Performance Improvements
+
 - **Bundle size**: 60-80% reduction (AngularJS ~150KB → React 18 ~45KB)
 - **Build time**: 90% faster (Gulp ~30s → Vite ~3s)
 - **Dev server**: Hot Module Replacement (instant updates)
 - **Modern JavaScript**: Tree shaking, code splitting
 
 ### Developer Experience
+
 - **TypeScript**: Type safety, better IDE support
 - **Modern tooling**: ESLint, Prettier, Vitest
 - **Component-based**: Reusable, testable components
 - **Reactive system**: Automatic UI updates
 
 ### Maintainability
+
 - **Security**: No EOL dependencies
 - **Documentation**: Modern, actively maintained libraries
 - **Community**: Large, active ecosystems
@@ -252,24 +268,28 @@ export function useSchoolData() {
 ## Implementation Timeline
 
 ### ✅ Phase 1: Infrastructure (Completed)
+
 - [x] Set up Vite build system
 - [x] Migrate from Bower to npm
 - [x] Update Node.js tooling
 - [x] Set up TypeScript with strict mode
 
 ### ✅ Phase 2: Framework Migration (Completed)
+
 - [x] Create React components for major UI sections
 - [x] Convert AngularJS services to React hooks
 - [x] Migrate templates to JSX/TSX
 - [x] Implement state management with useState/useRef
 
 ### ✅ Phase 3: Mapping & Data (Completed)
+
 - [x] Upgrade to Mapbox GL JS (from Leaflet)
 - [x] Implement GeoJSON data loading
 - [x] Add interactive click handlers
 - [x] Real-time data updates
 
 ### ✅ Phase 4: Features & Polish (Completed)
+
 - [x] All 33 redistricting options
 - [x] Interactive school/block selection
 - [x] Real-time student calculations

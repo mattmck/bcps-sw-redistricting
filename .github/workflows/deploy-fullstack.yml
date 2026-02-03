@@ -3,10 +3,24 @@ name: Deploy Full Stack to Azure
 on:
   push:
     branches:
-      - master
-      - main
+      - develop    # Auto-deploy dev environment
+      - staging    # Auto-deploy staging environment
+    paths:
+      - 'src/**'
+      - 'backend/**'
+      - 'package*.json'
+      - '.github/workflows/deploy-fullstack.yml'
   workflow_dispatch:
     inputs:
+      environment:
+        description: 'Environment to deploy to (dev, staging, prod)'
+        required: false
+        default: 'prod'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
       skip_backend:
         description: 'Skip backend deployment'
         required: false
@@ -21,19 +35,43 @@ permissions:
   id-token: write
 
 env:
-  ACR_NAME: bcpsredistrictingacr
-  RESOURCE_GROUP: bcps-redistricting-prod-rg
-  CONTAINER_APP_NAME: bcps-redistricting-prod-api
-  STATIC_WEB_APP_NAME: bcps-redistricting-prod-swa
+  ACR_NAME: bcpsredistricting-${{ github.event.inputs.environment || (github.ref == 'refs/heads/develop' && 'dev') || (github.ref == 'refs/heads/staging' && 'staging') || 'prod' }}-acr
+  ENVIRONMENT: bcpsredistricting-${{ github.event.inputs.environment || (github.ref == 'refs/heads/develop' && 'dev') || (github.ref == 'refs/heads/staging' && 'staging') || 'prod' }}-env
+  RESOURCE_GROUP: bcps-redistricting-${{ github.event.inputs.environment || (github.ref == 'refs/heads/develop' && 'dev') || (github.ref == 'refs/heads/staging' && 'staging') || 'prod' }}-rg
+  CONTAINER_APP_NAME: bcps-redistricting-${{ github.event.inputs.environment || (github.ref == 'refs/heads/develop' && 'dev') || (github.ref == 'refs/heads/staging' && 'staging') || 'prod' }}-api
+  STATIC_WEB_APP_NAME: bcps-redistricting-${{ github.event.inputs.environment || (github.ref == 'refs/heads/develop' && 'dev') || (github.ref == 'refs/heads/staging' && 'staging') || 'prod' }}-swa
 
 jobs:
+  # Detect which paths changed
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+              - 'package.json'
+            frontend:
+              - 'src/**'
+              - 'package.json'
+              - 'vite.config.ts'
+              - 'tsconfig.json'
+
   ci:
     uses: ./.github/workflows/ci.yml
+    with:
+      environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/develop' && 'dev') || (github.ref == 'refs/heads/staging' && 'staging') || 'prod' }}
     secrets: inherit
   
   deploy-backend:
-    if: github.event.inputs.skip_backend != 'true'
-    needs: ci
+    if: (github.event_name == 'workflow_dispatch' && github.event.inputs.skip_backend != 'true') || (github.event_name != 'workflow_dispatch' && needs.changes.outputs.backend == 'true')
+    needs: [ci, changes]
     runs-on: ubuntu-latest
     name: Deploy Backend API
     
@@ -62,127 +100,15 @@ jobs:
           
           echo "✅ Docker image pushed: ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:${{ github.sha }}"
       
-      - name: Check if Container App exists
-        id: check-app
+      - name: Update Container App Image
         run: |
-          if az containerapp show \
+          echo "Updating Container App with new image..."
+          az containerapp update \
             --name ${{ env.CONTAINER_APP_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --query name -o tsv 2>/dev/null; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-            echo "✅ Container App exists"
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-            echo "⚠️  Container App does not exist yet"
-          fi
-      
-      - name: Run Database Migrations
-        if: steps.check-app.outputs.exists == 'true'
-        run: |
-          echo "Running Flyway migrations..."
+            --image ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:${{ github.sha }}
           
-          # Get database connection info from Container App environment
-          DB_HOST=$(az containerapp show \
-            --name ${{ env.CONTAINER_APP_NAME }} \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --query "properties.template.containers[0].env[?name=='DB_HOST'].value" -o tsv)
-          
-          DB_NAME=$(az containerapp show \
-            --name ${{ env.CONTAINER_APP_NAME }} \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --query "properties.template.containers[0].env[?name=='DB_NAME'].value" -o tsv)
-          
-          DB_USER=$(az containerapp show \
-            --name ${{ env.CONTAINER_APP_NAME }} \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --query "properties.template.containers[0].env[?name=='DB_USER'].value" -o tsv)
-          
-          # Get DB password from Key Vault
-          DB_PASSWORD=$(az keyvault secret show \
-            --name db-admin-password \
-            --vault-name bcps-redistricting-prod-kv \
-            --query value -o tsv)
-          
-          # Run Flyway migration using Docker
-          docker run --rm \
-            -v $(pwd)/backend/migrations:/flyway/sql \
-            flyway/flyway:10 \
-            -url="jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}?sslmode=require" \
-            -user="${DB_USER}" \
-            -password="${DB_PASSWORD}" \
-            migrate
-          
-          echo "✅ Database migrations completed"
-      
-      - name: Skip migrations (first deployment)
-        if: steps.check-app.outputs.exists == 'false'
-        run: |
-          echo "⚠️  Container App doesn't exist yet. Skipping migrations."
-          echo "Run migrations manually after infrastructure setup."
-      
-      - name: Deploy Container App
-        run: |
-          if [ "${{ steps.check-app.outputs.exists }}" = "true" ]; then
-            echo "Updating existing Container App..."
-            az containerapp update \
-              --name ${{ env.CONTAINER_APP_NAME }} \
-              --resource-group ${{ env.RESOURCE_GROUP }} \
-              --image ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:${{ github.sha }}
-          else
-            echo "Creating new Container App..."
-            
-            # Get Container App Environment
-            # Note: If multiple environments exist, consider specifying the exact environment name
-            CONTAINER_ENV=$(az containerapp env list \
-              --resource-group ${{ env.RESOURCE_GROUP }} \
-              --query "[0].name" -o tsv)
-            
-            if [ -z "$CONTAINER_ENV" ]; then
-              echo "❌ No Container App Environment found. Please create one first."
-              exit 1
-            fi
-            
-            echo "Using Container App Environment: $CONTAINER_ENV"
-            
-            # Get ACR credentials for authentication
-            ACR_USERNAME=$(az acr credential show \
-              --name ${{ env.ACR_NAME }} \
-              --query username -o tsv)
-            ACR_PASSWORD=$(az acr credential show \
-              --name ${{ env.ACR_NAME }} \
-              --query "passwords[0].value" -o tsv)
-            
-            az containerapp create \
-              --name ${{ env.CONTAINER_APP_NAME }} \
-              --resource-group ${{ env.RESOURCE_GROUP }} \
-              --environment "$CONTAINER_ENV" \
-              --image ${{ env.ACR_NAME }}.azurecr.io/redistricting-api:${{ github.sha }} \
-              --target-port 4000 \
-              --ingress external \
-              --min-replicas 1 \
-              --max-replicas 3 \
-              --registry-server ${{ env.ACR_NAME }}.azurecr.io \
-              --registry-username "$ACR_USERNAME" \
-              --registry-password "$ACR_PASSWORD"
-            
-            # Set environment variables from Key Vault
-            # Note: This assumes Key Vault secrets are already configured in the Container App Environment
-            # If secrets aren't configured, this step may fail. In that case, configure secrets first:
-            # az containerapp secret set --name $NAME --resource-group $RG --secrets \
-            #   db-host=keyvaultref:<vault-uri>/secrets/db-host,identityref:<identity-id>
-            echo "Setting environment variables..."
-            az containerapp update \
-              --name ${{ env.CONTAINER_APP_NAME }} \
-              --resource-group ${{ env.RESOURCE_GROUP }} \
-              --set-env-vars \
-                DB_HOST=secretref:db-host \
-                DB_NAME=secretref:db-name \
-                DB_USER=secretref:db-user \
-                DB_PASSWORD=secretref:db-password \
-                NODE_ENV=production
-          fi
-          
-          echo "✅ Container App deployed successfully"
+          echo "✅ Container App updated successfully"
       
       - name: Verify API Health
         run: |
@@ -208,8 +134,8 @@ jobs:
           fi
 
   deploy-frontend:
-    if: github.event.inputs.skip_frontend != 'true'
-    needs: deploy-backend
+    if: (github.event_name == 'workflow_dispatch' && github.event.inputs.skip_frontend != 'true') || (github.event_name != 'workflow_dispatch' && needs.changes.outputs.frontend == 'true')
+    needs: [changes]
     runs-on: ubuntu-latest
     name: Deploy Frontend
     

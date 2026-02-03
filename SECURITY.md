@@ -17,17 +17,20 @@ The modern full-stack application follows security best practices:
 ### Frontend (React 18)
 
 ### ✅ Secrets Management
+
 - **Environment Variables**: API keys stored in `.env` files (gitignored)
 - **Template File**: `.env.example` provided for setup
 - **No Hardcoded Secrets**: All sensitive values use environment variables
 - **Pattern**: Uses Vite's `import.meta.env.*` convention
 
 ### ✅ Dependency Management
+
 - **Automated Updates**: Dependabot configured for weekly scans
 - **Modern Stack**: Up-to-date React 18, Vite 7, TypeScript 5
 - **Security Patches**: Automatically applied for production dependencies
 
 ### ✅ GitHub Secret Scanning
+
 - **AWS Keys**: Previous leaked AWS keys were revoked (Alerts #1 & #2 - Resolved 2026-02-02)
 - **Mapbox Keys**: Using environment variables, no keys in source code
 - **Push Protection**: Enabled to prevent future secret commits
@@ -35,18 +38,21 @@ The modern full-stack application follows security best practices:
 ### Backend (Node.js + Express + PostgreSQL)
 
 ✅ **Database Security**
+
 - **Connection Pooling**: pg connection pool with secure configuration
 - **Parameterized Queries**: SQL injection prevention
 - **Environment Variables**: Database credentials in `.env` (gitignored)
 - **PostGIS Extension**: Spatial queries with built-in security
 
 ✅ **API Security**
+
 - **CORS**: Configured to allow specific origins only
 - **Rate Limiting**: Express rate limit middleware
 - **Error Handling**: Safe error messages (no stack traces in production)
 - **Input Validation**: Type checking with TypeScript
 
 ✅ **Container Security**
+
 - **Docker Compose**: Isolated network for database
 - **Non-root User**: API runs as non-privileged user
 - **Health Checks**: Automated health monitoring
@@ -85,6 +91,7 @@ If you discover a security vulnerability in the **production React application**
 2. **Email**: Create a GitHub issue with the `security` label
 
 Please include:
+
 - Description of the vulnerability
 - Steps to reproduce
 - Potential impact
@@ -119,6 +126,7 @@ When contributing to this project:
    - Implement proper error handling
 
 4. **Environment Variable Setup**
+
    ```bash
    # Copy template
    cp .env.example .env.local
@@ -188,6 +196,7 @@ npm run build
 ## Compliance
 
 This is a personal/open-source project for visualizing school redistricting data. It does not:
+
 - Collect or store personal information
 - Process payments
 - Handle authentication/authorization
@@ -199,6 +208,7 @@ No compliance certifications (SOC 2, GDPR, etc.) are required for current use ca
 ## Contact
 
 For security concerns:
+
 - **GitHub Issues**: https://github.com/mattmck/bcps-sw-redistricting/issues
 - **Security Advisories**: https://github.com/mattmck/bcps-sw-redistricting/security
 

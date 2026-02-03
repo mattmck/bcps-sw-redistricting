@@ -1,0 +1,30 @@
+name: Issue Link Check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+      - edited
+
+permissions:
+  contents: read
+
+jobs:
+  validate-issue-link:
+    name: Validate issue link
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR description for linked issue
+        run: |
+          BODY="${{ github.event.pull_request.body }}"
+          echo "Checking PR body for issue link..."
+
+          if echo "$BODY" | grep -Eiq "(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved) #[0-9]+"; then
+            echo "✅ Issue link found in PR description"
+          else
+            echo "❌ No linked issue found. Add 'Closes #123' or similar to the PR description."
+            exit 1
+          fi

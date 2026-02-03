@@ -1,6 +1,7 @@
 name: "CodeQL Security Analysis"
 
 on:
+  workflow_call:
   push:
     branches: [ main, master ]
   pull_request:

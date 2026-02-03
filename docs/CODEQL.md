@@ -7,6 +7,7 @@ This document explains how to use CodeQL for automated security and code quality
 CodeQL is GitHub's code analysis engine that treats code as data. It can find security vulnerabilities, bugs, and code quality issues in JavaScript, TypeScript, and many other languages.
 
 **Benefits:**
+
 - 🔒 Find security vulnerabilities before they reach production
 - 🐛 Detect common coding errors and anti-patterns
 - 📊 Enforce code quality standards
@@ -20,20 +21,25 @@ CodeQL is GitHub's code analysis engine that treats code as data. It can find se
 CodeQL must be installed on your system to run locally. Choose one option:
 
 #### Option 1: Homebrew (Recommended for macOS)
+
 ```bash
 brew install codeql
 ```
 
 #### Option 2: Manual Download
+
 1. Visit [github.com/github/codeql-cli-binaries/releases](https://github.com/github/codeql-cli-binaries/releases)
 2. Download the latest release for your OS
 3. Extract to a directory (e.g., `~/codeql-cli`)
 4. Add to PATH:
+
    ```bash
    # Add to ~/.zshrc or ~/.bashrc
    export PATH="$HOME/codeql-cli:$PATH"
    ```
+
 5. Verify installation:
+
    ```bash
    codeql --version
    ```
@@ -59,6 +65,7 @@ npm run codeql:scan
 ```
 
 This command:
+
 1. Creates a CodeQL database from your source code
 2. Runs all security and quality checks
 3. Outputs results to `codeql-results.sarif`
@@ -143,6 +150,7 @@ echo "Run 'npm run codeql:scan' to perform security analysis"
 ```
 
 Make it executable and run:
+
 ```bash
 chmod +x scripts/setup-dev.sh
 ./scripts/setup-dev.sh
@@ -161,6 +169,7 @@ Add automatic CodeQL setup to `package.json`:
 ```
 
 Create `scripts/check-codeql.cjs` (note: `.cjs` for CommonJS compatibility):
+
 ```javascript
 const { execSync } = require('child_process');
 
@@ -268,6 +277,7 @@ fi
 ## What Gets Scanned?
 
 CodeQL analyzes:
+
 - ✅ All TypeScript files in `src/`
 - ✅ All JavaScript files in project root
 - ✅ Backend code in `backend/src/`
@@ -281,6 +291,7 @@ CodeQL analyzes:
 ### "codeql: command not found"
 
 Install CodeQL first:
+
 ```bash
 brew install codeql
 ```
@@ -288,6 +299,7 @@ brew install codeql
 ### "No query packs found"
 
 Download JavaScript queries:
+
 ```bash
 codeql pack download codeql/javascript-queries
 ```
@@ -295,6 +307,7 @@ codeql pack download codeql/javascript-queries
 ### "Database creation failed"
 
 Clean up and try again:
+
 ```bash
 npm run codeql:clean
 npm run codeql:create-db
@@ -303,6 +316,7 @@ npm run codeql:create-db
 ### "Permission denied" on macOS
 
 CodeQL may need Full Disk Access:
+
 1. System Preferences → Security & Privacy → Privacy
 2. Select "Full Disk Access"
 3. Add Terminal/iTerm
@@ -337,6 +351,7 @@ select elem, "Unsafe use of innerHTML with user input"
 ```
 
 Run custom queries:
+
 ```bash
 codeql database analyze codeql-db .github/codeql/custom-queries.ql --format=sarif-latest --output=custom-results.sarif
 ```
@@ -351,6 +366,7 @@ codeql database analyze codeql-db .github/codeql/custom-queries.ql --format=sari
 ## Support
 
 If you encounter issues:
+
 1. Check this documentation first
 2. Search [GitHub CodeQL discussions](https://github.com/github/codeql/discussions)
 3. File an issue in this repository with the `codeql` label

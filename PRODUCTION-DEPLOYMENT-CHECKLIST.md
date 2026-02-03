@@ -15,17 +15,20 @@ This checklist guides you through deploying the BCPS Redistricting Tool to Azure
 ### 1. Prerequisites Installed
 
 - [ ] **Azure CLI** installed and updated
+
   ```bash
   az --version  # Should be 2.0 or higher
   az login
   ```
 
 - [ ] **Terraform** installed (>= 1.0)
+
   ```bash
   terraform --version
   ```
 
 - [ ] **Node.js** >= 18
+
   ```bash
   node --version
   ```
@@ -33,6 +36,7 @@ This checklist guides you through deploying the BCPS Redistricting Tool to Azure
 ### 2. Azure Setup
 
 - [ ] **Azure subscription** active and accessible
+
   ```bash
   az account show
   ```
@@ -66,16 +70,20 @@ This checklist guides you through deploying the BCPS Redistricting Tool to Azure
 ### Phase 1: Local Testing (5 minutes)
 
 1. **Test local build**
+
    ```bash
    npm install
    npm run build
    ```
+
    Expected: Build succeeds, `dist/` directory created
 
 2. **Test local development**
+
    ```bash
    npm run dev
    ```
+
    Expected: Map loads with planning blocks and schools, no console errors
 
 3. **Verify Mapbox key**
@@ -90,22 +98,27 @@ This checklist guides you through deploying the BCPS Redistricting Tool to Azure
 ### Phase 2: Infrastructure Deployment (10-15 minutes)
 
 1. **Initialize Terraform**
+
    ```bash
    cd terraform
    terraform init
    ```
+
    Expected: Provider plugins downloaded successfully
 
 2. **Create configuration file**
+
    ```bash
    cp terraform.tfvars.example terraform.tfvars
    # Edit terraform.tfvars if needed (or use defaults)
    ```
 
 3. **Plan infrastructure**
+
    ```bash
    terraform plan -out=tfplan
    ```
+
    Expected: Shows resources to be created:
    - Resource Group
    - Static Web App
@@ -117,17 +130,21 @@ This checklist guides you through deploying the BCPS Redistricting Tool to Azure
    - [ ] No unexpected deletions or changes
 
 5. **Apply infrastructure**
+
    ```bash
    terraform apply tfplan
    ```
+
    Expected: Resources created successfully
    
    Time: ~5-10 minutes
 
 6. **Verify outputs**
+
    ```bash
    terraform output
    ```
+
    Expected outputs:
    - `application_url` - Your app URL
    - `key_vault_name` - Key Vault name (if enabled)
@@ -144,12 +161,14 @@ This checklist guides you through deploying the BCPS Redistricting Tool to Azure
 ### Phase 3: Application Deployment (5 minutes)
 
 1. **Option A: Automated Script (Recommended)**
+
    ```bash
    cd ..
    ./deploy.sh --deploy-only
    ```
 
 2. **Option B: Manual Deployment**
+
    ```bash
    # Get deployment token
    DEPLOYMENT_TOKEN=$(cd terraform && terraform output -raw deployment_token)
@@ -171,6 +190,7 @@ This checklist guides you through deploying the BCPS Redistricting Tool to Azure
    ```
 
 3. **Verify deployment**
+
    ```bash
    # Get app URL
    cd terraform
@@ -208,13 +228,16 @@ Open the application URL and verify:
    - [ ] Go to Access Tokens
    - [ ] Click on your production token
    - [ ] Add URL restrictions:
+
      ```
      https://<your-static-app-url>.azurestaticapps.net/*
      http://localhost:3000/*
      ```
+
    - [ ] Save changes
 
 2. **Configure Key Vault Access (if enabled)**
+
    ```bash
    # Restrict access to specific users
    az keyvault set-policy \
@@ -224,6 +247,7 @@ Open the application URL and verify:
    ```
 
 3. **Review Resource Tags**
+
    ```bash
    az resource list \
      --resource-group bcps-redistricting-prod-rg \
@@ -239,6 +263,7 @@ Open the application URL and verify:
 If you want automatic deployments on git push:
 
 1. **Create Azure Service Principal**
+
    ```bash
    az ad sp create-for-rbac \
      --name "bcps-redistricting-github" \
@@ -246,16 +271,20 @@ If you want automatic deployments on git push:
      --scopes /subscriptions/<subscription-id>/resourceGroups/bcps-redistricting-prod-rg \
      --sdk-auth
    ```
+
    Copy the JSON output
 
 2. **Add GitHub Secrets**
    - Go to GitHub repo → Settings → Secrets → Actions
    - Add `AZURE_CREDENTIALS` with the JSON from step 1
    - Add `AZURE_STATIC_WEB_APPS_API_TOKEN`:
+
      ```bash
      terraform output -raw deployment_token
      ```
+
    - Add `MAPBOX_API_KEY` (fallback):
+
      ```
      <Your Mapbox API key from https://account.mapbox.com/access-tokens/>
      ```
@@ -274,18 +303,21 @@ If you want automatic deployments on git push:
 If you want to use a custom domain:
 
 1. **Add domain to Terraform**
+
    ```hcl
    # In terraform.tfvars
    custom_domain = "redistricting.yourschool.org"
    ```
 
 2. **Apply changes**
+
    ```bash
    terraform apply
    ```
 
 3. **Configure DNS**
    Add CNAME record:
+
    ```
    Type:  CNAME
    Name:  redistricting
@@ -294,6 +326,7 @@ If you want to use a custom domain:
    ```
 
 4. **Wait for SSL provisioning** (5-15 minutes)
+
    ```bash
    az staticwebapp show \
      --name $(terraform output -raw static_web_app_name) \
@@ -352,6 +385,7 @@ terraform apply
 ## Cost Tracking
 
 **Expected Monthly Cost** (Free Tier):
+
 - Static Web App: $0
 - Key Vault: $0 (1000 operations free)
 - Bandwidth: $0 (100 GB free)
@@ -369,15 +403,19 @@ terraform apply
 ### Common Issues
 
 **Issue**: Terraform apply fails with "name already exists"
+
 - **Solution**: Resource names must be unique. Edit `terraform.tfvars` to change `project_name`
 
 **Issue**: Map doesn't load in production
+
 - **Solution**: Check browser console for API key errors, verify Key Vault secret
 
 **Issue**: GitHub Actions fail with auth error
+
 - **Solution**: Verify `AZURE_CREDENTIALS` secret is correct, check service principal permissions
 
 **Issue**: Can't access Key Vault
+
 - **Solution**: Grant yourself access with `az keyvault set-policy`
 
 ### Getting Help

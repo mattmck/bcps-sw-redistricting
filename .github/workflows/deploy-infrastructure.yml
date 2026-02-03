@@ -7,6 +7,15 @@ on:
   # Manual trigger for infrastructure changes
   workflow_dispatch:
     inputs:
+      environment:
+        description: 'Environment to deploy to (dev, staging, prod)'
+        required: false
+        default: 'prod'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
       terraform_action:
         description: 'Terraform action to perform'
         required: true
@@ -27,6 +36,32 @@ on:
   #     - '.github/workflows/deploy-infrastructure.yml'
 
 jobs:
+  changes:
+    name: Detect infra/backend changes
+    runs-on: ubuntu-latest
+    outputs:
+      infrastructure: ${{ steps.filter.outputs.infrastructure }}
+      backend: ${{ steps.filter.outputs.backend }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Filter paths
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          base: ${{ github.event.repository.default_branch }}
+          ref: ${{ github.sha }}
+          filters: |
+            infrastructure:
+              - 'terraform/**'
+              - '.github/workflows/deploy-infrastructure.yml'
+            backend:
+              - 'backend/**'
+              - 'package*.json'
+
   terraform:
     name: Terraform ${{ github.event.inputs.terraform_action || 'plan' }}
     runs-on: ubuntu-latest
@@ -153,9 +188,12 @@ jobs:
 
   database-migration:
     name: Run Database Migrations
-    needs: terraform
+    needs: [terraform, changes]
     runs-on: ubuntu-latest
-    if: needs.terraform.outputs.database_host != '' && github.event.inputs.terraform_action != 'destroy'
+    if: >-
+      needs.terraform.outputs.database_host != '' &&
+      github.event.inputs.terraform_action != 'destroy' &&
+      (needs.changes.outputs.infrastructure == 'true' || needs.changes.outputs.backend == 'true')
     
     steps:
       - name: Checkout code

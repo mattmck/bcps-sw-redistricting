@@ -8,17 +8,16 @@ terraform {
     }
   }
   
-  # Uncomment for remote state storage
-  # backend "azurerm" {
-  #   resource_group_name  = "terraform-state-rg"
-  #   storage_account_name = "tfstatexxxxxx"
-  #   container_name       = "tfstate"
-  #   key                  = "redistricting.terraform.tfstate"
-  # }
+  # Remote state storage in Azure
+  backend "azurerm" {
+    # Configuration provided via backend-config.hcl in CI/CD
+    # or via command line: terraform init -backend-config="key=value"
+  }
 }
 
 provider "azurerm" {
   features {}
+  skip_provider_registration = true
 }
 
 # Local variables for naming consistency
@@ -26,7 +25,7 @@ locals {
   resource_group_name = var.resource_group_name != "" ? var.resource_group_name : "${var.project_name}-${var.environment}-rg"
   static_web_app_name = "${var.project_name}-${var.environment}-swa"
   db_server_name      = "${var.project_name}-${var.environment}-pg"
-  db_name             = "bcps_redistricting"
+  db_name             = "${var.project_name}-${var.environment}-db"
   container_env_name  = "${var.project_name}-${var.environment}-env"
   container_app_name  = "${var.project_name}-${var.environment}-api"
   log_analytics_name  = "${var.project_name}-${var.environment}-logs"
@@ -142,7 +141,7 @@ resource "azurerm_container_app" "api" {
       
       env {
         name  = "NODE_ENV"
-        value = "production"
+        value = var.environment
       }
       
       env {

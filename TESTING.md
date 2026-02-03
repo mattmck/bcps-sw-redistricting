@@ -1,9 +1,11 @@
 # Testing & Validation Checklist - Phase 5
 
 ## Overview
+
 This document provides comprehensive testing procedures for the BCPS Redistricting Tool with PostGIS backend.
 
 ## Prerequisites
+
 - Docker running with backend services
 - Backend API running on `http://localhost:4000`
 - Frontend dev server running on `http://localhost:3000`
@@ -11,6 +13,7 @@ This document provides comprehensive testing procedures for the BCPS Redistricti
 ## Phase 5.1: Manual Frontend Testing
 
 ### Map Loading
+
 - [ ] Open `http://localhost:3000`
 - [ ] Verify map loads without errors
 - [ ] Verify 182 planning blocks are visible (gray polygons)
@@ -18,6 +21,7 @@ This document provides comprehensive testing procedures for the BCPS Redistricti
 - [ ] Verify initial planning blocks are colored by school
 
 ### School Selection
+
 - [ ] Click on a school (colored circle on map)
 - [ ] Verify school name appears in banner at top
 - [ ] Verify school color appears in banner
@@ -25,6 +29,7 @@ This document provides comprehensive testing procedures for the BCPS Redistricti
 - [ ] Click different schools and verify banner updates
 
 ### Planning Block Reassignment
+
 - [ ] Select a school (click school circle)
 - [ ] Click a planning block (polygon)
 - [ ] Verify block changes color to match selected school
@@ -34,32 +39,39 @@ This document provides comprehensive testing procedures for the BCPS Redistricti
 - [ ] Try reassigning blocks to different schools
 
 ### Redistricting Options Loading
+
 - [ ] Click "Load Current Districting" button
 - [ ] Verify map colors update to show current districting
 - [ ] Verify table shows student counts for current districting
 
 #### 9/30/2015 Meeting Options
+
 - [ ] Click "Option 1" - verify map and table update
 - [ ] Click "Option 2" - verify map and table update
 - [ ] Click "Option 3" - verify map and table update
 
 #### 10/14/2015 Meeting Options
+
 - [ ] Click "Option A" through "Option E"
 - [ ] Verify each option loads different color patterns
 
 #### 10/28/2015 Meeting Options
+
 - [ ] Click "Option A" through "Option G"
 - [ ] Verify each option loads correctly
 
 #### 11/11/2015 Meeting Options
+
 - [ ] Click "Option A" through "Option L"
 - [ ] Verify all 12 options load correctly
 
 #### 11/18/2015 Meeting Options
+
 - [ ] Click "Option 1" through "Option 4"
 - [ ] Verify each option loads correctly
 
 ### School Table
+
 - [ ] Verify table shows all 11 schools
 - [ ] Verify each school has color indicator
 - [ ] Verify capacity columns show correct values
@@ -69,6 +81,7 @@ This document provides comprehensive testing procedures for the BCPS Redistricti
 - [ ] Click a row and verify it highlights
 
 ### Snapshot Feature
+
 - [ ] Click "Take Snapshot" button
 - [ ] Verify button shows "Taking Snapshot..." while processing
 - [ ] Verify snapshot image appears below
@@ -78,16 +91,19 @@ This document provides comprehensive testing procedures for the BCPS Redistricti
 ## Phase 5.2: API Endpoint Testing
 
 ### Health Check
+
 ```bash
 curl http://localhost:4000/health | jq
 # Expected: { status: "healthy", database: "connected" }
 ```
+
 - [ ] Status is "healthy"
 - [ ] Database is "connected"
 - [ ] Timestamp is recent
 - [ ] Uptime is positive
 
 ### Schools API
+
 ```bash
 # Get all schools
 curl http://localhost:4000/api/schools | jq '. | {type, count: (.features | length)}'
@@ -97,6 +113,7 @@ curl http://localhost:4000/api/schools | jq '. | {type, count: (.features | leng
 curl http://localhost:4000/api/schools/1 | jq '.properties.NAME'
 # Expected: School name
 ```
+
 - [ ] Returns 11 schools
 - [ ] Type is "FeatureCollection"
 - [ ] Each feature has properties: NAME, SRC, SRC2016, SRC2017, X, Y
@@ -104,6 +121,7 @@ curl http://localhost:4000/api/schools/1 | jq '.properties.NAME'
 - [ ] Single school endpoint returns 404 for invalid ID
 
 ### Planning Blocks API
+
 ```bash
 # Get all planning blocks
 curl http://localhost:4000/api/planning-blocks | jq '. | {type, count: (.features | length)}'
@@ -113,6 +131,7 @@ curl http://localhost:4000/api/planning-blocks | jq '. | {type, count: (.feature
 curl http://localhost:4000/api/planning-blocks/1 | jq '.properties.PBID'
 # Expected: Block ID
 ```
+
 - [ ] Returns 182 planning blocks
 - [ ] Type is "FeatureCollection"
 - [ ] Each feature has properties: PBID, K5LiveAtt
@@ -120,6 +139,7 @@ curl http://localhost:4000/api/planning-blocks/1 | jq '.properties.PBID'
 - [ ] Polygons have valid coordinate arrays
 
 ### Redistricting Options API
+
 ```bash
 # Get all options
 curl http://localhost:4000/api/options | jq '[.[] | {id, name, is_current}]'
@@ -133,6 +153,7 @@ curl http://localhost:4000/api/options/1 | jq '{id, name, schools: (.assignments
 curl http://localhost:4000/api/options/1/stats | jq '{option: .option.name, schoolCount: (.schools | length)}'
 # Expected: Statistics for all schools
 ```
+
 - [ ] Returns 5 redistricting options
 - [ ] First option (150930) has is_current: true
 - [ ] Option details include assignments object
@@ -141,6 +162,7 @@ curl http://localhost:4000/api/options/1/stats | jq '{option: .option.name, scho
 - [ ] Utilization percentages are calculated correctly
 
 ### Create New Option (Optional)
+
 ```bash
 # Create new option
 curl -X POST http://localhost:4000/api/options \
@@ -155,12 +177,14 @@ curl -X POST http://localhost:4000/api/options \
   }' | jq
 # Expected: New option created with ID
 ```
+
 - [ ] POST creates new option successfully
 - [ ] Returns 201 status code
 - [ ] New option appears in GET /api/options list
 - [ ] Assignments are saved correctly
 
 ### Update Option (Optional)
+
 ```bash
 # Update option
 curl -X PUT http://localhost:4000/api/options/6 \
@@ -170,15 +194,18 @@ curl -X PUT http://localhost:4000/api/options/6 \
   }' | jq
 # Expected: Updated option
 ```
+
 - [ ] PUT updates option successfully
 - [ ] Changes are reflected in GET endpoint
 
 ### Delete Option (Optional)
+
 ```bash
 # Delete option
 curl -X DELETE http://localhost:4000/api/options/6 | jq
 # Expected: { message: "Redistricting option deleted" }
 ```
+
 - [ ] DELETE removes option successfully
 - [ ] Option no longer appears in list
 - [ ] Assignments are cascade deleted
@@ -186,6 +213,7 @@ curl -X DELETE http://localhost:4000/api/options/6 | jq
 ## Phase 5.3: Performance Testing
 
 ### API Response Times
+
 ```bash
 # Test schools endpoint
 time curl -s http://localhost:4000/api/schools > /dev/null
@@ -209,6 +237,7 @@ time curl -s http://localhost:4000/api/options/1/stats > /dev/null
 ```
 
 **Results:**
+
 - [ ] Schools: _____ ms (target: < 100ms)
 - [ ] Planning blocks: _____ ms (target: < 500ms)
 - [ ] Options list: _____ ms (target: < 50ms)
@@ -216,6 +245,7 @@ time curl -s http://localhost:4000/api/options/1/stats > /dev/null
 - [ ] Statistics: _____ ms (target: < 200ms)
 
 ### Frontend Load Time
+
 - [ ] Open DevTools Network tab
 - [ ] Clear cache and hard reload
 - [ ] Measure total load time: _____ seconds
@@ -225,6 +255,7 @@ time curl -s http://localhost:4000/api/options/1/stats > /dev/null
 ## Phase 5.4: Data Integrity Validation
 
 ### School Count
+
 ```bash
 # Database
 docker exec bcps-postgres psql -U bcps_user -d bcps_redistricting -c "SELECT COUNT(*) FROM schools;"
@@ -234,11 +265,13 @@ docker exec bcps-postgres psql -U bcps_user -d bcps_redistricting -c "SELECT COU
 curl -s http://localhost:4000/api/schools | jq '.features | length'
 # Expected: 11
 ```
+
 - [ ] Database has 11 schools
 - [ ] API returns 11 schools
 - [ ] Counts match
 
 ### Planning Block Count
+
 ```bash
 # Database
 docker exec bcps-postgres psql -U bcps_user -d bcps_redistricting -c "SELECT COUNT(*) FROM planning_blocks;"
@@ -248,11 +281,13 @@ docker exec bcps-postgres psql -U bcps_user -d bcps_redistricting -c "SELECT COU
 curl -s http://localhost:4000/api/planning-blocks | jq '.features | length'
 # Expected: 182
 ```
+
 - [ ] Database has 182 planning blocks
 - [ ] API returns 182 planning blocks
 - [ ] Counts match
 
 ### Redistricting Options Count
+
 ```bash
 # Database
 docker exec bcps-postgres psql -U bcps_user -d bcps_redistricting -c "SELECT COUNT(*) FROM redistricting_options;"
@@ -262,11 +297,13 @@ docker exec bcps-postgres psql -U bcps_user -d bcps_redistricting -c "SELECT COU
 curl -s http://localhost:4000/api/options | jq '. | length'
 # Expected: 5
 ```
+
 - [ ] Database has 5 options
 - [ ] API returns 5 options
 - [ ] Counts match
 
 ### Option Assignments
+
 ```bash
 # Database - count assignments for option 1
 docker exec bcps-postgres psql -U bcps_user -d bcps_redistricting -c "
@@ -278,11 +315,13 @@ docker exec bcps-postgres psql -U bcps_user -d bcps_redistricting -c "
 curl -s http://localhost:4000/api/options/1 | jq '.assignments | to_entries | map(.value | length) | add'
 # Expected: 176
 ```
+
 - [ ] Database assignment counts match API
 - [ ] All schools have assignments
 - [ ] No duplicate assignments
 
 ### Spot Check School Data
+
 ```bash
 # Check Arbutus ES capacity
 curl -s http://localhost:4000/api/schools | jq '.features[] | select(.properties.NAME == "Arbutus ES") | .properties | {SRC, SRC2016, SRC2017}'
@@ -292,6 +331,7 @@ curl -s http://localhost:4000/api/schools | jq '.features[] | select(.properties
 curl -s http://localhost:4000/api/schools | jq '.features[] | select(.properties.NAME == "Catonsville ES") | .properties | {SRC, SRC2016, SRC2017}'
 # Expected: { SRC: 405, SRC2016: 715, SRC2017: null }
 ```
+
 - [ ] Arbutus ES: 405 capacity
 - [ ] Catonsville ES: 405/715/null (override applied)
 - [ ] Relay ES: 415/null/689 (override applied)
@@ -301,27 +341,33 @@ curl -s http://localhost:4000/api/schools | jq '.features[] | select(.properties
 ## Test Summary
 
 **Phase 5.1: Manual Frontend Testing**
+
 - Total tests: _____ / _____
 - Pass rate: _____%
 
 **Phase 5.2: API Endpoint Testing**
+
 - Total tests: _____ / _____
 - Pass rate: _____%
 
 **Phase 5.3: Performance Testing**
+
 - All endpoints meet performance targets: [ ] Yes [ ] No
 - Notes: _______________
 
 **Phase 5.4: Data Integrity**
+
 - All data counts match: [ ] Yes [ ] No
 - Capacity overrides correct: [ ] Yes [ ] No
 
 ## Issues Found
+
 1. _____________________
 2. _____________________
 3. _____________________
 
 ## Sign-off
+
 - [ ] All critical tests passing
 - [ ] Performance targets met
 - [ ] Data integrity verified

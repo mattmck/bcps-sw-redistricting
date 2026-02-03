@@ -1,0 +1,31 @@
+name: PR Title Check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+      - edited
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pr-title:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title format
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          echo "PR title: $TITLE"
+
+          if [[ "$TITLE" =~ ^(feat|fix|docs|refactor|chore|test|task)(\([a-z0-9._-]+\))?:\ .+ ]]; then
+            echo "✅ PR title format is valid"
+          else
+            echo "❌ Invalid PR title format. Use: type(scope?): summary"
+            echo "Allowed types: feat, fix, docs, refactor, chore, test, task"
+            exit 1
+          fi

@@ -63,7 +63,7 @@ function checkCodeQL() {
     console.log('  3. Automated setup script:');
     console.log('     ./scripts/setup-dev.sh\n');
     
-    log('See CODEQL.md for detailed instructions.\n', 'blue');
+    log('See docs/CODEQL.md for detailed instructions.\n', 'blue');
   }
 }
 
