@@ -18,13 +18,13 @@ on:
           - destroy
       
   # Optionally run on infrastructure changes
-  push:
-    branches:
-      - master
-      - main
-    paths:
-      - 'terraform/**'
-      - '.github/workflows/deploy-infrastructure.yml'
+  # push:
+  #   branches:
+  #     - master
+  #     - main
+  #   paths:
+  #     - 'terraform/**'
+  #     - '.github/workflows/deploy-infrastructure.yml'
 
 jobs:
   terraform:
