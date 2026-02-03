@@ -35,28 +35,55 @@ Before deploying the backend to Azure:
 
 ## Deployment Options
 
-### Option 1: Automated (GitHub Actions) - Recommended
+Choose your deployment strategy:
 
-**When:** After Terraform infrastructure is created
+### **Option A: Fully Automated (GitHub Actions + Terraform)** 🤖
 
+**Best for:** Production environments, teams, hands-off automation
+
+**What it does:** GitHub Actions handles **everything** - infrastructure creation via Terraform, database migrations, and code deployments.
+
+**Setup Requirements:**
+1. **One-Time**: Configure GitHub secrets (8 required secrets)
+2. **One-Time**: Create Azure Storage for Terraform state
+3. **Push to master**: Automatic deployment on every commit
+
+**See:** [docs/GITHUB_SECRETS_SETUP.md](docs/GITHUB_SECRETS_SETUP.md) for complete setup guide
+
+**Workflows:**
+- `.github/workflows/deploy-infrastructure.yml` - Creates/updates Azure infrastructure via Terraform
+- `.github/workflows/deploy-fullstack.yml` - Deploys code (backend + frontend)
+
+**Usage:**
 ```bash
-# Push to master triggers automatic deployment
-git checkout master
-git merge 48-feature-database-backend-with-postgis-for-spatial-data
-git push origin master
+# Trigger infrastructure deployment (creates PostgreSQL, Container App, etc.)
+gh workflow run deploy-infrastructure.yml -f terraform_action=apply
 
-# Or trigger manually
-gh workflow run deploy-fullstack.yml
+# After infrastructure exists, just push code to master
+git checkout master
+git merge your-feature-branch
+git push origin master  # Automatically deploys backend + frontend
 ```
 
-**What it does:**
-1. Builds backend Docker image
-2. Pushes to Azure Container Registry
-3. Updates Container App with new version
-4. Verifies API health
-5. Builds and deploys frontend with API URL
+**Pros:**
+- ✅ Zero manual steps after initial setup
+- ✅ Consistent deployments every time
+- ✅ Automatic database migrations
+- ✅ Built-in rollback via workflow history
+- ✅ Team-friendly (anyone can deploy)
 
-### Option 2: Manual Terraform + Script
+**Cons:**
+- ⚠️ Requires 8 GitHub secrets setup
+- ⚠️ Terraform state in Azure Storage (extra resource)
+- ⚠️ More complex initial configuration
+
+---
+
+### **Option B: Manual Terraform + Automated Deployments** 🛠️
+
+**Best for:** Solo developers, full control, testing environments
+
+**What it does:** You run Terraform **once** locally to create infrastructure. After that, GitHub Actions handles all code deployments automatically.
 
 **Initial Setup (One-Time):**
 
@@ -77,23 +104,58 @@ nano terraform.tfvars  # Set db_admin_password and verify other values
 terraform init
 terraform plan  # Review what will be created
 terraform apply # Creates PostgreSQL + Container App + Log Analytics
+
+# 4. Run database migrations (one-time)
+# See "Post-Deployment Steps" below
 ```
 
 **After Infrastructure Exists:**
 
 ```bash
-# Just rebuild and push the Docker image
-cd backend
-az acr login --name bcpsredistrictingacr
-docker build -t bcpsredistrictingacr.azurecr.io/redistricting-api:latest .
-docker push bcpsredistrictingacr.azurecr.io/redistricting-api:latest
+# Just push to master - GitHub Actions handles deployment
+git checkout master
+git merge your-feature-branch
+git push origin master  # Automatically deploys via deploy-fullstack.yml
 
-# Update Container App
-az containerapp update \
-  --name bcps-redistricting-prod-api \
-  --resource-group bcps-redistricting-prod-rg \
-  --image bcpsredistrictingacr.azurecr.io/redistricting-api:latest
+# Or trigger manually
+gh workflow run deploy-fullstack.yml
 ```
+
+**Pros:**
+- ✅ Simpler setup (only 3 GitHub secrets needed)
+- ✅ Full control over infrastructure changes
+- ✅ Terraform state stays local (simpler)
+- ✅ Automated code deployments (same as Option A)
+
+**Cons:**
+- ⚠️ Manual Terraform commands for infrastructure changes
+- ⚠️ Requires local Terraform state management
+- ⚠️ Initial database migrations are manual
+
+---
+
+### **Comparison Table**
+
+| Feature | Option A (Full Automation) | Option B (Manual Terraform) |
+|---------|----------------------------|-----------------------------|
+| Infrastructure Creation | GitHub Actions (Terraform) | Local Terraform CLI |
+| Code Deployments | GitHub Actions ✅ | GitHub Actions ✅ |
+| Database Migrations | Automatic ✅ | Manual (one-time) |
+| GitHub Secrets Required | 8 | 3 |
+| Terraform State | Azure Storage | Local |
+| Initial Setup Complexity | High | Medium |
+| Ongoing Maintenance | Zero | Low |
+| Best For | Production | Development |
+
+---
+
+### **Recommended Approach**
+
+**Start with Option B** → Graduate to Option A when ready for production:
+
+1. Use **Option B** during development to maintain control
+2. Switch to **Option A** when deploying to production for full automation
+3. Both options use the same Terraform code and GitHub Actions workflows
 
 ## Terraform Infrastructure
 
