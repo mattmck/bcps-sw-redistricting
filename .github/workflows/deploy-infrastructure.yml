@@ -1,5 +1,8 @@
 name: Deploy Azure Infrastructure (Terraform)
 
+permissions:
+  contents: read
+
 on:
   # Manual trigger for infrastructure changes
   workflow_dispatch:

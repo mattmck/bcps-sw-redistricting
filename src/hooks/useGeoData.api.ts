@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import type { School, PlanningBlock, GeoJSONData, GeoJSONFeature } from '@/types'
 import { SCHOOL_COLORS } from '@/utils/calculations'
-import { schoolsAPI, planningBlocksAPI, optionsAPI, type OptionWithAssignments } from '@/services/apiClient'
+import { schoolsAPI, planningBlocksAPI, optionsAPI } from '@/services/apiClient'
 
 export interface GeoDataState {
   schools: School[]
