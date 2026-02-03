@@ -27,8 +27,13 @@ env:
   STATIC_WEB_APP_NAME: bcps-redistricting-prod-swa
 
 jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+  
   deploy-backend:
     if: github.event.inputs.skip_backend != 'true'
+    needs: ci
     runs-on: ubuntu-latest
     name: Deploy Backend API
     
