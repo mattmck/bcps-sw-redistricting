@@ -1,11 +1,12 @@
 name: Deploy to Azure Static Web Apps
 
 on:
-  push:
-    branches:
-      - master
-      - main
-  workflow_dispatch:
+  # Disabled - using deploy-fullstack.yml instead for all Azure deployments
+  # push:
+  #   branches:
+  #     - master
+  #     - main
+  workflow_dispatch:  # Keep manual trigger only
 
 # Permissions needed for Azure deployment
 permissions:

@@ -16,7 +16,7 @@ resource "azurerm_key_vault" "main" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   sku_name                   = "standard"
   soft_delete_retention_days = 90
-  purge_protection_enabled   = true
+  purge_protection_enabled   = false
   
   enable_rbac_authorization = var.enable_rbac_authorization
   
@@ -43,7 +43,7 @@ resource "azurerm_key_vault" "main" {
   tags = var.tags
   
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -58,6 +58,6 @@ resource "azurerm_key_vault_secret" "secrets" {
   tags = var.tags
   
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
