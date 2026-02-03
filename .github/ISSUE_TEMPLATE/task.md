@@ -7,12 +7,5 @@ labels: task
 ## Summary
 Describe the task and desired outcome.
 
-## Scope
-What areas or files are affected?
-
-## Acceptance Criteria
-- [ ] 
-- [ ] 
-
 ## Additional Context
 Links, references, or notes.
