@@ -399,4 +399,27 @@ angular-app/public/assets/    # Legacy GeoJSON data files
 - **2015:** Original AngularJS 1.4 implementation
 
 See [MODERNIZATION_ROADMAP.md](./MODERNIZATION_ROADMAP.md) for detailed migration strategy.
-See [VUE_TO_REACT_MIGRATION.md](./VUE_TO_REACT_MIGRATION.md) for React conversion notes.
+See [ANGULAR_TO_REACT_MIGRATION.md](./ANGULAR_TO_REACT_MIGRATION.md) for React conversion notes.
+
+## For Contributors & AI Coding Assistants
+
+This repository includes comprehensive coding instructions for developers and AI coding assistants:
+
+- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - Complete guide to project architecture, coding patterns, development workflow, and best practices
+- **[WARP.md](WARP.md)** - Symlink to Copilot instructions (alternative access point)
+- **[INSTRUCTIONS.md](INSTRUCTIONS.md)** - Detailed developer documentation
+
+These instructions are optimized for:
+- GitHub Copilot coding agents
+- AI-assisted development tools
+- Human developers new to the codebase
+- Understanding project-specific patterns and conventions
+
+**Key topics covered:**
+- React 18 + TypeScript patterns
+- Mapbox GL integration best practices
+- State management with hooks and refs
+- Environment variables and secrets
+- CI/CD workflows
+- Security guidelines
+- Common troubleshooting
