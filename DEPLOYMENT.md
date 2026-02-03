@@ -331,3 +331,120 @@ terraform destroy  # Type 'yes' to confirm
 ---
 
 **Note**: For frontend-only deployment (without backend), see [DEPLOYMENT_FRONTEND_ONLY.md](./DEPLOYMENT_FRONTEND_ONLY.md).
+### Map Not Loading
+**Symptom:** Blank map or console errors about Mapbox token
+
+**Solution:**
+1. Verify `MAPBOX_API_KEY` secret is set in GitHub
+2. Check GitHub Actions logs for token masking (`***`)
+3. Verify token in dist/assets/*.js files (look for `pk.ey`)
+4. Check Mapbox dashboard for API usage/restrictions
+
+### Deployment Failed
+**Symptom:** GitHub Actions workflow fails
+
+**Solution:**
+1. Check workflow logs for specific error
+2. Verify all required secrets are configured
+3. For Azure: Verify Azure credentials and Static Web Apps token
+4. For GitHub Pages: Verify Pages is enabled in repository settings
+
+### Wrong Base Path (404 on Assets)
+**Symptom:** App loads but assets return 404
+
+**Solution:**
+- **GitHub Pages:** Ensure `GITHUB_PAGES=true` in workflow
+- **Azure/Custom Domain:** Ensure `GITHUB_PAGES` is NOT set
+- Check `vite.config.ts` base path configuration
+- Rebuild and redeploy
+
+### Azure SWA Deployment: "An unknown exception has occurred"
+**Symptom:** Azure Static Web Apps deployment fails with "An unknown exception has occurred" after detecting Data API Files Directory
+
+**Cause:** The presence of a `swa-db-connections/` directory with an empty or incomplete `staticwebapp.database.config.json` file causes Azure to attempt Data API Builder processing, which fails when the configuration is not properly set up.
+
+**Solution:**
+1. **For static-only sites (no database):** Remove the `swa-db-connections/` directory entirely
+   ```bash
+   rm -rf swa-db-connections
+   git add swa-db-connections
+   git commit -m "Remove unused database config directory"
+   ```
+2. **If you need Data API Builder:** Properly configure the `staticwebapp.database.config.json` file with valid connection strings and entity definitions according to [Azure Data API Builder documentation](https://learn.microsoft.com/en-us/azure/data-api-builder/)
+
+**Note:** This app is a static-only React application with no backend database, so the database configuration directory is not needed.
+
+### Azure Key Vault Access Denied
+**Symptom:** Workflow fails at "Get Mapbox API Key from Key Vault" or shows warning "Could not retrieve Mapbox key from Key Vault"
+
+**Solution:**
+1. **If using Azure Key Vault:** Verify service principal has Key Vault read permissions:
+   ```bash
+   az keyvault set-policy \
+     --name bcps-redistricting-prod-kv \
+     --spn YOUR_SP_APP_ID \
+     --secret-permissions get list
+   ```
+2. **Alternative:** Use GitHub Secret only (skip Key Vault):
+   - The workflow automatically falls back to `MAPBOX_API_KEY` GitHub Secret
+   - Ensure the GitHub Secret is set correctly (see below)
+
+### Invalid or Short Mapbox Token
+**Symptom:** Warning shows "Mapbox key retrieved (length: 18)" or similar short length
+
+**Solution:**
+1. **Check GitHub Secret is set correctly:**
+   ```bash
+   # Verify the secret exists
+   gh secret list | grep MAPBOX_API_KEY
+   
+   # Set/update the secret with a valid Mapbox token
+   gh secret set MAPBOX_API_KEY --body "pk.eyJ1Ijoibm..."
+   ```
+
+2. **Verify token format:**
+   - Valid Mapbox tokens start with `pk.ey`
+   - Tokens are typically 80-100 characters long
+   - Get your token from https://account.mapbox.com/access-tokens/
+
+3. **Common mistakes:**
+   - Using a placeholder value like "your_token_here"
+   - Using an incomplete token (copied only part of it)
+   - Using an old or revoked token
+
+4. **Test your token:**
+   ```bash
+   # Build locally with the token to verify it works
+   export VITE_MAPBOX_ACCESS_TOKEN="pk.your_token_here"
+   npm run build
+   npm run preview
+   # Open http://localhost:4173 and verify map loads
+   ```
+
+## Monitoring
+
+### Azure Static Web Apps
+- **URL:** `https://bcps-redistricting.azurestaticapps.net`
+- **Dashboard:** Azure Portal → Static Web Apps → bcps-redistricting
+- **Logs:** Available in Azure Portal
+
+### GitHub Pages
+- **URL:** `https://<USERNAME>.github.io/bcps-sw-redistricting/` (replace `<USERNAME>` with your GitHub username)
+- **Status:** Repository → Settings → Pages
+- **Logs:** Repository → Actions → Deploy to GitHub Pages workflow
+
+## Security
+
+✅ **Secrets Management:** Tokens stored in GitHub Secrets (encrypted)  
+✅ **Log Masking:** API tokens masked in workflow logs  
+✅ **Build-time Injection:** Tokens embedded at build time, not runtime  
+✅ **HTTPS:** Both platforms serve over HTTPS by default  
+✅ **No Backend:** Static site, no server-side secrets exposure
+
+## References
+
+- [Azure Static Web Apps Documentation](https://docs.microsoft.com/en-us/azure/static-web-apps/)
+- [GitHub Pages Documentation](https://docs.github.com/en/pages)
+- [GitHub Actions Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
+- [Vite Environment Variables](https://vitejs.dev/guide/env-and-mode.html)
+- [Mapbox Access Tokens](https://docs.mapbox.com/help/getting-started/access-tokens/)

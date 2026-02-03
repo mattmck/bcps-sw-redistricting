@@ -15,19 +15,31 @@ export const MainView = () => {
   const [selectedSchool, setSelectedSchool] = useState<string>('')
   const [snapshotUrl, setSnapshotUrl] = useState<string>('')
   const [takingSnapshot, setTakingSnapshot] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [selectedDropdown, setSelectedDropdown] = useState<string>('')
+  const [darkMode, setDarkMode] = useState(false)
   const selectedSchoolRef = useRef<string>('')
+  const listenersAddedRef = useRef(false)
+  const darkModeInitialized = useRef(false)
+  const schoolsRef = useRef<School[]>([])
 
-  // Keep ref in sync with state
+  // Keep refs in sync with state
   useEffect(() => {
     selectedSchoolRef.current = selectedSchool
   }, [selectedSchool])
+  
+  useEffect(() => {
+    schoolsRef.current = schools
+  }, [schools])
 
   // Initialize map
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return
 
     console.log('Initializing Mapbox map...')
+    console.log('Token being set:', MAPBOX_ACCESS_TOKEN ? `${MAPBOX_ACCESS_TOKEN.substring(0, 20)}...` : 'UNDEFINED')
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN
+    console.log('mapboxgl.accessToken after setting:', mapboxgl.accessToken ? `${mapboxgl.accessToken.substring(0, 20)}...` : 'UNDEFINED')
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
@@ -36,6 +48,9 @@ export const MainView = () => {
       zoom: 12,
       preserveDrawingBuffer: true
     })
+
+    // Store map instance for dark mode style switching
+    mapRef.current = map
 
     map.on('load', () => {
       console.log('Map style loaded successfully')
@@ -62,6 +77,57 @@ export const MainView = () => {
       setSchools(geoData.schools)
     }
   }, [geoData.loading, geoData.schools])
+
+  // Add event listeners once
+  const addMapListeners = (map: mapboxgl.Map) => {
+    if (listenersAddedRef.current) return
+    
+    console.log('Adding map event listeners')
+    
+    // Click handler for schools
+    map.on('click', 'schools-circle', (e) => {
+      if (e.features && e.features.length > 0) {
+        const schoolName = e.features[0].properties?.NAME
+        if (schoolName) {
+          console.log('School clicked:', schoolName)
+          setSelectedSchool(schoolName)
+        }
+      }
+    })
+
+    // Change cursor on hover for schools
+    map.on('mouseenter', 'schools-circle', () => {
+      map.getCanvas().style.cursor = 'pointer'
+    })
+    map.on('mouseleave', 'schools-circle', () => {
+      map.getCanvas().style.cursor = ''
+    })
+    
+    // Click handler for planning blocks
+    map.on('click', 'planning-blocks-fill', (e) => {
+      const currentSelectedSchool = selectedSchoolRef.current
+      console.log('Planning block layer clicked, features:', e.features?.length, 'selectedSchool:', currentSelectedSchool)
+      if (e.features && e.features.length > 0) {
+        const blockId = e.features[0].properties?.PBID
+        console.log('Block ID:', blockId, 'Selected school:', currentSelectedSchool)
+        if (blockId && currentSelectedSchool) {
+          console.log('Calling handleBlockClick for block:', blockId)
+          handleBlockClick(blockId)
+        } else if (!currentSelectedSchool) {
+          console.log('No school selected - please click a school first')
+        }
+      }
+    })
+
+    map.on('mouseenter', 'planning-blocks-fill', () => {
+      map.getCanvas().style.cursor = 'pointer'
+    })
+    map.on('mouseleave', 'planning-blocks-fill', () => {
+      map.getCanvas().style.cursor = ''
+    })
+    
+    listenersAddedRef.current = true
+  }
 
   // Load GeoJSON layers when data is ready
   useEffect(() => {
@@ -128,50 +194,10 @@ export const MainView = () => {
           }
         })
         console.log('Schools layer added successfully')
-
-        // Add click handler for schools
-        map.on('click', 'schools-circle', (e) => {
-          if (e.features && e.features.length > 0) {
-            const schoolName = e.features[0].properties?.NAME
-            if (schoolName) {
-              console.log('School clicked:', schoolName)
-              setSelectedSchool(schoolName)
-            }
-          }
-        })
-
-        // Change cursor on hover
-        map.on('mouseenter', 'schools-circle', () => {
-          map.getCanvas().style.cursor = 'pointer'
-        })
-        map.on('mouseleave', 'schools-circle', () => {
-          map.getCanvas().style.cursor = ''
-        })
       }
 
-      // Add click handler for planning blocks (must be after layer is added)
-      console.log('Adding planning block click handler')
-      map.on('click', 'planning-blocks-fill', (e) => {
-        const currentSelectedSchool = selectedSchoolRef.current
-        console.log('Planning block layer clicked, features:', e.features?.length, 'selectedSchool:', currentSelectedSchool)
-        if (e.features && e.features.length > 0) {
-          const blockId = e.features[0].properties?.PBID
-          console.log('Block ID:', blockId, 'Selected school:', currentSelectedSchool)
-          if (blockId && currentSelectedSchool) {
-            console.log('Calling handleBlockClick for block:', blockId)
-            handleBlockClick(blockId)
-          } else if (!currentSelectedSchool) {
-            console.log('No school selected - please click a school first')
-          }
-        }
-      })
-
-      map.on('mouseenter', 'planning-blocks-fill', () => {
-        map.getCanvas().style.cursor = 'pointer'
-      })
-      map.on('mouseleave', 'planning-blocks-fill', () => {
-        map.getCanvas().style.cursor = ''
-      })
+      // Add event listeners once
+      addMapListeners(map)
 
       // Load current districting after layers are added
       console.log('Layers initialized, loading current option')
@@ -193,6 +219,114 @@ export const MainView = () => {
       map.once('load', initializeLayers)
     }
   }, [geoData.loading, geoData.planningBlocksGeoJSON, geoData.schoolsGeoJSON, geoData.schoolColors, geoData.schools])
+
+  // Handle dark mode toggle
+  useEffect(() => {
+    if (!mapRef.current || !geoData.planningBlocksGeoJSON || !geoData.schoolsGeoJSON) return
+    
+    // On first run when data is ready, just mark as initialized
+    if (!darkModeInitialized.current) {
+      darkModeInitialized.current = true
+      document.body.classList.toggle('dark-mode', darkMode)
+      return
+    }
+    
+    const map = mapRef.current
+    const newStyle = darkMode 
+      ? 'mapbox://styles/mapbox/dark-v11'
+      : 'mapbox://styles/mapbox/streets-v12'
+    
+    // setStyle removes all sources/layers, so we need to reset listener flag
+    listenersAddedRef.current = false
+    
+    map.setStyle(newStyle)
+    
+    // Re-add layers and data after style loads
+    map.once('style.load', () => {
+      // Re-add planning blocks (sources are cleared by setStyle)
+      map.addSource('planning-blocks', {
+        type: 'geojson',
+        data: geoData.planningBlocksGeoJSON as any
+      })
+      
+      map.addLayer({
+        id: 'planning-blocks-fill',
+        type: 'fill',
+        source: 'planning-blocks',
+        paint: {
+          'fill-color': '#888888',
+          'fill-opacity': 0.5
+        }
+      })
+      
+      map.addLayer({
+        id: 'planning-blocks-line',
+        type: 'line',
+        source: 'planning-blocks',
+        paint: {
+          'line-color': darkMode ? '#ffffff' : '#000000',
+          'line-width': 1
+        }
+      })
+      
+      // Re-add schools
+      map.addSource('schools', {
+        type: 'geojson',
+        data: geoData.schoolsGeoJSON as any
+      })
+      
+      map.addLayer({
+        id: 'schools-circle',
+        type: 'circle',
+        source: 'schools',
+        paint: {
+          'circle-radius': 10,
+          'circle-color': [
+            'match',
+            ['get', 'NAME'],
+            ...Object.entries(geoData.schoolColors).flat(),
+            '#000000'
+          ],
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#ffffff'
+        }
+      })
+      
+      // Re-add event listeners
+      addMapListeners(map)
+      
+      // Restore current colors if we have schools data
+      const currentSchools = schoolsRef.current
+      if (currentSchools.length > 0) {
+        const colorExpression: any[] = ['match', ['get', 'PBID']]
+        let hasBlocks = false
+        
+        currentSchools.forEach(school => {
+          const schoolColor = geoData.schoolColors[school.NAME] || '#888888'
+          school.planningBlocks.forEach(bid => {
+            colorExpression.push(bid, schoolColor)
+            hasBlocks = true
+          })
+        })
+        
+        colorExpression.push('#888888') // default
+        
+        // Only update if we have planning blocks
+        if (hasBlocks && colorExpression.length > 3) {
+          map.setPaintProperty('planning-blocks-fill', 'fill-color', colorExpression as any)
+        }
+      } else if (Object.keys(geoData.options.current).length > 0) {
+        // Fallback: if no schools data yet, load current option
+        console.log('No schools in ref, loading current option as fallback')
+        setTimeout(() => {
+          loadOption(geoData.options.current)
+        }, 100)
+      }
+    })
+    
+    // Apply dark mode to page
+    document.body.classList.toggle('dark-mode', darkMode)
+  }, [darkMode, geoData.planningBlocksGeoJSON, geoData.schoolsGeoJSON, geoData.schoolColors])
 
   const loadOption = (option: RedistrictingOption) => {
     console.log('loadOption called, option has', Object.keys(option).length, 'schools')
@@ -347,89 +481,177 @@ export const MainView = () => {
 
   return (
     <div className="main-view">
-      <div ref={mapContainerRef} className="map-container"></div>
-      
-      {geoData.loading && <div className="loading">Loading map data...</div>}
-      {!geoData.loading && schools.length === 0 && <div className="loading">Data loaded but no schools found</div>}
-      
-      {selectedSchool && (
-        <div className="selected-school-banner">
-          <strong>Selected School:</strong> {selectedSchool}
-          <span style={{
-            display: 'inline-block',
-            width: '20px',
-            height: '20px',
-            backgroundColor: geoData.schoolColors[selectedSchool],
-            marginLeft: '10px',
-            verticalAlign: 'middle',
-            border: '2px solid white'
-          }} />
-          <span style={{ marginLeft: '10px', fontSize: '0.9em', color: '#666' }}>
-            (Click planning blocks on the map to assign them to this school)
-          </span>
-        </div>
-      )}
-      
-      <div className="options-panel">
-        <h4>Actions</h4>
-        <button onClick={takeSnapshot} className="btn" disabled={takingSnapshot}>
-          {takingSnapshot ? '📸 Taking Snapshot...' : '📸 Take Snapshot'}
-        </button>
-        <button onClick={() => loadOption(geoData.options.current)} className="btn">Load Current Districting</button>
-      </div>
+      <button 
+        className="sidebar-toggle"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        aria-label="Toggle sidebar"
+      >
+        {sidebarOpen ? '◀' : '▶'}
+      </button>
 
-      <div className="options-panel">
-        <h4>9/30/2015 Meeting</h4>
-        <button onClick={() => loadOption(geoData.options.option1)} className="btn">Option 1</button>
-        <button onClick={() => loadOption(geoData.options.option2)} className="btn">Option 2</button>
-        <button onClick={() => loadOption(geoData.options.option3)} className="btn">Option 3</button>
+      <div className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
+        <div className="sidebar-content">
+          <div className="options-panel">
+            <h4>Actions</h4>
+            <button onClick={takeSnapshot} className="btn" disabled={takingSnapshot}>
+              {takingSnapshot ? '📸 Taking Snapshot...' : '📸 Take Snapshot'}
+            </button>
+            <button onClick={() => loadOption(geoData.options.current)} className="btn">Load Current Districting</button>
+            <label className="dark-mode-toggle">
+              <span>Dark Mode</span>
+              <input 
+                type="checkbox" 
+                checked={darkMode} 
+                onChange={(e) => setDarkMode(e.target.checked)}
+                className="dark-mode-checkbox"
+              />
+              <span className="slider"></span>
+            </label>
+          </div>
+
+          <div className="options-panel">
+            <h4>9/30/2015 Meeting</h4>
+        <select 
+          value={selectedDropdown.startsWith('option') && !selectedDropdown.includes('1021') && !selectedDropdown.includes('1111') && !selectedDropdown.includes('1118') && !['optionA', 'optionB', 'optionC', 'optionD', 'optionE'].includes(selectedDropdown) ? selectedDropdown : ''}
+          onChange={(e) => {
+            const key = e.target.value
+            if (key) {
+              setSelectedDropdown(key)
+              loadOption(geoData.options[key as keyof typeof geoData.options] as RedistrictingOption)
+            }
+          }}
+          className="option-select"
+        >
+          <option value="">Select Option...</option>
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
       </div>
 
       <div className="options-panel">
         <h4>10/14/2015 Meeting</h4>
-        <button onClick={() => loadOption(geoData.options.optionA)} className="btn">Option A</button>
-        <button onClick={() => loadOption(geoData.options.optionB)} className="btn">Option B</button>
-        <button onClick={() => loadOption(geoData.options.optionC)} className="btn">Option C</button>
-        <button onClick={() => loadOption(geoData.options.optionD)} className="btn">Option D</button>
-        <button onClick={() => loadOption(geoData.options.optionE)} className="btn">Option E</button>
+        <select 
+          value={['optionA', 'optionB', 'optionC', 'optionD', 'optionE'].includes(selectedDropdown) ? selectedDropdown : ''}
+          onChange={(e) => {
+            const key = e.target.value
+            if (key) {
+              setSelectedDropdown(key)
+              loadOption(geoData.options[key as keyof typeof geoData.options] as RedistrictingOption)
+            }
+          }}
+          className="option-select"
+        >
+          <option value="">Select Option...</option>
+          <option value="optionA">Option A</option>
+          <option value="optionB">Option B</option>
+          <option value="optionC">Option C</option>
+          <option value="optionD">Option D</option>
+          <option value="optionE">Option E</option>
+        </select>
       </div>
 
       <div className="options-panel">
         <h4>10/28/2015 Meeting</h4>
-        <button onClick={() => loadOption(geoData.options.optionA1021)} className="btn">Option A</button>
-        <button onClick={() => loadOption(geoData.options.optionB1021)} className="btn">Option B</button>
-        <button onClick={() => loadOption(geoData.options.optionC1021)} className="btn">Option C</button>
-        <button onClick={() => loadOption(geoData.options.optionD1021)} className="btn">Option D</button>
-        <button onClick={() => loadOption(geoData.options.optionE1021)} className="btn">Option E</button>
-        <button onClick={() => loadOption(geoData.options.optionF1021)} className="btn">Option F</button>
-        <button onClick={() => loadOption(geoData.options.optionG1021)} className="btn">Option G</button>
+        <select 
+          value={selectedDropdown.includes('1021') ? selectedDropdown : ''}
+          onChange={(e) => {
+            const key = e.target.value
+            if (key) {
+              setSelectedDropdown(key)
+              loadOption(geoData.options[key as keyof typeof geoData.options] as RedistrictingOption)
+            }
+          }}
+          className="option-select"
+        >
+          <option value="">Select Option...</option>
+          <option value="optionA1021">Option A</option>
+          <option value="optionB1021">Option B</option>
+          <option value="optionC1021">Option C</option>
+          <option value="optionD1021">Option D</option>
+          <option value="optionE1021">Option E</option>
+          <option value="optionF1021">Option F</option>
+          <option value="optionG1021">Option G</option>
+        </select>
       </div>
 
       <div className="options-panel">
         <h4>11/11/2015 Meeting</h4>
-        <button onClick={() => loadOption(geoData.options.optionA1111)} className="btn">Option A</button>
-        <button onClick={() => loadOption(geoData.options.optionB1111)} className="btn">Option B</button>
-        <button onClick={() => loadOption(geoData.options.optionC1111)} className="btn">Option C</button>
-        <button onClick={() => loadOption(geoData.options.optionD1111)} className="btn">Option D</button>
-        <button onClick={() => loadOption(geoData.options.optionE1111)} className="btn">Option E</button>
-        <button onClick={() => loadOption(geoData.options.optionF1111)} className="btn">Option F</button>
-        <button onClick={() => loadOption(geoData.options.optionG1111)} className="btn">Option G</button>
-        <button onClick={() => loadOption(geoData.options.optionH1111)} className="btn">Option H</button>
-        <button onClick={() => loadOption(geoData.options.optionI1111)} className="btn">Option I</button>
-        <button onClick={() => loadOption(geoData.options.optionJ1111)} className="btn">Option J</button>
-        <button onClick={() => loadOption(geoData.options.optionK1111)} className="btn">Option K</button>
-        <button onClick={() => loadOption(geoData.options.optionL1111)} className="btn">Option L</button>
+        <select 
+          value={selectedDropdown.includes('1111') ? selectedDropdown : ''}
+          onChange={(e) => {
+            const key = e.target.value
+            if (key) {
+              setSelectedDropdown(key)
+              loadOption(geoData.options[key as keyof typeof geoData.options] as RedistrictingOption)
+            }
+          }}
+          className="option-select"
+        >
+          <option value="">Select Option...</option>
+          <option value="optionA1111">Option A</option>
+          <option value="optionB1111">Option B</option>
+          <option value="optionC1111">Option C</option>
+          <option value="optionD1111">Option D</option>
+          <option value="optionE1111">Option E</option>
+          <option value="optionF1111">Option F</option>
+          <option value="optionG1111">Option G</option>
+          <option value="optionH1111">Option H</option>
+          <option value="optionI1111">Option I</option>
+          <option value="optionJ1111">Option J</option>
+          <option value="optionK1111">Option K</option>
+          <option value="optionL1111">Option L</option>
+        </select>
       </div>
 
       <div className="options-panel">
         <h4>11/18/2015 Meeting</h4>
-        <button onClick={() => loadOption(geoData.options.option11118)} className="btn">Option 1</button>
-        <button onClick={() => loadOption(geoData.options.option21118)} className="btn">Option 2</button>
-        <button onClick={() => loadOption(geoData.options.option31118)} className="btn">Option 3</button>
-        <button onClick={() => loadOption(geoData.options.option41118)} className="btn">Option 4</button>
+        <select 
+          value={selectedDropdown.includes('1118') ? selectedDropdown : ''}
+          onChange={(e) => {
+            const key = e.target.value
+            if (key) {
+              setSelectedDropdown(key)
+              loadOption(geoData.options[key as keyof typeof geoData.options] as RedistrictingOption)
+            }
+          }}
+          className="option-select"
+        >
+          <option value="">Select Option...</option>
+          <option value="option11118">Option 1</option>
+          <option value="option21118">Option 2</option>
+          <option value="option31118">Option 3</option>
+          <option value="option41118">Option 4</option>
+        </select>
+      </div>
+        </div>
       </div>
 
-      <div className="school-table">
+      <div className="main-content">
+        <div ref={mapContainerRef} className="map-container"></div>
+        
+        {geoData.loading && <div className="loading">Loading map data...</div>}
+        {!geoData.loading && schools.length === 0 && <div className="loading">Data loaded but no schools found</div>}
+        
+        {selectedSchool && (
+          <div className="selected-school-banner">
+            <strong>Selected School:</strong> {selectedSchool}
+            <span style={{
+              display: 'inline-block',
+              width: '20px',
+              height: '20px',
+              backgroundColor: geoData.schoolColors[selectedSchool],
+              marginLeft: '10px',
+              verticalAlign: 'middle',
+              border: '2px solid white'
+            }} />
+            <span style={{ marginLeft: '10px', fontSize: '0.9em', color: '#666' }}>
+              (Click planning blocks on the map to assign them to this school)
+            </span>
+          </div>
+        )}
+
+        <div className="school-table">
         {schools.length === 0 ? (
           <div className="loading">No school data loaded yet...</div>
         ) : (
@@ -481,9 +703,9 @@ export const MainView = () => {
           </tbody>
         </table>
         )}
-      </div>
+        </div>
 
-      {snapshotUrl && (
+        {snapshotUrl && (
         <div id="snapshot" className="snapshot-container">
           <h3>Map Snapshot</h3>
           <img src={snapshotUrl} alt="Map snapshot" style={{ maxWidth: '100%', border: '1px solid #ccc' }} />
@@ -496,7 +718,8 @@ export const MainView = () => {
             </button>
           </div>
         </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
