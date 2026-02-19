@@ -362,8 +362,108 @@ gh pr create --title "Fix bug" --body "Closes #10"
 7. **Single component**: MainView handles everything (intentionally monolithic)
 8. **Commit format**: ALWAYS include `Co-Authored-By: Warp <agent@warp.dev>` in commits
 
+## Environment Variables
+
+### Required Variables
+```bash
+# .env.local (for local development)
+VITE_MAPBOX_ACCESS_TOKEN=your_token_here   # Required for map rendering
+VITE_API_URL=http://localhost:4000         # Optional, defaults to localhost:4000
+```
+
+### Setup
+1. Copy `.env.example` to `.env.local`
+2. Get Mapbox token from https://account.mapbox.com/access-tokens/
+3. Add token to `.env.local` (NEVER commit this file)
+4. Restart dev server after changing env vars
+
+### Production
+- Mapbox token stored in Azure Key Vault (see [SECRETS.md](../SECRETS.md))
+- Retrieved automatically during build via CI/CD
+- Never hardcode tokens in source code
+
+## CI/CD & Workflows
+
+### GitHub Actions Workflows
+- **ci.yml** - Continuous integration (build and type check)
+- **codeql.yml** - Security scanning with CodeQL
+- **deploy.yml** - Azure Static Web Apps deployment
+- **deploy-pages.yml** - GitHub Pages deployment
+- **deploy-fullstack.yml** - Full stack deployment (frontend + backend)
+- **deploy-infrastructure.yml** - Terraform infrastructure deployment
+
+### Running Locally
+```bash
+npm run build          # Test production build
+npm run codeql:scan    # Run security analysis locally
+npx tsc --noEmit       # Type check without building
+```
+
+## Security Guidelines
+
+### Before Adding Dependencies
+1. Check for known vulnerabilities using GitHub Advisory Database
+2. Review package popularity and maintenance status
+3. Prefer well-maintained packages with security track record
+4. Run `npm audit` after adding new packages
+
+### Code Security
+- Never commit secrets (tokens, passwords, API keys)
+- Use environment variables for sensitive data
+- Run CodeQL analysis before finalizing changes: `npm run codeql:scan`
+- Keep dependencies updated (Dependabot enabled)
+
+### Secrets Management
+- Local: Use `.env.local` (gitignored)
+- Production: Use Azure Key Vault
+- CI/CD: Use GitHub Secrets
+- See [SECRETS.md](../SECRETS.md) for complete guide
+
+## Troubleshooting
+
+### Map Not Rendering
+- **Check**: Mapbox token in `.env.local`
+- **Check**: Token has correct permissions
+- **Check**: Browser console for errors
+- **Fix**: Restart dev server after env changes
+
+### Build Failures
+- **Issue**: TypeScript errors
+- **Fix**: Run `npx tsc --noEmit` to see all errors
+- **Fix**: Check imports and type definitions
+
+### Planning Blocks Not Clickable
+- **Issue**: Event handlers not attached
+- **Check**: Map layers loaded (check console)
+- **Check**: `selectedSchoolRef.current` is used (not state)
+- **Fix**: Ensure map is fully initialized before attaching handlers
+
+### Backend Connection Issues
+- **Issue**: API calls failing
+- **Check**: Backend running on port 4000
+- **Check**: `VITE_API_URL` set correctly
+- **Fix**: Start backend with `cd backend && docker-compose up -d`
+
+### Common Errors
+```typescript
+// ❌ Error: Stale closure in event handler
+map.on('click', () => {
+  console.log(selectedSchool)  // May be stale
+})
+
+// ✅ Fix: Use ref
+map.on('click', () => {
+  console.log(selectedSchoolRef.current)  // Always fresh
+})
+```
+
 ## Additional Documentation
 - [README.md](../README.md) - User guide and setup
 - [INSTRUCTIONS.md](../INSTRUCTIONS.md) - Detailed developer docs
 - [MODERNIZATION_ROADMAP.md](../MODERNIZATION_ROADMAP.md) - Migration details
-- [VUE_TO_REACT_MIGRATION.md](../VUE_TO_REACT_MIGRATION.md) - React conversion notes
+- [ANGULAR_TO_REACT_MIGRATION.md](../ANGULAR_TO_REACT_MIGRATION.md) - React conversion notes
+- [DEPLOYMENT.md](../DEPLOYMENT.md) - Production deployment guide
+- [SECRETS.md](../SECRETS.md) - Secrets management
+- [SECURITY.md](../SECURITY.md) - Security policies
+- [TESTING.md](../TESTING.md) - Testing guide
+- [CODEQL.md](../CODEQL.md) - CodeQL setup and usage
